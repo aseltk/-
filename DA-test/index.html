@@ -1,0 +1,3938 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Analytics Test | 120 вопросов | По одному вопросу</title>
+  <style>
+    :root {
+      --bg-main: #eef5ff;
+      --bg-secondary: #dcecff;
+      --card-bg: rgba(255,255,255,0.92);
+      --card-border: #2e6fbb;
+      --primary: #1f6fd6;
+      --primary-dark: #174f99;
+      --primary-soft: #cfe2ff;
+      --primary-soft-2: #e8f1ff;
+      --accent: #5ba2ff;
+      --accent-2: #8bc2ff;
+      --text-main: #163657;
+      --text-soft: #4d6d91;
+      --danger: #d23b57;
+      --danger-soft: #ffe5eb;
+      --success: #198754;
+      --success-soft: #e3f7ed;
+      --warning: #f0ad4e;
+      --white-soft: rgba(255,255,255,0.95);
+      --shadow-soft: 0 16px 36px rgba(29, 82, 146, 0.12);
+      --shadow-hover: 0 20px 40px rgba(29, 82, 146, 0.18);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(91, 162, 255, 0.18), transparent 28%),
+        radial-gradient(circle at 86% 14%, rgba(31, 111, 214, 0.14), transparent 26%),
+        radial-gradient(circle at 50% 90%, rgba(139, 194, 255, 0.24), transparent 30%),
+        linear-gradient(180deg, #f7fbff 0%, var(--bg-main) 45%, #eaf3ff 100%);
+    }
+
+    .app {
+      width: min(1100px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 18px;
+      margin-bottom: 18px;
+      align-items: stretch;
+    }
+
+    .hero-card, .panel, .stat-card, .question-shell, .final-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(46,111,187,0.28);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(4px);
+    }
+
+    .hero-card {
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      right: -55px;
+      top: -55px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(91,162,255,0.30), rgba(139,194,255,0.10));
+    }
+
+    .kicker {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      border: 1px solid rgba(46,111,187,0.28);
+      color: var(--primary-dark);
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 8px;
+      font-size: clamp(28px, 4vw, 46px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 16px;
+      line-height: 1.55;
+      max-width: 720px;
+    }
+
+    .mode-panel {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      justify-content: space-between;
+    }
+
+    .mode-title {
+      margin: 0 0 12px;
+      color: var(--text-soft);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .mode-buttons, .action-row, .nav-row, .jump-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .btn {
+      border: 1px solid rgba(46,111,187,0.30);
+      border-radius: 999px;
+      padding: 11px 16px;
+      background: var(--white-soft);
+      color: var(--text-main);
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(51, 102, 153, 0.10);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, opacity 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn.primary { background: linear-gradient(135deg, #d6e8ff, #c4ddff); }
+    .btn.secondary { background: linear-gradient(135deg, #edf5ff, #dfeeff); }
+    .btn.accent { background: linear-gradient(135deg, #b7d6ff, #d6e8ff); }
+    .btn.active {
+      background: linear-gradient(135deg, #1f6fd6, #4a93f0);
+      color: #fff;
+      border-color: rgba(31,111,214,0.6);
+    }
+    .btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card {
+      padding: 16px;
+      min-height: 84px;
+      background: rgba(255,255,255,0.82);
+    }
+
+    .stat-label {
+      color: var(--text-soft);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .progress-panel {
+      padding: 16px 18px;
+      margin-bottom: 16px;
+    }
+
+    .progress-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: var(--text-soft);
+      font-weight: 800;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 12px;
+      background: rgba(46,111,187,0.12);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: width 0.25s ease;
+    }
+
+    .question-shell {
+      min-height: 56vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .question-top {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .question-number {
+      min-width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #d7e9ff, #edf5ff);
+      border: 1px solid rgba(46,111,187,0.30);
+      font-weight: 900;
+      font-size: 20px;
+      color: var(--primary-dark);
+      box-shadow: 0 8px 18px rgba(29,82,146,0.10);
+      flex: 0 0 auto;
+    }
+
+    .question-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      border: 1px solid rgba(46,111,187,0.22);
+      color: var(--primary-dark);
+      background: var(--primary-soft-2);
+    }
+
+    .question-title {
+      margin: 0;
+      font-size: clamp(20px, 2.5vw, 28px);
+      line-height: 1.35;
+      font-weight: 850;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .option {
+      width: 100%;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid rgba(46,111,187,0.28);
+      border-radius: 18px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.84);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+      box-shadow: 0 8px 18px rgba(29,82,146,0.08);
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .option:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 26px rgba(29,82,146,0.12);
+      background: #fff;
+    }
+
+    .option:disabled {
+      cursor: default;
+    }
+
+    .option-label {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #d9ebff, #eef5ff);
+      border: 1px solid rgba(46,111,187,0.22);
+      font-weight: 900;
+      color: var(--primary-dark);
+    }
+
+    .option.selected {
+      background: #e8f2ff;
+      border-color: rgba(31,111,214,0.45);
+    }
+
+    .option.correct {
+      background: var(--success-soft);
+      border-color: rgba(25,135,84,0.45);
+    }
+
+    .option.wrong {
+      background: var(--danger-soft);
+      border-color: rgba(210,59,87,0.45);
+    }
+
+    .feedback {
+      margin-top: 16px;
+      border-radius: 16px;
+      padding: 14px 16px;
+      border: 1px solid rgba(46,111,187,0.20);
+      background: rgba(255,255,255,0.88);
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .feedback.good {
+      border-color: rgba(25,135,84,0.35);
+      background: linear-gradient(135deg, rgba(227,247,237,0.95), rgba(255,255,255,0.92));
+    }
+
+    .feedback.bad {
+      border-color: rgba(210,59,87,0.32);
+      background: linear-gradient(135deg, rgba(255,229,235,0.95), rgba(255,255,255,0.92));
+    }
+
+    .feedback.neutral {
+      border-color: rgba(46,111,187,0.20);
+    }
+
+    .question-footer {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .hint {
+      color: var(--text-soft);
+      font-size: 14px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .jump-select {
+      border: 1px solid rgba(46,111,187,0.28);
+      border-radius: 999px;
+      padding: 11px 16px;
+      background: rgba(255,255,255,0.95);
+      color: var(--text-main);
+      font-weight: 800;
+      min-width: 230px;
+      outline: none;
+    }
+
+    .final-card {
+      padding: 28px;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(214,232,255,0.96));
+      margin-bottom: 16px;
+    }
+
+    .final-card h2 {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 4vw, 44px);
+    }
+
+    .final-score {
+      font-size: 56px;
+      font-weight: 950;
+      margin: 10px 0 6px;
+      color: var(--primary-dark);
+    }
+
+    .final-note {
+      margin: 0 auto 18px;
+      color: var(--text-soft);
+      max-width: 720px;
+      line-height: 1.55;
+      font-weight: 700;
+    }
+
+    .source-note {
+      margin-top: 18px;
+      color: rgba(22,54,87,0.68);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 880px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .app {
+        width: min(100% - 18px, 1100px);
+        padding-top: 18px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .question-top {
+        flex-direction: column;
+      }
+
+      .question-shell {
+        min-height: auto;
+      }
+
+      .option {
+        grid-template-columns: 42px 1fr;
+        padding: 12px 14px;
+      }
+
+      .question-footer {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .jump-select {
+        width: 100%;
+        min-width: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div class="hero-card">
+        <div class="kicker">DATA ANALYTICS · 120 вопросов</div>
+        <h1>Интерактивный тест<br>по одному вопросу</h1>
+        <p class="subtitle">Режим изучения показывает все 120 вопросов последовательно. Режим теста формирует случайные 30 вопросов. На экране отображается только один вопрос, что удобнее для прохождения на компьютере и телефоне.</p>
+      </div>
+
+      <aside class="panel mode-panel">
+        <div>
+          <p class="mode-title">Режим работы</p>
+          <div class="mode-buttons">
+            <button class="btn primary active" id="studyModeBtn" type="button">Режим изучения</button>
+            <button class="btn secondary" id="testModeBtn" type="button">Режим теста</button>
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="btn accent" id="restartBtn" type="button">Начать заново</button>
+          <button class="btn secondary" id="finishTestBtn" type="button" hidden>Завершить тест</button>
+        </div>
+      </aside>
+    </section>
+
+    <section class="stats" aria-label="Статистика">
+      <div class="stat-card">
+        <div class="stat-label">Правильно</div>
+        <div class="stat-value" id="correctStat">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Ошибки</div>
+        <div class="stat-value" id="wrongStat">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Осталось</div>
+        <div class="stat-value" id="leftStat">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Результат</div>
+        <div class="stat-value" id="resultStat">0%</div>
+      </div>
+    </section>
+
+    <section class="panel progress-panel">
+      <div class="progress-top">
+        <span id="statusText">Загружено вопросов: 120</span>
+        <span id="modeHint">В режиме изучения ответ подсвечивается сразу после выбора.</span>
+      </div>
+      <div class="progress-track" aria-hidden="true">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </section>
+
+    <section id="finalScreen"></section>
+    <section class="question-shell" id="questionShell"></section>
+
+    <div class="source-note">Банк вопросов встроен в HTML-файл. Работает локально, без сервера и внешних библиотек.</div>
+  </main>
+
+  <script>
+    const QUESTIONS = [
+  {
+    "id": 1,
+    "question": "Для загрузки CSV-файла с продажами в DataFrame наиболее корректно использовать",
+    "options": [
+      {
+        "label": "A",
+        "text": "pd.read_csv()"
+      },
+      {
+        "label": "B",
+        "text": "pd.load_table()"
+      },
+      {
+        "label": "C",
+        "text": "pd.csv_read()"
+      },
+      {
+        "label": "D",
+        "text": "pd.open_csv()"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "pd.read_csv()",
+    "correctIndex": 0
+  },
+  {
+    "id": 2,
+    "question": "Если функция должна вернуть рассчитанный KPI, наиболее корректно использовать",
+    "options": [
+      {
+        "label": "A",
+        "text": "print"
+      },
+      {
+        "label": "B",
+        "text": "continue"
+      },
+      {
+        "label": "C",
+        "text": "return"
+      },
+      {
+        "label": "D",
+        "text": "break"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "return",
+    "correctIndex": 2
+  },
+  {
+    "id": 3,
+    "question": "Какой из методов словаря dict возвращает список кортежей, где каждый кортеж состоит из пары «ключ-значение»?",
+    "options": [
+      {
+        "label": "A",
+        "text": "keys()"
+      },
+      {
+        "label": "B",
+        "text": "elements()"
+      },
+      {
+        "label": "C",
+        "text": "values()"
+      },
+      {
+        "label": "D",
+        "text": "items()"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "items()",
+    "correctIndex": 3
+  },
+  {
+    "id": 4,
+    "question": "При использовании оператора IN в конструкции WHERE column IN (val1, val2, val3), какому набору логических операторов это эквивалентно?",
+    "options": [
+      {
+        "label": "A",
+        "text": "column = val1 AND column = val2 AND column = val3"
+      },
+      {
+        "label": "B",
+        "text": "column != val1 OR column != val2 OR column != val3"
+      },
+      {
+        "label": "C",
+        "text": "column > val1 AND column < val3"
+      },
+      {
+        "label": "D",
+        "text": "column = val1 OR column = val2 OR column = val3"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "column = val1 OR column = val2 OR column = val3",
+    "correctIndex": 3
+  },
+  {
+    "id": 5,
+    "question": "Для удаления из таблицы строк с тестовыми заказами используется оператор",
+    "options": [
+      {
+        "label": "A",
+        "text": "DROP"
+      },
+      {
+        "label": "B",
+        "text": "ERASE"
+      },
+      {
+        "label": "C",
+        "text": "CLEAR"
+      },
+      {
+        "label": "D",
+        "text": "DELETE"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "DELETE",
+    "correctIndex": 3
+  },
+  {
+    "id": 6,
+    "question": "Для отображения распределения результатов теста по баллам наиболее подходящий график",
+    "options": [
+      {
+        "label": "A",
+        "text": "gauge"
+      },
+      {
+        "label": "B",
+        "text": "treemap"
+      },
+      {
+        "label": "C",
+        "text": "pie chart"
+      },
+      {
+        "label": "D",
+        "text": "histogram"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "histogram",
+    "correctIndex": 3
+  },
+  {
+    "id": 7,
+    "question": "Для вычисления среднего значения зарплаты по каждому отделу (department_id) какой синтаксис необходимо использовать?",
+    "options": [
+      {
+        "label": "A",
+        "text": "SELECT department_id, AVG(salary) FROM employees"
+      },
+      {
+        "label": "B",
+        "text": "SELECT department_id, AVERAGE(salary) FROM employees GROUP BY department_id"
+      },
+      {
+        "label": "C",
+        "text": "SELECT department_id, AVG(salary) FROM employees GROUP BY department_id"
+      },
+      {
+        "label": "D",
+        "text": "SELECT department_id, MEAN(salary) FROM employees PARTITION BY department_id"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "SELECT department_id, AVG(salary) FROM employees GROUP BY department_id",
+    "correctIndex": 2
+  },
+  {
+    "id": 8,
+    "question": "Каково принципиальное различие между вычисляемым столбцом (Calculated Column) и мерой (Measure) в DAX?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Меры можно использовать только с числовыми данными, а столбцы со строками"
+      },
+      {
+        "label": "B",
+        "text": "Вычисляемый столбец рассчитывается агрегированно «на лету», а мера вычисляется для каждой строки при загрузке данных"
+      },
+      {
+        "label": "C",
+        "text": "Вычисляемый столбец рассчитывается строка за строкой при загрузке или обновлении данных и увеличивает размер модели, тогда как мера вычисляется «на лету» в контексте фильтра"
+      },
+      {
+        "label": "D",
+        "text": "Меры можно размещать в срезах (Slicers) для фильтрации, а столбцы нет"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "Вычисляемый столбец рассчитывается строка за строкой при загрузке или обновлении данных и увеличивает размер модели, тогда как мера вычисляется «на лету» в контексте фильтра",
+    "correctIndex": 2
+  },
+  {
+    "id": 9,
+    "question": "С помощью какого метода можно извлечь все ключи из существующего словаря my_dict для последующей итерации по ним?",
+    "options": [
+      {
+        "label": "A",
+        "text": "my_dict.get_keys()"
+      },
+      {
+        "label": "B",
+        "text": "my_dict.indices()"
+      },
+      {
+        "label": "C",
+        "text": "my_dict.keys()"
+      },
+      {
+        "label": "D",
+        "text": "my_dict.values()"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "my_dict.keys()",
+    "correctIndex": 2
+  },
+  {
+    "id": 10,
+    "question": "Для загрузки Excel-файла с данными в Pandas наиболее корректный метод",
+    "options": [
+      {
+        "label": "A",
+        "text": "pd.read_excel()"
+      },
+      {
+        "label": "B",
+        "text": "pd.sheet_read()"
+      },
+      {
+        "label": "C",
+        "text": "pd.import_sheet()"
+      },
+      {
+        "label": "D",
+        "text": "pd.open_xlsx()"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "pd.read_excel()",
+    "correctIndex": 0
+  },
+  {
+    "id": 11,
+    "question": "Если скрипт должен работать с аргументами командной строки, наиболее уместный модуль",
+    "options": [
+      {
+        "label": "A",
+        "text": "pandas"
+      },
+      {
+        "label": "B",
+        "text": "sys"
+      },
+      {
+        "label": "C",
+        "text": "seaborn"
+      },
+      {
+        "label": "D",
+        "text": "pathlib"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "sys",
+    "correctIndex": 1
+  },
+  {
+    "id": 12,
+    "question": "Основная цель unit-теста в аналитическом проекте",
+    "options": [
+      {
+        "label": "A",
+        "text": "автоматически очистить и сбросить базу данных"
+      },
+      {
+        "label": "B",
+        "text": "сгенерировать документацию проекта"
+      },
+      {
+        "label": "C",
+        "text": "полностью заменить бизнес-логику приложения"
+      },
+      {
+        "label": "D",
+        "text": "проверить отдельный компонент кода в изоляции"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "проверить отдельный компонент кода в изоляции",
+    "correctIndex": 3
+  },
+  {
+    "id": 13,
+    "question": "Если в скрипте нужно корректно обработать сбой чтения файла, наиболее подходящая конструкция",
+    "options": [
+      {
+        "label": "A",
+        "text": "while / break"
+      },
+      {
+        "label": "B",
+        "text": "if / else"
+      },
+      {
+        "label": "C",
+        "text": "try / except"
+      },
+      {
+        "label": "D",
+        "text": "for / in"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "try / except",
+    "correctIndex": 2
+  },
+  {
+    "id": 14,
+    "question": "Автоматизация отчетности в аналитическом проекте в первую очередь нужна для",
+    "options": [
+      {
+        "label": "A",
+        "text": "замены бизнес-логики визуализацией"
+      },
+      {
+        "label": "B",
+        "text": "уменьшения числа таблиц в базе"
+      },
+      {
+        "label": "C",
+        "text": "снижения ошибок и воспроизводимости процесса"
+      },
+      {
+        "label": "D",
+        "text": "увеличения числа ручных операций"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "снижения ошибок и воспроизводимости процесса",
+    "correctIndex": 2
+  },
+  {
+    "id": 15,
+    "question": "В чем основная цель нормализации при проектировании реляционных баз данных?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Увеличение скорости выполнения любых запросов SELECT"
+      },
+      {
+        "label": "B",
+        "text": "Уменьшение избыточности данных и устранение аномалий обновления"
+      },
+      {
+        "label": "C",
+        "text": "Шифрование конфиденциальных полей пользователей"
+      },
+      {
+        "label": "D",
+        "text": "Объединение всех таблиц в одну большую витрину данных"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Уменьшение избыточности данных и устранение аномалий обновления",
+    "correctIndex": 1
+  },
+  {
+    "id": 16,
+    "question": "Для сохранения итогового DataFrame в таблицу базы данных наиболее подходящий Pandas-метод",
+    "options": [
+      {
+        "label": "A",
+        "text": "export_sql()"
+      },
+      {
+        "label": "B",
+        "text": "to_sql()"
+      },
+      {
+        "label": "C",
+        "text": "save_db()"
+      },
+      {
+        "label": "D",
+        "text": "insert_frame()"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "to_sql()",
+    "correctIndex": 1
+  },
+  {
+    "id": 17,
+    "question": "Для построения графиков средствами Python с полным контролем над осями и подписями наиболее подходящая библиотека",
+    "options": [
+      {
+        "label": "A",
+        "text": "Matplotlib"
+      },
+      {
+        "label": "B",
+        "text": "pytest"
+      },
+      {
+        "label": "C",
+        "text": "TensorFlow"
+      },
+      {
+        "label": "D",
+        "text": "Selenium"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "Matplotlib",
+    "correctIndex": 0
+  },
+  {
+    "id": 18,
+    "question": "При получении данных из REST API наиболее типичный формат ответа",
+    "options": [
+      {
+        "label": "A",
+        "text": "PNG"
+      },
+      {
+        "label": "B",
+        "text": "JSON"
+      },
+      {
+        "label": "C",
+        "text": "DOCX"
+      },
+      {
+        "label": "D",
+        "text": "PPTX"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "JSON",
+    "correctIndex": 1
+  },
+  {
+    "id": 19,
+    "question": "Индекс в базе данных в первую очередь создается для",
+    "options": [
+      {
+        "label": "A",
+        "text": "ускорения доступа к данным"
+      },
+      {
+        "label": "B",
+        "text": "преобразования SQL в Python"
+      },
+      {
+        "label": "C",
+        "text": "уменьшения количества столбцов"
+      },
+      {
+        "label": "D",
+        "text": "автоматического удаления дубликатов"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "ускорения доступа к данным",
+    "correctIndex": 0
+  },
+  {
+    "id": 20,
+    "question": "Какой тип данных в Python концептуально представляет собой неупорядоченную коллекцию уникальных элементов и подходит для операций пересечения или объединения?",
+    "options": [
+      {
+        "label": "A",
+        "text": "dictionary"
+      },
+      {
+        "label": "B",
+        "text": "set"
+      },
+      {
+        "label": "C",
+        "text": "tuple"
+      },
+      {
+        "label": "D",
+        "text": "string"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "set",
+    "correctIndex": 1
+  },
+  {
+    "id": 21,
+    "question": "Главная цель дашборда для руководителя определяется как",
+    "options": [
+      {
+        "label": "A",
+        "text": "хранение резервных копий данных"
+      },
+      {
+        "label": "B",
+        "text": "быстрый доступ к ключевым метрикам и отклонениям"
+      },
+      {
+        "label": "C",
+        "text": "максимальное число графиков на экране"
+      },
+      {
+        "label": "D",
+        "text": "полная замена SQL-базы данных"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "быстрый доступ к ключевым метрикам и отклонениям",
+    "correctIndex": 1
+  },
+  {
+    "id": 22,
+    "question": "Для изменения статуса уже существующей записи используется оператор",
+    "options": [
+      {
+        "label": "A",
+        "text": "INSERT"
+      },
+      {
+        "label": "B",
+        "text": "REPLACE COLUMN"
+      },
+      {
+        "label": "C",
+        "text": "UPDATE"
+      },
+      {
+        "label": "D",
+        "text": "MODIFY"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "UPDATE",
+    "correctIndex": 2
+  },
+  {
+    "id": 23,
+    "question": "Для быстрой статистической визуализации поверх Matplotlib наиболее подходящая библиотека",
+    "options": [
+      {
+        "label": "A",
+        "text": "unittest"
+      },
+      {
+        "label": "B",
+        "text": "Seaborn"
+      },
+      {
+        "label": "C",
+        "text": "FastAPI"
+      },
+      {
+        "label": "D",
+        "text": "Flask"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Seaborn",
+    "correctIndex": 1
+  },
+  {
+    "id": 24,
+    "question": "Для отображения изменения среднего балла по месяцам наиболее подходящий тип графика",
+    "options": [
+      {
+        "label": "A",
+        "text": "boxplot"
+      },
+      {
+        "label": "B",
+        "text": "line chart"
+      },
+      {
+        "label": "C",
+        "text": "treemap"
+      },
+      {
+        "label": "D",
+        "text": "pie chart"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "line chart",
+    "correctIndex": 1
+  },
+  {
+    "id": 25,
+    "question": "Дан словарь student = {'name': 'Ali', 'score': 92}. Корректный доступ к значению балла",
+    "options": [
+      {
+        "label": "A",
+        "text": "student→score"
+      },
+      {
+        "label": "B",
+        "text": "student(score)"
+      },
+      {
+        "label": "C",
+        "text": "score[\"student\"]"
+      },
+      {
+        "label": "D",
+        "text": "student[\"score\"]"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "student[\"score\"]",
+    "correctIndex": 3
+  },
+  {
+    "id": 26,
+    "question": "Данные о продажах по неделям за два года наиболее корректно определяются как",
+    "options": [
+      {
+        "label": "A",
+        "text": "graph database"
+      },
+      {
+        "label": "B",
+        "text": "static schema"
+      },
+      {
+        "label": "C",
+        "text": "classification dataset"
+      },
+      {
+        "label": "D",
+        "text": "time series"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "time series",
+    "correctIndex": 3
+  },
+  {
+    "id": 27,
+    "question": "Для измерения средней абсолютной ошибки прогноза в модели регрессии наиболее подходящая метрика",
+    "options": [
+      {
+        "label": "A",
+        "text": "Recall"
+      },
+      {
+        "label": "B",
+        "text": "MAE"
+      },
+      {
+        "label": "C",
+        "text": "ROC-AUC"
+      },
+      {
+        "label": "D",
+        "text": "Accuracy"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "MAE",
+    "correctIndex": 1
+  },
+  {
+    "id": 28,
+    "question": "Наиболее корректная причина использования Pandas в аналитическом процессе",
+    "options": [
+      {
+        "label": "A",
+        "text": "настройка и администрирование серверов БД"
+      },
+      {
+        "label": "B",
+        "text": "создание и публикация веб-интерфейсов"
+      },
+      {
+        "label": "C",
+        "text": "обработка, преобразование и анализ табличных данных"
+      },
+      {
+        "label": "D",
+        "text": "построение и управление CI/CD-пайплайнами"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "обработка, преобразование и анализ табличных данных",
+    "correctIndex": 2
+  },
+  {
+    "id": 29,
+    "question": "В чем основное отличие агрегатной функции от оконной функции в SQL?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Агрегатные функции можно использовать только с числами, а оконные со строками"
+      },
+      {
+        "label": "B",
+        "text": "Оконные функции схлопывают строки в одну результирующую запись, а агрегатные сохраняют исходное количество строк"
+      },
+      {
+        "label": "C",
+        "text": "Агрегатные функции с GROUP BY сокращают набор результатов, а оконные функции возвращают результат для каждой строки исходного набора, не схлопывая его"
+      },
+      {
+        "label": "D",
+        "text": "Агрегатные функции всегда работают быстрее на больших объемах данных"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "Агрегатные функции с GROUP BY сокращают набор результатов, а оконные функции возвращают результат для каждой строки исходного набора, не схлопывая его",
+    "correctIndex": 2
+  },
+  {
+    "id": 30,
+    "question": "Если данные на сайте подгружаются только после нажатий и выполнения JavaScript, наиболее подходящий инструмент",
+    "options": [
+      {
+        "label": "A",
+        "text": "requests"
+      },
+      {
+        "label": "B",
+        "text": "seaborn"
+      },
+      {
+        "label": "C",
+        "text": "logging"
+      },
+      {
+        "label": "D",
+        "text": "Selenium"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "Selenium",
+    "correctIndex": 3
+  },
+  {
+    "id": 31,
+    "question": "Каков результат выполнения выражения 10 // 3 в Python?",
+    "options": [
+      {
+        "label": "A",
+        "text": "3.333"
+      },
+      {
+        "label": "B",
+        "text": "1"
+      },
+      {
+        "label": "C",
+        "text": "3"
+      },
+      {
+        "label": "D",
+        "text": "0.33"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "3",
+    "correctIndex": 2
+  },
+  {
+    "id": 32,
+    "question": "Какая визуализация в Power BI лучше всего подходит для демонстрации непрерывных трендов изменения показателей, например объема продаж, с течением времени?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Круговая диаграмма (Pie Chart)"
+      },
+      {
+        "label": "B",
+        "text": "Точечная диаграмма (Scatter Plot)"
+      },
+      {
+        "label": "C",
+        "text": "Карточка (Card)"
+      },
+      {
+        "label": "D",
+        "text": "Линейный график (Line Chart)"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "Линейный график (Line Chart)",
+    "correctIndex": 3
+  },
+  {
+    "id": 33,
+    "question": "Какой тип данных в Python представляет собой неупорядоченную коллекцию уникальных элементов и подходит для математических операций, таких как пересечение или объединение?",
+    "options": [
+      {
+        "label": "A",
+        "text": "dictionary"
+      },
+      {
+        "label": "B",
+        "text": "set"
+      },
+      {
+        "label": "C",
+        "text": "tuple"
+      },
+      {
+        "label": "D",
+        "text": "string"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "set",
+    "correctIndex": 1
+  },
+  {
+    "id": 34,
+    "question": "Какой SQL-запрос корректно считает количество сотрудников по отделам?",
+    "options": [
+      {
+        "label": "A",
+        "text": "SELECT department FROM employees HAVING COUNT();"
+      },
+      {
+        "label": "B",
+        "text": "SELECT department, TOTAL() FROM employees GROUP BY department;"
+      },
+      {
+        "label": "C",
+        "text": "SELECT COUNT(department) FROM employees ORDER BY department;"
+      },
+      {
+        "label": "D",
+        "text": "SELECT department, COUNT(*) FROM employees GROUP BY department;"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "SELECT department, COUNT(*) FROM employees GROUP BY department;",
+    "correctIndex": 3
+  },
+  {
+    "id": 35,
+    "question": "Для построения графиков средствами Python с полным контролем над осями и подписями наиболее подходящая библиотека",
+    "options": [
+      {
+        "label": "A",
+        "text": "Matplotlib"
+      },
+      {
+        "label": "B",
+        "text": "pytest"
+      },
+      {
+        "label": "C",
+        "text": "TensorFlow"
+      },
+      {
+        "label": "D",
+        "text": "SQLAlchemy"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "Matplotlib",
+    "correctIndex": 0
+  },
+  {
+    "id": 36,
+    "question": "Какая разница между командами DELETE и TRUNCATE в SQL?",
+    "options": [
+      {
+        "label": "A",
+        "text": "DELETE удаляет структуру таблицы, а TRUNCATE только данные"
+      },
+      {
+        "label": "B",
+        "text": "TRUNCATE позволяет использовать WHERE, а DELETE удаляет все"
+      },
+      {
+        "label": "C",
+        "text": "DELETE логирует каждую удаляемую строку, а TRUNCATE обычно очищает таблицу быстрее и с минимальным логированием"
+      },
+      {
+        "label": "D",
+        "text": "Эти команды идентичны по производительности и поведению"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "DELETE логирует каждую удаляемую строку, а TRUNCATE обычно очищает таблицу быстрее и с минимальным логированием",
+    "correctIndex": 2
+  },
+  {
+    "id": 37,
+    "question": "Для хранения уникальных категорий товаров без дубликатов наиболее подходящая структура данных",
+    "options": [
+      {
+        "label": "A",
+        "text": "tuple"
+      },
+      {
+        "label": "B",
+        "text": "dict"
+      },
+      {
+        "label": "C",
+        "text": "set"
+      },
+      {
+        "label": "D",
+        "text": "list"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "set",
+    "correctIndex": 2
+  },
+  {
+    "id": 38,
+    "question": "Для обращения к API с целью получения списка заказов наиболее корректный HTTP-метод",
+    "options": [
+      {
+        "label": "A",
+        "text": "DELETE"
+      },
+      {
+        "label": "B",
+        "text": "PATCH"
+      },
+      {
+        "label": "C",
+        "text": "GET"
+      },
+      {
+        "label": "D",
+        "text": "POST"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "GET",
+    "correctIndex": 2
+  },
+  {
+    "id": 39,
+    "question": "Если модель должна предсказать, сдаст ли студент экзамен или нет, такая задача определяется как",
+    "options": [
+      {
+        "label": "A",
+        "text": "classification"
+      },
+      {
+        "label": "B",
+        "text": "ranking"
+      },
+      {
+        "label": "C",
+        "text": "clustering"
+      },
+      {
+        "label": "D",
+        "text": "regression"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "classification",
+    "correctIndex": 0
+  },
+  {
+    "id": 40,
+    "question": "Для удаления повторяющихся значений городов из выборки наиболее подходящая конструкция",
+    "options": [
+      {
+        "label": "A",
+        "text": "GROUP ONLY"
+      },
+      {
+        "label": "B",
+        "text": "DISTINCT"
+      },
+      {
+        "label": "C",
+        "text": "UNIQUE"
+      },
+      {
+        "label": "D",
+        "text": "FILTER UNIQUE"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "DISTINCT",
+    "correctIndex": 1
+  },
+  {
+    "id": 41,
+    "question": "Хорошая визуализация для бизнес-пользователя в первую очередь определяется как",
+    "options": [
+      {
+        "label": "A",
+        "text": "содержащая как можно больше метрик"
+      },
+      {
+        "label": "B",
+        "text": "основанная только на таблицах"
+      },
+      {
+        "label": "C",
+        "text": "понятная и ориентированная на вопрос"
+      },
+      {
+        "label": "D",
+        "text": "максимально сложная и насыщенная деталями"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "понятная и ориентированная на вопрос",
+    "correctIndex": 2
+  },
+  {
+    "id": 42,
+    "question": "Для отображения распределения результатов теста по баллам наиболее подходящий график",
+    "options": [
+      {
+        "label": "A",
+        "text": "gauge"
+      },
+      {
+        "label": "B",
+        "text": "treemap"
+      },
+      {
+        "label": "C",
+        "text": "pie chart"
+      },
+      {
+        "label": "D",
+        "text": "histogram"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "histogram",
+    "correctIndex": 3
+  },
+  {
+    "id": 43,
+    "question": "Для ограничения выборки первыми 100 строками наиболее подходящая конструкция",
+    "options": [
+      {
+        "label": "A",
+        "text": "RANGE 100"
+      },
+      {
+        "label": "B",
+        "text": "LIMIT 100"
+      },
+      {
+        "label": "C",
+        "text": "TOP 100 ONLY"
+      },
+      {
+        "label": "D",
+        "text": "FIRST 100"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "LIMIT 100",
+    "correctIndex": 1
+  },
+  {
+    "id": 44,
+    "question": "Для вывода всех столбцов таблицы без перечисления по отдельности используется",
+    "options": [
+      {
+        "label": "A",
+        "text": "FULL"
+      },
+      {
+        "label": "B",
+        "text": "TABLE"
+      },
+      {
+        "label": "C",
+        "text": "ALL"
+      },
+      {
+        "label": "D",
+        "text": "*"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "*",
+    "correctIndex": 3
+  },
+  {
+    "id": 45,
+    "question": "Чтобы добавить строковый ID в конец списка, наиболее подходящий метод",
+    "options": [
+      {
+        "label": "A",
+        "text": "merge()"
+      },
+      {
+        "label": "B",
+        "text": "append()"
+      },
+      {
+        "label": "C",
+        "text": "add()"
+      },
+      {
+        "label": "D",
+        "text": "push()"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "append()",
+    "correctIndex": 1
+  },
+  {
+    "id": 46,
+    "question": "Код аналитического проекта считается production-ready в большей степени, если он",
+    "options": [
+      {
+        "label": "A",
+        "text": "использует только print() вместо логирования"
+      },
+      {
+        "label": "B",
+        "text": "не содержит проверок и тестов"
+      },
+      {
+        "label": "C",
+        "text": "написан в одном длинном файле"
+      },
+      {
+        "label": "D",
+        "text": "структурирован, читаем и воспроизводим"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "структурирован, читаем и воспроизводим",
+    "correctIndex": 3
+  },
+  {
+    "id": 47,
+    "question": "Какой тип JOIN следует использовать, чтобы получить все записи из левой таблицы, даже если для них нет соответствующих записей в правой таблице?",
+    "options": [
+      {
+        "label": "A",
+        "text": "INNER JOIN"
+      },
+      {
+        "label": "B",
+        "text": "RIGHT JOIN"
+      },
+      {
+        "label": "C",
+        "text": "FULL JOIN"
+      },
+      {
+        "label": "D",
+        "text": "LEFT JOIN"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "LEFT JOIN",
+    "correctIndex": 3
+  },
+  {
+    "id": 48,
+    "question": "Функция в Python наиболее корректно определяется как",
+    "options": [
+      {
+        "label": "A",
+        "text": "блок переиспользуемой логики"
+      },
+      {
+        "label": "B",
+        "text": "контейнер для SQL-запроса"
+      },
+      {
+        "label": "C",
+        "text": "способ хранения таблицы"
+      },
+      {
+        "label": "D",
+        "text": "отдельный тип итерации"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "блок переиспользуемой логики",
+    "correctIndex": 0
+  },
+  {
+    "id": 49,
+    "question": "Какая функция DAX используется для изменения, удаления или добавления фильтров в текущий контекст фильтра перед выполнением вычисления?",
+    "options": [
+      {
+        "label": "A",
+        "text": "SUMX()"
+      },
+      {
+        "label": "B",
+        "text": "FILTER()"
+      },
+      {
+        "label": "C",
+        "text": "EVALUATE()"
+      },
+      {
+        "label": "D",
+        "text": "CALCULATE()"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "CALCULATE()",
+    "correctIndex": 3
+  },
+  {
+    "id": 50,
+    "question": "В каком логическом порядке СУБД обрабатывает основные предложения SQL-запроса?",
+    "options": [
+      {
+        "label": "A",
+        "text": "SELECT → FROM → WHERE → GROUP BY → ORDER BY"
+      },
+      {
+        "label": "B",
+        "text": "FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY"
+      },
+      {
+        "label": "C",
+        "text": "WHERE → FROM → SELECT → HAVING → GROUP BY → ORDER BY"
+      },
+      {
+        "label": "D",
+        "text": "SELECT → GROUP BY → HAVING → FROM → WHERE → ORDER BY"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY",
+    "correctIndex": 1
+  },
+  {
+    "id": 51,
+    "question": "Какая команда SQL используется для создания новой структуры таблицы в базе данных и относится к классу DDL?",
+    "options": [
+      {
+        "label": "A",
+        "text": "INSERT INTO"
+      },
+      {
+        "label": "B",
+        "text": "CREATE TABLE"
+      },
+      {
+        "label": "C",
+        "text": "MAKE TABLE"
+      },
+      {
+        "label": "D",
+        "text": "BUILD STRUCTURE"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "CREATE TABLE",
+    "correctIndex": 1
+  },
+  {
+    "id": 52,
+    "question": "Для логистической компании требуется построить гистограмму распределения времени задержки рейсов с интерактивной фильтрацией по регионам. Какой вариант оптимален для конечных бизнес-пользователей?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Построить статический график в Matplotlib и отправить картинку по почте"
+      },
+      {
+        "label": "B",
+        "text": "Написать SQL-запрос с агрегацией и выгрузить результат в Excel"
+      },
+      {
+        "label": "C",
+        "text": "Импортировать модель данных в Power BI, создать гистограмму и добавить срез (Slicer) по региону"
+      },
+      {
+        "label": "D",
+        "text": "Использовать Python для создания дашборда с нуля"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "Импортировать модель данных в Power BI, создать гистограмму и добавить срез (Slicer) по региону",
+    "correctIndex": 2
+  },
+  {
+    "id": 53,
+    "question": "Сквозной аналитический pipeline наиболее корректно определяется как",
+    "options": [
+      {
+        "label": "A",
+        "text": "только этап обучения машинной модели"
+      },
+      {
+        "label": "B",
+        "text": "процесс от получения данных до итогового отчета"
+      },
+      {
+        "label": "C",
+        "text": "один SQL-запрос в системе бизнес-аналитики"
+      },
+      {
+        "label": "D",
+        "text": "только этап визуализации в Power BI"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "процесс от получения данных до итогового отчета",
+    "correctIndex": 1
+  },
+  {
+    "id": 54,
+    "question": "Если в скрипте нужно корректно обработать сбой чтения файла, наиболее подходящая конструкция",
+    "options": [
+      {
+        "label": "A",
+        "text": "while / break"
+      },
+      {
+        "label": "B",
+        "text": "if / else"
+      },
+      {
+        "label": "C",
+        "text": "try / except"
+      },
+      {
+        "label": "D",
+        "text": "for / in"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "try / except",
+    "correctIndex": 2
+  },
+  {
+    "id": 55,
+    "question": "Сложные группировки, переиндексация, оконные операции и обработка временных меток в Pandas определяются как",
+    "options": [
+      {
+        "label": "A",
+        "text": "исключительно визуализация"
+      },
+      {
+        "label": "B",
+        "text": "продвинутый анализ в Pandas"
+      },
+      {
+        "label": "C",
+        "text": "работа только с API"
+      },
+      {
+        "label": "D",
+        "text": "базовая очистка данных"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "продвинутый анализ в Pandas",
+    "correctIndex": 1
+  },
+  {
+    "id": 56,
+    "question": "Для расчета средней выручки по таблице продаж наиболее корректная агрегатная функция",
+    "options": [
+      {
+        "label": "A",
+        "text": "TOTAL()"
+      },
+      {
+        "label": "B",
+        "text": "COUNT()"
+      },
+      {
+        "label": "C",
+        "text": "SUM()"
+      },
+      {
+        "label": "D",
+        "text": "AVG()"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "AVG()",
+    "correctIndex": 3
+  },
+  {
+    "id": 57,
+    "question": "Какой метод позволяет привести все символы в строке к нижнему регистру для обеспечения единообразия текстовых данных?",
+    "options": [
+      {
+        "label": "A",
+        "text": "lower()"
+      },
+      {
+        "label": "B",
+        "text": "uppercase()"
+      },
+      {
+        "label": "C",
+        "text": "downcase()"
+      },
+      {
+        "label": "D",
+        "text": "small()"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "lower()",
+    "correctIndex": 0
+  },
+  {
+    "id": 58,
+    "question": "Если данные на сайте подгружаются только после нажатий и выполнения JavaScript, наиболее подходящий инструмент",
+    "options": [
+      {
+        "label": "A",
+        "text": "requests"
+      },
+      {
+        "label": "B",
+        "text": "seaborn"
+      },
+      {
+        "label": "C",
+        "text": "logging"
+      },
+      {
+        "label": "D",
+        "text": "Selenium"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "Selenium",
+    "correctIndex": 3
+  },
+  {
+    "id": 59,
+    "question": "Какой строковый метод следует использовать для удаления случайных пробелов в начале и в конце строки при очистке данных?",
+    "options": [
+      {
+        "label": "A",
+        "text": "delete_spaces()"
+      },
+      {
+        "label": "B",
+        "text": "trim()"
+      },
+      {
+        "label": "C",
+        "text": "lower()"
+      },
+      {
+        "label": "D",
+        "text": "strip()"
+      }
+    ],
+    "correctLabel": "D",
+    "correctText": "strip()",
+    "correctIndex": 3
+  },
+  {
+    "id": 60,
+    "question": "В чем заключается ключевое преимущество использования кортежа (tuple) вместо списка (list), когда набор данных не требует изменений в процессе работы скрипта?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Кортежи поддерживают многомерные массивы, а списки нет"
+      },
+      {
+        "label": "B",
+        "text": "Кортежи работают быстрее и потребляют меньше памяти благодаря своей неизменяемости"
+      },
+      {
+        "label": "C",
+        "text": "Кортежи можно напрямую экспортировать в SQL без сторонних библиотек"
+      },
+      {
+        "label": "D",
+        "text": "Кортежи позволяют использовать индексы в виде строковых ключей"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Кортежи работают быстрее и потребляют меньше памяти благодаря своей неизменяемости",
+    "correctIndex": 1
+  },
+  {
+    "id": 61,
+    "question": "Какая конструкция SQL вернет количество непустых значений в столбце discount?",
+    "options": [
+      {
+        "label": "A",
+        "text": "COUNT(*)"
+      },
+      {
+        "label": "B",
+        "text": "COUNT(discount)"
+      },
+      {
+        "label": "C",
+        "text": "SUM(discount)"
+      },
+      {
+        "label": "D",
+        "text": "AVG(discount)"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "COUNT(discount)",
+    "correctIndex": 1
+  },
+  {
+    "id": 62,
+    "question": "Какое предложение SQL следует использовать для фильтрации групп после GROUP BY?",
+    "options": [
+      {
+        "label": "A",
+        "text": "WHERE"
+      },
+      {
+        "label": "B",
+        "text": "ORDER BY"
+      },
+      {
+        "label": "C",
+        "text": "HAVING"
+      },
+      {
+        "label": "D",
+        "text": "LIMIT"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "HAVING",
+    "correctIndex": 2
+  },
+  {
+    "id": 63,
+    "question": "Какой тип JOIN возвращает только те строки, для которых совпадения есть в обеих таблицах?",
+    "options": [
+      {
+        "label": "A",
+        "text": "LEFT JOIN"
+      },
+      {
+        "label": "B",
+        "text": "RIGHT JOIN"
+      },
+      {
+        "label": "C",
+        "text": "INNER JOIN"
+      },
+      {
+        "label": "D",
+        "text": "FULL JOIN"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "INNER JOIN",
+    "correctIndex": 2
+  },
+  {
+    "id": 64,
+    "question": "Какой тип JOIN возвращает все строки из обеих таблиц, подставляя NULL там, где совпадений нет?",
+    "options": [
+      {
+        "label": "A",
+        "text": "INNER JOIN"
+      },
+      {
+        "label": "B",
+        "text": "FULL OUTER JOIN"
+      },
+      {
+        "label": "C",
+        "text": "CROSS JOIN"
+      },
+      {
+        "label": "D",
+        "text": "LEFT JOIN"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "FULL OUTER JOIN",
+    "correctIndex": 1
+  },
+  {
+    "id": 65,
+    "question": "Как в SQL корректно проверить, что значение в столбце manager_id отсутствует?",
+    "options": [
+      {
+        "label": "A",
+        "text": "manager_id = NULL"
+      },
+      {
+        "label": "B",
+        "text": "manager_id IS NULL"
+      },
+      {
+        "label": "C",
+        "text": "manager_id == NULL"
+      },
+      {
+        "label": "D",
+        "text": "manager_id IN NULL"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "manager_id IS NULL",
+    "correctIndex": 1
+  },
+  {
+    "id": 66,
+    "question": "Какой оператор SQL используется для добавления нового столбца в уже существующую таблицу?",
+    "options": [
+      {
+        "label": "A",
+        "text": "UPDATE TABLE ... ADD COLUMN"
+      },
+      {
+        "label": "B",
+        "text": "MODIFY TABLE ... COLUMN"
+      },
+      {
+        "label": "C",
+        "text": "ALTER TABLE ... ADD COLUMN"
+      },
+      {
+        "label": "D",
+        "text": "CREATE COLUMN"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "ALTER TABLE ... ADD COLUMN",
+    "correctIndex": 2
+  },
+  {
+    "id": 67,
+    "question": "Какова основная роль функции COALESCE в SQL?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Удалять дубликаты из результата"
+      },
+      {
+        "label": "B",
+        "text": "Возвращать первое не-NULL значение из списка выражений"
+      },
+      {
+        "label": "C",
+        "text": "Сортировать записи по нескольким полям"
+      },
+      {
+        "label": "D",
+        "text": "Создавать временную таблицу"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Возвращать первое не-NULL значение из списка выражений",
+    "correctIndex": 1
+  },
+  {
+    "id": 68,
+    "question": "Какая оконная функция присваивает уникальный порядковый номер каждой строке внутри окна?",
+    "options": [
+      {
+        "label": "A",
+        "text": "ROW_NUMBER()"
+      },
+      {
+        "label": "B",
+        "text": "COUNT()"
+      },
+      {
+        "label": "C",
+        "text": "AVG()"
+      },
+      {
+        "label": "D",
+        "text": "DISTINCT()"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "ROW_NUMBER()",
+    "correctIndex": 0
+  },
+  {
+    "id": 69,
+    "question": "Что делает PARTITION BY в оконной функции SQL?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Фильтрует строки до выполнения запроса"
+      },
+      {
+        "label": "B",
+        "text": "Разбивает строки на группы для независимого расчета оконной функции"
+      },
+      {
+        "label": "C",
+        "text": "Удаляет повторяющиеся строки"
+      },
+      {
+        "label": "D",
+        "text": "Объединяет таблицы по ключу"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Разбивает строки на группы для независимого расчета оконной функции",
+    "correctIndex": 1
+  },
+  {
+    "id": 70,
+    "question": "Для чего в SQL обычно используется конструкция CASE WHEN?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Для создания новой таблицы"
+      },
+      {
+        "label": "B",
+        "text": "Для условной логики внутри запроса"
+      },
+      {
+        "label": "C",
+        "text": "Для удаления строк по условию"
+      },
+      {
+        "label": "D",
+        "text": "Для добавления индекса"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Для условной логики внутри запроса",
+    "correctIndex": 1
+  },
+  {
+    "id": 71,
+    "question": "Какой запрос корректно посчитает количество уникальных городов в столбце city?",
+    "options": [
+      {
+        "label": "A",
+        "text": "COUNT(city)"
+      },
+      {
+        "label": "B",
+        "text": "UNIQUE(city)"
+      },
+      {
+        "label": "C",
+        "text": "COUNT(DISTINCT city)"
+      },
+      {
+        "label": "D",
+        "text": "DISTINCT COUNT(city)"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "COUNT(DISTINCT city)",
+    "correctIndex": 2
+  },
+  {
+    "id": 72,
+    "question": "В чем отличие UNION ALL от UNION?",
+    "options": [
+      {
+        "label": "A",
+        "text": "UNION ALL удаляет дубликаты, а UNION сохраняет их"
+      },
+      {
+        "label": "B",
+        "text": "UNION ALL сохраняет дубликаты, а UNION обычно удаляет их"
+      },
+      {
+        "label": "C",
+        "text": "UNION ALL работает только с числовыми полями"
+      },
+      {
+        "label": "D",
+        "text": "Между ними нет различий"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "UNION ALL сохраняет дубликаты, а UNION обычно удаляет их",
+    "correctIndex": 1
+  },
+  {
+    "id": 73,
+    "question": "Как работает оператор BETWEEN в SQL?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Проверяет значение строго между границами, не включая их"
+      },
+      {
+        "label": "B",
+        "text": "Проверяет значение вхождения в список"
+      },
+      {
+        "label": "C",
+        "text": "Обычно включает обе граничные величины диапазона"
+      },
+      {
+        "label": "D",
+        "text": "Сравнивает только текстовые поля"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "Обычно включает обе граничные величины диапазона",
+    "correctIndex": 2
+  },
+  {
+    "id": 74,
+    "question": "Какое условие LIKE выберет все строки, где name начинается с буквы A?",
+    "options": [
+      {
+        "label": "A",
+        "text": "name LIKE '%A'"
+      },
+      {
+        "label": "B",
+        "text": "name LIKE 'A%'"
+      },
+      {
+        "label": "C",
+        "text": "name LIKE '%A%'"
+      },
+      {
+        "label": "D",
+        "text": "name LIKE '_A%'"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "name LIKE 'A%'",
+    "correctIndex": 1
+  },
+  {
+    "id": 75,
+    "question": "Какова основная роль первичного ключа (PRIMARY KEY) в таблице?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Хранить только текстовые значения"
+      },
+      {
+        "label": "B",
+        "text": "Обеспечивать уникальную идентификацию каждой строки"
+      },
+      {
+        "label": "C",
+        "text": "Ускорять только сортировку"
+      },
+      {
+        "label": "D",
+        "text": "Автоматически объединять таблицы"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Обеспечивать уникальную идентификацию каждой строки",
+    "correctIndex": 1
+  },
+  {
+    "id": 76,
+    "question": "Для чего обычно используется внешний ключ (FOREIGN KEY)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Для шифрования чувствительных данных"
+      },
+      {
+        "label": "B",
+        "text": "Для задания связи между таблицами и поддержания ссылочной целостности"
+      },
+      {
+        "label": "C",
+        "text": "Для удаления дубликатов в одной таблице"
+      },
+      {
+        "label": "D",
+        "text": "Для сортировки по нескольким столбцам"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Для задания связи между таблицами и поддержания ссылочной целостности",
+    "correctIndex": 1
+  },
+  {
+    "id": 77,
+    "question": "Какой оператор SQL фиксирует изменения транзакции?",
+    "options": [
+      {
+        "label": "A",
+        "text": "SAVE"
+      },
+      {
+        "label": "B",
+        "text": "APPLY"
+      },
+      {
+        "label": "C",
+        "text": "COMMIT"
+      },
+      {
+        "label": "D",
+        "text": "LOCK"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "COMMIT",
+    "correctIndex": 2
+  },
+  {
+    "id": 78,
+    "question": "Что делает команда ROLLBACK в SQL?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Безвозвратно удаляет таблицу"
+      },
+      {
+        "label": "B",
+        "text": "Отменяет изменения текущей транзакции, если они еще не зафиксированы"
+      },
+      {
+        "label": "C",
+        "text": "Создает точку сохранения"
+      },
+      {
+        "label": "D",
+        "text": "Обновляет статистику индексов"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Отменяет изменения текущей транзакции, если они еще не зафиксированы",
+    "correctIndex": 1
+  },
+  {
+    "id": 79,
+    "question": "Какой индексатор Pandas следует использовать для выбора строк и столбцов по меткам?",
+    "options": [
+      {
+        "label": "A",
+        "text": "iloc"
+      },
+      {
+        "label": "B",
+        "text": "loc"
+      },
+      {
+        "label": "C",
+        "text": "at_index"
+      },
+      {
+        "label": "D",
+        "text": "labels"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "loc",
+    "correctIndex": 1
+  },
+  {
+    "id": 80,
+    "question": "Какой индексатор Pandas следует использовать для выбора данных по целочисленным позициям?",
+    "options": [
+      {
+        "label": "A",
+        "text": "iloc"
+      },
+      {
+        "label": "B",
+        "text": "loc"
+      },
+      {
+        "label": "C",
+        "text": "query"
+      },
+      {
+        "label": "D",
+        "text": "where"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "iloc",
+    "correctIndex": 0
+  },
+  {
+    "id": 81,
+    "question": "Какой метод Pandas обычно используется для объединения двух DataFrame по ключу?",
+    "options": [
+      {
+        "label": "A",
+        "text": "append()"
+      },
+      {
+        "label": "B",
+        "text": "join_text()"
+      },
+      {
+        "label": "C",
+        "text": "merge()"
+      },
+      {
+        "label": "D",
+        "text": "stack()"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "merge()",
+    "correctIndex": 2
+  },
+  {
+    "id": 82,
+    "question": "Какой метод Pandas удаляет дубликаты строк?",
+    "options": [
+      {
+        "label": "A",
+        "text": "drop_duplicates()"
+      },
+      {
+        "label": "B",
+        "text": "remove_dupes()"
+      },
+      {
+        "label": "C",
+        "text": "unique_rows()"
+      },
+      {
+        "label": "D",
+        "text": "deduplicate()"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "drop_duplicates()",
+    "correctIndex": 0
+  },
+  {
+    "id": 83,
+    "question": "Какой метод Pandas используется для заполнения пропусков фиксированным значением?",
+    "options": [
+      {
+        "label": "A",
+        "text": "dropna()"
+      },
+      {
+        "label": "B",
+        "text": "fillna()"
+      },
+      {
+        "label": "C",
+        "text": "replace_nulls()"
+      },
+      {
+        "label": "D",
+        "text": "padnull()"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "fillna()",
+    "correctIndex": 1
+  },
+  {
+    "id": 84,
+    "question": "Какой метод Pandas корректно преобразует строковый столбец с датами в тип datetime?",
+    "options": [
+      {
+        "label": "A",
+        "text": "pd.parse_date()"
+      },
+      {
+        "label": "B",
+        "text": "pd.date_cast()"
+      },
+      {
+        "label": "C",
+        "text": "pd.to_datetime()"
+      },
+      {
+        "label": "D",
+        "text": "pd.datetime_read()"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "pd.to_datetime()",
+    "correctIndex": 2
+  },
+  {
+    "id": 85,
+    "question": "Какой метод Pandas сортирует DataFrame по столбцу revenue?",
+    "options": [
+      {
+        "label": "A",
+        "text": "sort_values()"
+      },
+      {
+        "label": "B",
+        "text": "order_by()"
+      },
+      {
+        "label": "C",
+        "text": "rank_values()"
+      },
+      {
+        "label": "D",
+        "text": "arrange()"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "sort_values()",
+    "correctIndex": 0
+  },
+  {
+    "id": 86,
+    "question": "Какой аргумент функции sort_values в Pandas задает сортировку по убыванию?",
+    "options": [
+      {
+        "label": "A",
+        "text": "descending=True"
+      },
+      {
+        "label": "B",
+        "text": "reverse=True"
+      },
+      {
+        "label": "C",
+        "text": "ascending=False"
+      },
+      {
+        "label": "D",
+        "text": "order='desc'"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "ascending=False",
+    "correctIndex": 2
+  },
+  {
+    "id": 87,
+    "question": "Какой метод Pandas вернет первые 5 строк DataFrame для быстрой проверки данных?",
+    "options": [
+      {
+        "label": "A",
+        "text": "top(5)"
+      },
+      {
+        "label": "B",
+        "text": "preview(5)"
+      },
+      {
+        "label": "C",
+        "text": "head(5)"
+      },
+      {
+        "label": "D",
+        "text": "sample_first(5)"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "head(5)",
+    "correctIndex": 2
+  },
+  {
+    "id": 88,
+    "question": "Какой метод Pandas корректно переименовывает столбцы DataFrame?",
+    "options": [
+      {
+        "label": "A",
+        "text": "rename()"
+      },
+      {
+        "label": "B",
+        "text": "columns_set()"
+      },
+      {
+        "label": "C",
+        "text": "rename_cols()"
+      },
+      {
+        "label": "D",
+        "text": "set_headers()"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "rename()",
+    "correctIndex": 0
+  },
+  {
+    "id": 89,
+    "question": "Какой метод Pandas чаще всего используют для агрегации по группам?",
+    "options": [
+      {
+        "label": "A",
+        "text": "groupby()"
+      },
+      {
+        "label": "B",
+        "text": "cluster()"
+      },
+      {
+        "label": "C",
+        "text": "partition()"
+      },
+      {
+        "label": "D",
+        "text": "pivot()"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "groupby()",
+    "correctIndex": 0
+  },
+  {
+    "id": 90,
+    "question": "Какой метод Pandas превращает сводную агрегацию в удобную таблицу по индексам и столбцам?",
+    "options": [
+      {
+        "label": "A",
+        "text": "cross_join()"
+      },
+      {
+        "label": "B",
+        "text": "pivot_table()"
+      },
+      {
+        "label": "C",
+        "text": "reshape_table()"
+      },
+      {
+        "label": "D",
+        "text": "stack_table()"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "pivot_table()",
+    "correctIndex": 1
+  },
+  {
+    "id": 91,
+    "question": "Какой метод Pandas обычно используют для удаления строк с пропусками?",
+    "options": [
+      {
+        "label": "A",
+        "text": "fillna()"
+      },
+      {
+        "label": "B",
+        "text": "dropna()"
+      },
+      {
+        "label": "C",
+        "text": "cleanna()"
+      },
+      {
+        "label": "D",
+        "text": "stripna()"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "dropna()",
+    "correctIndex": 1
+  },
+  {
+    "id": 92,
+    "question": "Какой метод строки в Python заменяет одну подстроку на другую?",
+    "options": [
+      {
+        "label": "A",
+        "text": "replace()"
+      },
+      {
+        "label": "B",
+        "text": "swap()"
+      },
+      {
+        "label": "C",
+        "text": "substitute()"
+      },
+      {
+        "label": "D",
+        "text": "rewrite()"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "replace()",
+    "correctIndex": 0
+  },
+  {
+    "id": 93,
+    "question": "Какой метод списка Python вставляет элемент в конкретную позицию?",
+    "options": [
+      {
+        "label": "A",
+        "text": "append()"
+      },
+      {
+        "label": "B",
+        "text": "extend()"
+      },
+      {
+        "label": "C",
+        "text": "insert()"
+      },
+      {
+        "label": "D",
+        "text": "push()"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "insert()",
+    "correctIndex": 2
+  },
+  {
+    "id": 94,
+    "question": "Какой тип графика лучше всего показывает связь между двумя числовыми переменными?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Scatter plot"
+      },
+      {
+        "label": "B",
+        "text": "Pie chart"
+      },
+      {
+        "label": "C",
+        "text": "Treemap"
+      },
+      {
+        "label": "D",
+        "text": "Gauge"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "Scatter plot",
+    "correctIndex": 0
+  },
+  {
+    "id": 95,
+    "question": "Какой тип графика наиболее уместен для сравнения значений по категориям?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Histogram"
+      },
+      {
+        "label": "B",
+        "text": "Bar chart"
+      },
+      {
+        "label": "C",
+        "text": "Heatmap"
+      },
+      {
+        "label": "D",
+        "text": "Area chart"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Bar chart",
+    "correctIndex": 1
+  },
+  {
+    "id": 96,
+    "question": "Какой тип графика чаще всего используют для поиска выбросов в распределении?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Boxplot"
+      },
+      {
+        "label": "B",
+        "text": "Pie chart"
+      },
+      {
+        "label": "C",
+        "text": "Gauge"
+      },
+      {
+        "label": "D",
+        "text": "Treemap"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "Boxplot",
+    "correctIndex": 0
+  },
+  {
+    "id": 97,
+    "question": "Что делает функция plt.xlabel() в Matplotlib?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Добавляет подпись оси X"
+      },
+      {
+        "label": "B",
+        "text": "Строит линейный график"
+      },
+      {
+        "label": "C",
+        "text": "Меняет масштаб фигуры"
+      },
+      {
+        "label": "D",
+        "text": "Добавляет легенду"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "Добавляет подпись оси X",
+    "correctIndex": 0
+  },
+  {
+    "id": 98,
+    "question": "Для чего используется plt.legend() в Matplotlib?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Для фильтрации данных перед построением"
+      },
+      {
+        "label": "B",
+        "text": "Для отображения обозначений серий на графике"
+      },
+      {
+        "label": "C",
+        "text": "Для сохранения графика в Excel"
+      },
+      {
+        "label": "D",
+        "text": "Для удаления осей"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Для отображения обозначений серий на графике",
+    "correctIndex": 1
+  },
+  {
+    "id": 99,
+    "question": "Какой тип графика лучше всего подходит для отображения корреляционной матрицы?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Heatmap"
+      },
+      {
+        "label": "B",
+        "text": "Gauge"
+      },
+      {
+        "label": "C",
+        "text": "Donut chart"
+      },
+      {
+        "label": "D",
+        "text": "Funnel chart"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "Heatmap",
+    "correctIndex": 0
+  },
+  {
+    "id": 100,
+    "question": "Какой принцип визуализации делает дашборд более читаемым для бизнес-пользователя?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Использование как можно большего числа цветов"
+      },
+      {
+        "label": "B",
+        "text": "Единая логика цветов и акцент только на важных отклонениях"
+      },
+      {
+        "label": "C",
+        "text": "Размещение максимума визуалов на одном экране"
+      },
+      {
+        "label": "D",
+        "text": "Отказ от подписей ради минимализма"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Единая логика цветов и акцент только на важных отклонениях",
+    "correctIndex": 1
+  },
+  {
+    "id": 101,
+    "question": "Какой визуальный элемент Power BI обычно используют для показа одного ключевого показателя, например общей выручки?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Card"
+      },
+      {
+        "label": "B",
+        "text": "Treemap"
+      },
+      {
+        "label": "C",
+        "text": "Scatter chart"
+      },
+      {
+        "label": "D",
+        "text": "Ribbon chart"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "Card",
+    "correctIndex": 0
+  },
+  {
+    "id": 102,
+    "question": "Для чего в Power BI обычно используют Slicer?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Для написания SQL-запросов"
+      },
+      {
+        "label": "B",
+        "text": "Для интерактивной фильтрации визуализаций"
+      },
+      {
+        "label": "C",
+        "text": "Для хранения исходных CSV-файлов"
+      },
+      {
+        "label": "D",
+        "text": "Для построения связей между таблицами"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Для интерактивной фильтрации визуализаций",
+    "correctIndex": 1
+  },
+  {
+    "id": 103,
+    "question": "Что является центральной таблицей в звездной схеме (star schema)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Dimension table"
+      },
+      {
+        "label": "B",
+        "text": "Lookup table"
+      },
+      {
+        "label": "C",
+        "text": "Fact table"
+      },
+      {
+        "label": "D",
+        "text": "Bridge table"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "Fact table",
+    "correctIndex": 2
+  },
+  {
+    "id": 104,
+    "question": "Какой инструмент Power BI чаще всего используют для очистки и преобразования данных до загрузки в модель?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Power Query"
+      },
+      {
+        "label": "B",
+        "text": "DAX Studio"
+      },
+      {
+        "label": "C",
+        "text": "Report View"
+      },
+      {
+        "label": "D",
+        "text": "Performance Analyzer"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "Power Query",
+    "correctIndex": 0
+  },
+  {
+    "id": 105,
+    "question": "Что характерно для меры (Measure) в Power BI?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Она хранится построчно в таблице как новый физический столбец"
+      },
+      {
+        "label": "B",
+        "text": "Она вычисляется динамически в зависимости от контекста фильтра"
+      },
+      {
+        "label": "C",
+        "text": "Она может существовать только в Power Query"
+      },
+      {
+        "label": "D",
+        "text": "Она не может использовать агрегации"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Она вычисляется динамически в зависимости от контекста фильтра",
+    "correctIndex": 1
+  },
+  {
+    "id": 106,
+    "question": "Какая функция DAX итерируется по таблице и суммирует вычисляемое выражение по строкам?",
+    "options": [
+      {
+        "label": "A",
+        "text": "SUM()"
+      },
+      {
+        "label": "B",
+        "text": "SUMX()"
+      },
+      {
+        "label": "C",
+        "text": "COUNTROWS()"
+      },
+      {
+        "label": "D",
+        "text": "CALCULATE()"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "SUMX()",
+    "correctIndex": 1
+  },
+  {
+    "id": 107,
+    "question": "Какая функция DAX обычно используется для получения значения из связанной таблицы?",
+    "options": [
+      {
+        "label": "A",
+        "text": "RELATED()"
+      },
+      {
+        "label": "B",
+        "text": "LOOKUPFILTER()"
+      },
+      {
+        "label": "C",
+        "text": "MERGE()"
+      },
+      {
+        "label": "D",
+        "text": "EXPAND()"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "RELATED()",
+    "correctIndex": 0
+  },
+  {
+    "id": 108,
+    "question": "Какой HTTP-метод обычно используют для создания нового ресурса через API?",
+    "options": [
+      {
+        "label": "A",
+        "text": "GET"
+      },
+      {
+        "label": "B",
+        "text": "POST"
+      },
+      {
+        "label": "C",
+        "text": "PATCH"
+      },
+      {
+        "label": "D",
+        "text": "DELETE"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "POST",
+    "correctIndex": 1
+  },
+  {
+    "id": 109,
+    "question": "Что означает HTTP-статус 404?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Сервер временно недоступен"
+      },
+      {
+        "label": "B",
+        "text": "Доступ запрещен"
+      },
+      {
+        "label": "C",
+        "text": "Ресурс не найден"
+      },
+      {
+        "label": "D",
+        "text": "Запрос выполнен успешно"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "Ресурс не найден",
+    "correctIndex": 2
+  },
+  {
+    "id": 110,
+    "question": "Какой способ в Python наиболее типичен для получения JSON-ответа из объекта response библиотеки requests?",
+    "options": [
+      {
+        "label": "A",
+        "text": "response.parse_json()"
+      },
+      {
+        "label": "B",
+        "text": "response.json()"
+      },
+      {
+        "label": "C",
+        "text": "response.to_dict()"
+      },
+      {
+        "label": "D",
+        "text": "response.body_json()"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "response.json()",
+    "correctIndex": 1
+  },
+  {
+    "id": 111,
+    "question": "Для чего обычно используют модуль logging в аналитическом скрипте?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Для обучения моделей"
+      },
+      {
+        "label": "B",
+        "text": "Для структурированной записи диагностических сообщений и ошибок"
+      },
+      {
+        "label": "C",
+        "text": "Для построения графиков"
+      },
+      {
+        "label": "D",
+        "text": "Для работы с Excel-файлами"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Для структурированной записи диагностических сообщений и ошибок",
+    "correctIndex": 1
+  },
+  {
+    "id": 112,
+    "question": "Какова главная цель виртуального окружения Python?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ускорить выполнение SQL-запросов"
+      },
+      {
+        "label": "B",
+        "text": "Изолировать зависимости проекта"
+      },
+      {
+        "label": "C",
+        "text": "Заменить систему контроля версий"
+      },
+      {
+        "label": "D",
+        "text": "Сжать большие датасеты"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Изолировать зависимости проекта",
+    "correctIndex": 1
+  },
+  {
+    "id": 113,
+    "question": "Что измеряет метрика MAE в задаче регрессии?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Долю правильно классифицированных объектов"
+      },
+      {
+        "label": "B",
+        "text": "Среднюю абсолютную величину ошибки прогноза"
+      },
+      {
+        "label": "C",
+        "text": "Площадь под ROC-кривой"
+      },
+      {
+        "label": "D",
+        "text": "Средний квадрат коэффициентов модели"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Среднюю абсолютную величину ошибки прогноза",
+    "correctIndex": 1
+  },
+  {
+    "id": 114,
+    "question": "Какая метрика сильнее штрафует большие ошибки прогноза, чем MAE?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Recall"
+      },
+      {
+        "label": "B",
+        "text": "RMSE"
+      },
+      {
+        "label": "C",
+        "text": "Precision"
+      },
+      {
+        "label": "D",
+        "text": "F1-score"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "RMSE",
+    "correctIndex": 1
+  },
+  {
+    "id": 115,
+    "question": "Какая метрика особенно важна, если ложноположительные срабатывания в классификации очень нежелательны?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Precision"
+      },
+      {
+        "label": "B",
+        "text": "MSE"
+      },
+      {
+        "label": "C",
+        "text": "R2"
+      },
+      {
+        "label": "D",
+        "text": "MAE"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "Precision",
+    "correctIndex": 0
+  },
+  {
+    "id": 116,
+    "question": "Что показывает ROC-AUC для бинарной классификации?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Качество модели на разных порогах классификации"
+      },
+      {
+        "label": "B",
+        "text": "Среднюю абсолютную ошибку прогноза"
+      },
+      {
+        "label": "C",
+        "text": "Количество параметров модели"
+      },
+      {
+        "label": "D",
+        "text": "Скорость обучения алгоритма"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "Качество модели на разных порогах классификации",
+    "correctIndex": 0
+  },
+  {
+    "id": 117,
+    "question": "Для чего обычно используют train_test_split в машинном обучении?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Для удаления выбросов"
+      },
+      {
+        "label": "B",
+        "text": "Для разделения данных на обучающую и тестовую части"
+      },
+      {
+        "label": "C",
+        "text": "Для построения SQL-индексов"
+      },
+      {
+        "label": "D",
+        "text": "Для визуализации корреляций"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Для разделения данных на обучающую и тестовую части",
+    "correctIndex": 1
+  },
+  {
+    "id": 118,
+    "question": "Что означает коэффициент корреляции, близкий к +1?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Сильную отрицательную линейную связь"
+      },
+      {
+        "label": "B",
+        "text": "Отсутствие линейной связи"
+      },
+      {
+        "label": "C",
+        "text": "Сильную положительную линейную связь"
+      },
+      {
+        "label": "D",
+        "text": "Наличие только нелинейной связи"
+      }
+    ],
+    "correctLabel": "C",
+    "correctText": "Сильную положительную линейную связь",
+    "correctIndex": 2
+  },
+  {
+    "id": 119,
+    "question": "Что обычно означает p-value меньше уровня значимости alpha в A/B-тесте?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Различие между группами считается статистически значимым"
+      },
+      {
+        "label": "B",
+        "text": "Результат обязательно практически важен для бизнеса"
+      },
+      {
+        "label": "C",
+        "text": "Эксперимент нужно немедленно остановить как ошибочный"
+      },
+      {
+        "label": "D",
+        "text": "Контрольная группа была выбрана неверно"
+      }
+    ],
+    "correctLabel": "A",
+    "correctText": "Различие между группами считается статистически значимым",
+    "correctIndex": 0
+  },
+  {
+    "id": 120,
+    "question": "Зачем в воспроизводимом аналитическом коде часто задают random_state или seed?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Чтобы автоматически ускорить модель"
+      },
+      {
+        "label": "B",
+        "text": "Чтобы получить повторяемые результаты случайных операций"
+      },
+      {
+        "label": "C",
+        "text": "Чтобы уменьшить размер исходных данных"
+      },
+      {
+        "label": "D",
+        "text": "Чтобы отключить проверку типов"
+      }
+    ],
+    "correctLabel": "B",
+    "correctText": "Чтобы получить повторяемые результаты случайных операций",
+    "correctIndex": 1
+  }
+];
+
+    const state = {
+      mode: "study",
+      studyAnswers: Array(QUESTIONS.length).fill(null),
+      studyCurrentIndex: 0,
+      testIndexes: [],
+      testAnswers: [],
+      testCurrentIndex: 0,
+      testFinished: false
+    };
+
+    const elements = {
+      studyModeBtn: document.getElementById("studyModeBtn"),
+      testModeBtn: document.getElementById("testModeBtn"),
+      restartBtn: document.getElementById("restartBtn"),
+      finishTestBtn: document.getElementById("finishTestBtn"),
+      correctStat: document.getElementById("correctStat"),
+      wrongStat: document.getElementById("wrongStat"),
+      leftStat: document.getElementById("leftStat"),
+      resultStat: document.getElementById("resultStat"),
+      statusText: document.getElementById("statusText"),
+      modeHint: document.getElementById("modeHint"),
+      progressBar: document.getElementById("progressBar"),
+      questionShell: document.getElementById("questionShell"),
+      finalScreen: document.getElementById("finalScreen")
+    };
+
+    function shuffle(array) {
+      const copy = [...array];
+      for (let i = copy.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function startTest() {
+      state.testIndexes = shuffle(QUESTIONS.map((_, index) => index)).slice(0, 30);
+      state.testAnswers = Array(state.testIndexes.length).fill(null);
+      state.testCurrentIndex = 0;
+      state.testFinished = false;
+    }
+
+    function resetStudy() {
+      state.studyAnswers = Array(QUESTIONS.length).fill(null);
+      state.studyCurrentIndex = 0;
+    }
+
+    function getCurrentSet() {
+      if (state.mode === "study") {
+        return {
+          indexes: QUESTIONS.map((_, index) => index),
+          answers: state.studyAnswers,
+          currentIndex: state.studyCurrentIndex,
+          finished: false,
+          reveal: true
+        };
+      }
+      return {
+        indexes: state.testIndexes,
+        answers: state.testAnswers,
+        currentIndex: state.testCurrentIndex,
+        finished: state.testFinished,
+        reveal: state.testFinished
+      };
+    }
+
+    function getStats() {
+      const current = getCurrentSet();
+      const total = current.indexes.length;
+      let correct = 0;
+      let wrong = 0;
+      let answered = 0;
+
+      current.indexes.forEach((questionIndex, position) => {
+        const answer = current.answers[position];
+        if (answer === null || answer === undefined) return;
+        answered += 1;
+        if (answer === QUESTIONS[questionIndex].correctIndex) {
+          correct += 1;
+        } else {
+          wrong += 1;
+        }
+      });
+
+      return {
+        total,
+        answered,
+        correct,
+        wrong,
+        left: total - answered,
+        percent: total ? Math.round((correct / total) * 100) : 0
+      };
+    }
+
+    function updateModeButtons() {
+      elements.studyModeBtn.classList.toggle("active", state.mode === "study");
+      elements.testModeBtn.classList.toggle("active", state.mode === "test");
+      elements.finishTestBtn.hidden = state.mode !== "test";
+    }
+
+    function updateStats() {
+      const stats = getStats();
+      const current = getCurrentSet();
+      const total = current.indexes.length;
+      const progressValue = total ? ((current.currentIndex + 1) / total) * 100 : 0;
+
+      elements.correctStat.textContent = stats.correct;
+      elements.wrongStat.textContent = stats.wrong;
+      elements.leftStat.textContent = stats.left;
+      elements.resultStat.textContent = `${stats.percent}%`;
+      elements.progressBar.style.width = `${progressValue}%`;
+
+      elements.statusText.textContent =
+        state.mode === "study"
+          ? `Вопрос ${current.currentIndex + 1} из ${total} · полный банк из 120 вопросов`
+          : `Тестовый вопрос ${current.currentIndex + 1} из ${total} · случайная выборка из 30`;
+
+      if (state.mode === "study") {
+        elements.modeHint.textContent = "В режиме изучения правильный ответ подсвечивается сразу после выбора.";
+      } else if (!state.testFinished) {
+        elements.modeHint.textContent = "В режиме теста можно переходить между вопросами и менять ответы до завершения.";
+      } else {
+        elements.modeHint.textContent = "Тест завершен. Правильные ответы уже раскрыты.";
+      }
+    }
+
+    function switchMode(mode) {
+      state.mode = mode;
+      if (mode === "test" && state.testIndexes.length === 0) {
+        startTest();
+      }
+      updateModeButtons();
+      render();
+    }
+
+    function setCurrentIndex(value) {
+      const current = getCurrentSet();
+      const maxIndex = current.indexes.length - 1;
+      const safeIndex = Math.min(Math.max(0, value), maxIndex);
+      if (state.mode === "study") {
+        state.studyCurrentIndex = safeIndex;
+      } else {
+        state.testCurrentIndex = safeIndex;
+      }
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function answerQuestion(optionIndex) {
+      const current = getCurrentSet();
+      const currentPos = current.currentIndex;
+      if (state.mode === "study") {
+        if (state.studyAnswers[currentPos] !== null) return;
+        state.studyAnswers[currentPos] = optionIndex;
+      } else {
+        if (state.testFinished) return;
+        state.testAnswers[currentPos] = optionIndex;
+      }
+      render();
+    }
+
+    function createOptionButton(question, option, optionIndex, selectedAnswer, reveal) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "option";
+
+      const isSelected = selectedAnswer === optionIndex;
+      const isCorrect = question.correctIndex === optionIndex;
+      const shouldReveal = reveal && selectedAnswer !== null;
+
+      if (isSelected) button.classList.add("selected");
+      if (shouldReveal && isCorrect) {
+        button.classList.add("correct");
+      }
+      if (shouldReveal && isSelected && !isCorrect) {
+        button.classList.add("wrong");
+      }
+
+      const label = document.createElement("span");
+      label.className = "option-label";
+      label.textContent = option.label;
+
+      const text = document.createElement("span");
+      text.textContent = option.text;
+
+      button.append(label, text);
+      button.addEventListener("click", () => answerQuestion(optionIndex));
+
+      if ((state.mode === "study" && selectedAnswer !== null) || (state.mode === "test" && state.testFinished)) {
+        button.disabled = true;
+      }
+
+      return button;
+    }
+
+    function createFeedback(question, selectedAnswer, reveal) {
+      if (selectedAnswer === null || selectedAnswer === undefined) {
+        const box = document.createElement("div");
+        box.className = "feedback neutral";
+        box.textContent =
+          state.mode === "study"
+            ? "Выберите один вариант ответа."
+            : state.testFinished
+              ? `Ответ не выбран. Правильный ответ: ${question.correctLabel}) ${question.correctText}`
+              : "Можно выбрать ответ сейчас или вернуться к вопросу позже.";
+        return box;
+      }
+
+      if (!reveal) {
+        const box = document.createElement("div");
+        box.className = "feedback neutral";
+        box.textContent = `Ответ сохранён: ${question.options[selectedAnswer].label}) ${question.options[selectedAnswer].text}`;
+        return box;
+      }
+
+      const isCorrect = selectedAnswer === question.correctIndex;
+      const box = document.createElement("div");
+      box.className = `feedback ${isCorrect ? "good" : "bad"}`;
+      box.textContent = isCorrect
+        ? `Верно. Правильный ответ: ${question.correctLabel}) ${question.correctText}`
+        : `Неверно. Ваш ответ: ${question.options[selectedAnswer].label}) ${question.options[selectedAnswer].text}. Правильный ответ: ${question.correctLabel}) ${question.correctText}`;
+      return box;
+    }
+
+    function renderFinalScreen() {
+      elements.finalScreen.innerHTML = "";
+      if (!(state.mode === "test" && state.testFinished)) return;
+
+      const stats = getStats();
+      const finalCard = document.createElement("section");
+      finalCard.className = "final-card";
+      finalCard.innerHTML = `
+        <h2>Тест завершён</h2>
+        <div class="final-score">${stats.correct} / ${stats.total}</div>
+        <p class="final-note">
+          Итоговый результат: ${stats.percent}%. Вы можете просмотреть вопросы, перейти к любому номеру и изучить правильные ответы.
+        </p>
+      `;
+      elements.finalScreen.appendChild(finalCard);
+    }
+
+    function renderQuestion() {
+      const current = getCurrentSet();
+      const total = current.indexes.length;
+      const questionIndex = current.indexes[current.currentIndex];
+      const question = QUESTIONS[questionIndex];
+      const selectedAnswer = current.answers[current.currentIndex];
+      const reveal = state.mode === "study" || state.testFinished;
+
+      elements.questionShell.innerHTML = "";
+
+      const top = document.createElement("div");
+
+      const head = document.createElement("div");
+      head.className = "question-top";
+
+      const number = document.createElement("div");
+      number.className = "question-number";
+      number.textContent = current.currentIndex + 1;
+
+      const content = document.createElement("div");
+
+      const badges = document.createElement("div");
+      badges.className = "question-badges";
+
+      const badge1 = document.createElement("span");
+      badge1.className = "badge";
+      badge1.textContent = state.mode === "study" ? "Режим изучения" : "Режим теста";
+
+      const badge2 = document.createElement("span");
+      badge2.className = "badge";
+      badge2.textContent = `Банк: вопрос #${question.id}`;
+
+      badges.append(badge1, badge2);
+
+      const title = document.createElement("h2");
+      title.className = "question-title";
+      title.textContent = question.question;
+
+      content.append(badges, title);
+      head.append(number, content);
+      top.appendChild(head);
+
+      const optionsBox = document.createElement("div");
+      optionsBox.className = "options";
+      question.options.forEach((option, optionIndex) => {
+        optionsBox.appendChild(createOptionButton(question, option, optionIndex, selectedAnswer, reveal));
+      });
+      top.appendChild(optionsBox);
+      top.appendChild(createFeedback(question, selectedAnswer, reveal));
+
+      const footer = document.createElement("div");
+      footer.className = "question-footer";
+
+      const left = document.createElement("div");
+      left.className = "hint";
+      left.textContent =
+        state.mode === "study"
+          ? "После ответа переходите к следующему вопросу."
+          : state.testFinished
+            ? "После завершения теста можно просмотреть все 30 вопросов по одному."
+            : "Можно перемещаться между вопросами без потери выбранных ответов.";
+
+      const right = document.createElement("div");
+      right.style.display = "grid";
+      right.style.gap = "10px";
+
+      const navRow = document.createElement("div");
+      navRow.className = "nav-row";
+
+      const prevBtn = document.createElement("button");
+      prevBtn.type = "button";
+      prevBtn.className = "btn secondary";
+      prevBtn.textContent = "← Назад";
+      prevBtn.disabled = current.currentIndex === 0;
+      prevBtn.addEventListener("click", () => setCurrentIndex(current.currentIndex - 1));
+
+      const nextBtn = document.createElement("button");
+      nextBtn.type = "button";
+      nextBtn.className = "btn primary";
+      nextBtn.textContent = current.currentIndex === total - 1 ? "Последний вопрос" : "Вперёд →";
+      nextBtn.disabled = current.currentIndex === total - 1;
+      nextBtn.addEventListener("click", () => setCurrentIndex(current.currentIndex + 1));
+
+      navRow.append(prevBtn, nextBtn);
+
+      const jumpRow = document.createElement("div");
+      jumpRow.className = "jump-row";
+
+      const select = document.createElement("select");
+      select.className = "jump-select";
+
+      current.indexes.forEach((_, pos) => {
+        const opt = document.createElement("option");
+        opt.value = pos;
+        const ans = current.answers[pos];
+        const marker = ans === null || ans === undefined ? "•" : "✓";
+        opt.textContent = `Вопрос ${pos + 1} из ${total} ${marker}`;
+        if (pos === current.currentIndex) opt.selected = true;
+        select.appendChild(opt);
+      });
+
+      select.addEventListener("change", event => {
+        setCurrentIndex(Number(event.target.value));
+      });
+
+      jumpRow.appendChild(select);
+
+      right.append(navRow, jumpRow);
+      footer.append(left, right);
+
+      elements.questionShell.append(top, footer);
+    }
+
+    function render() {
+      updateModeButtons();
+      updateStats();
+      renderFinalScreen();
+      renderQuestion();
+    }
+
+    elements.studyModeBtn.addEventListener("click", () => switchMode("study"));
+    elements.testModeBtn.addEventListener("click", () => switchMode("test"));
+
+    elements.restartBtn.addEventListener("click", () => {
+      if (state.mode === "study") {
+        resetStudy();
+      } else {
+        startTest();
+      }
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    elements.finishTestBtn.addEventListener("click", () => {
+      if (state.mode !== "test") return;
+      state.testFinished = true;
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    render();
+  </script>
+</body>
+</html>
