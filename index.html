@@ -1,0 +1,3546 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TECH ORDA | Интерактивный тест</title>
+  <style>
+    :root {
+      --bg-main: #fefbe6;
+      --card-bg: #cee3f8;
+      --card-border: #336699;
+      --accent-primary: #f4a6a6;
+      --accent-secondary: #b9d8c2;
+      --accent-warm: #f6c7a6;
+      --accent-soft: #d8c7f2;
+      --accent-highlight: #f7e7a1;
+      --text-main: #17324d;
+      --text-soft: #45627c;
+      --white-soft: rgba(255, 255, 255, 0.82);
+      --danger: #c95f5f;
+      --success: #4f8f67;
+      --shadow-soft: 0 12px 28px rgba(51, 102, 153, 0.16);
+      --shadow-hover: 0 18px 36px rgba(51, 102, 153, 0.24);
+      --radius-xl: 24px;
+      --radius-md: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at 8% 8%, rgba(244, 166, 166, 0.32), transparent 28%),
+        radial-gradient(circle at 90% 12%, rgba(216, 199, 242, 0.42), transparent 30%),
+        radial-gradient(circle at 50% 92%, rgba(185, 216, 194, 0.36), transparent 32%),
+        var(--bg-main);
+      color: var(--text-main);
+    }
+
+    .app {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 34px 0 48px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 20px;
+      align-items: stretch;
+      margin-bottom: 22px;
+    }
+
+    .hero-card,
+    .panel,
+    .stat-card,
+    .question-card,
+    .final-card {
+      border: 2px solid var(--card-border);
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .hero-card {
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      right: -55px;
+      top: -55px;
+      border-radius: 50%;
+      background: var(--accent-highlight);
+      opacity: 0.55;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-highlight);
+      border: 1px solid rgba(51, 102, 153, 0.35);
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      margin: 0 0 10px;
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 17px;
+      line-height: 1.55;
+      max-width: 760px;
+    }
+
+    .mode-panel {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .mode-title {
+      font-size: 16px;
+      color: var(--text-soft);
+      margin: 0 0 12px;
+      font-weight: 700;
+    }
+
+    .mode-buttons,
+    .action-row,
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .btn {
+      border: 2px solid var(--card-border);
+      border-radius: 999px;
+      padding: 11px 16px;
+      background: var(--white-soft);
+      color: var(--text-main);
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(51, 102, 153, 0.12);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, opacity 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn.primary {
+      background: var(--accent-primary);
+    }
+
+    .btn.secondary {
+      background: var(--accent-secondary);
+    }
+
+    .btn.warm {
+      background: var(--accent-warm);
+    }
+
+    .btn.soft {
+      background: var(--accent-soft);
+    }
+
+    .btn.active {
+      background: var(--accent-highlight);
+      box-shadow: inset 0 0 0 2px rgba(51, 102, 153, 0.18), var(--shadow-soft);
+    }
+
+    .btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.58;
+      transform: none;
+    }
+
+    .controls {
+      padding: 18px;
+      margin-bottom: 18px;
+      display: grid;
+      grid-template-columns: minmax(240px, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .search-box {
+      width: 100%;
+      border: 2px solid var(--card-border);
+      border-radius: 999px;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.76);
+      color: var(--text-main);
+      font-size: 15px;
+      outline: none;
+      box-shadow: inset 0 2px 8px rgba(51, 102, 153, 0.08);
+    }
+
+    .search-box:focus {
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(247, 231, 161, 0.72);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .stat-card {
+      padding: 16px;
+      min-height: 86px;
+      background: rgba(206, 227, 248, 0.92);
+    }
+
+    .stat-label {
+      color: var(--text-soft);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .status-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 0 16px;
+      color: var(--text-soft);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .questions {
+      display: grid;
+      gap: 16px;
+    }
+
+    .question-card {
+      padding: 20px;
+      background: linear-gradient(180deg, rgba(206, 227, 248, 0.98), rgba(206, 227, 248, 0.84));
+    }
+
+    .question-head {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .question-number {
+      flex: 0 0 auto;
+      min-width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: var(--accent-highlight);
+      border: 2px solid var(--card-border);
+      font-weight: 900;
+      box-shadow: 0 8px 16px rgba(51, 102, 153, 0.12);
+    }
+
+    .question-title {
+      margin: 4px 0 0;
+      font-size: 18px;
+      line-height: 1.45;
+      font-weight: 850;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .option {
+      width: 100%;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 10px;
+      align-items: center;
+      border: 2px solid rgba(51, 102, 153, 0.48);
+      border-radius: 18px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+      box-shadow: 0 6px 14px rgba(51, 102, 153, 0.08);
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .option:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(51, 102, 153, 0.16);
+      background: #fff;
+    }
+
+    .option:disabled {
+      cursor: default;
+    }
+
+    .option-label {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: var(--accent-soft);
+      border: 1px solid rgba(51, 102, 153, 0.35);
+      font-weight: 900;
+    }
+
+    .option.selected {
+      background: var(--accent-highlight);
+      border-color: var(--card-border);
+    }
+
+    .option.correct {
+      background: var(--accent-secondary);
+      border-color: var(--success);
+    }
+
+    .option.wrong {
+      background: var(--accent-primary);
+      border-color: var(--danger);
+    }
+
+    .feedback {
+      margin-top: 14px;
+      border-radius: 16px;
+      padding: 12px 14px;
+      border: 2px solid rgba(51, 102, 153, 0.35);
+      background: rgba(255, 255, 255, 0.72);
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .feedback.good {
+      border-color: var(--success);
+    }
+
+    .feedback.bad {
+      border-color: var(--danger);
+    }
+
+    .final-card {
+      padding: 26px;
+      background: linear-gradient(135deg, var(--accent-highlight), var(--card-bg));
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .final-card h2 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 44px);
+    }
+
+    .final-score {
+      font-size: 58px;
+      font-weight: 950;
+      margin: 12px 0 6px;
+    }
+
+    .final-note {
+      margin: 0 auto 18px;
+      color: var(--text-soft);
+      max-width: 620px;
+      line-height: 1.55;
+      font-weight: 700;
+    }
+
+    .empty {
+      padding: 24px;
+      border: 2px dashed var(--card-border);
+      border-radius: var(--radius-xl);
+      background: rgba(255, 255, 255, 0.52);
+      color: var(--text-soft);
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .source-note {
+      margin-top: 20px;
+      color: rgba(23, 50, 77, 0.72);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 860px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 520px) {
+      .app {
+        width: min(100% - 20px, 1180px);
+        padding-top: 18px;
+      }
+
+      .hero-card,
+      .mode-panel,
+      .question-card,
+      .final-card {
+        border-radius: 18px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .question-head {
+        flex-direction: column;
+      }
+
+      .option {
+        grid-template-columns: 36px 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Вопросы загружены из файла: fileciteturn0file0 -->
+  <main class="app">
+    <section class="hero">
+      <div class="hero-card">
+        <div class="kicker">TECH ORDA · Product and Project Management</div>
+        <h1>Интерактивный тест</h1>
+        <p class="subtitle">Выберите режим изучения для тренировки с мгновенной обратной связью или режим теста, где случайно формируются 30 вопросов из общего банка.</p>
+      </div>
+
+      <aside class="panel mode-panel">
+        <div>
+          <p class="mode-title">Режим работы</p>
+          <div class="mode-buttons">
+            <button class="btn primary active" id="studyModeBtn" type="button">Режим изучения</button>
+            <button class="btn soft" id="testModeBtn" type="button">Режим теста</button>
+          </div>
+        </div>
+        <div class="action-row">
+          <button class="btn warm" id="restartBtn" type="button">Начать заново</button>
+          <button class="btn secondary" id="finishTestBtn" type="button" hidden>Завершить тест</button>
+        </div>
+      </aside>
+    </section>
+
+    <section class="panel controls">
+      <input class="search-box" id="searchInput" type="search" placeholder="Поиск по вопросам и вариантам ответов" autocomplete="off" />
+      <div class="filter-row" aria-label="Фильтры">
+        <button class="btn active" data-filter="all" type="button">Все</button>
+        <button class="btn" data-filter="wrong" type="button">Ошибки</button>
+        <button class="btn" data-filter="unanswered" type="button">Без ответа</button>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Статистика">
+      <div class="stat-card">
+        <div class="stat-label">Правильно</div>
+        <div class="stat-value" id="correctStat">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Ошибки</div>
+        <div class="stat-value" id="wrongStat">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Осталось</div>
+        <div class="stat-value" id="leftStat">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Результат</div>
+        <div class="stat-value" id="resultStat">0%</div>
+      </div>
+    </section>
+
+    <div class="status-line">
+      <span id="statusText">Загружено вопросов: 100</span>
+      <span id="modeHint">В режиме изучения ответ подсвечивается сразу после выбора.</span>
+    </div>
+
+    <section id="finalScreen"></section>
+    <section class="questions" id="questionsContainer"></section>
+    <div class="source-note">Банк вопросов встроен в файл. Тест работает локально без интернета, внешних библиотек и серверной части.</div>
+  </main>
+
+  <script>
+    const QUESTIONS = [
+  {
+    "question": "Какое из следующих утверждений лучше всего описывает разницу между Продуктовой стратегией и Дорожной картой (Roadmap)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Стратегия описывает тактические шаги на месяц, а Roadmap — видение на 5 лет."
+      },
+      {
+        "label": "B",
+        "text": "Стратегия отвечает на вопросы «Что?» и «Когда?», а Roadmap — «Зачем?»."
+      },
+      {
+        "label": "C",
+        "text": "Стратегия задает направление и обосновывает «Зачем», а Roadmap направляет исполнение и отвечает на «Что» и «Когда»."
+      },
+      {
+        "label": "D",
+        "text": "Стратегия оперирует детальными фичами, а Roadmap — концептуальными бизнес-гипотезами."
+      },
+      {
+        "label": "E",
+        "text": "Стратегия ориентирована исключительно на команду разработки, а Roadmap — на инвесторов."
+      }
+    ],
+    "correctText": "Стратегия задает направление и обосновывает «Зачем», а Roadmap направляет исполнение и отвечает на «Что» и «Когда».",
+    "correctIndex": 2
+  },
+  {
+    "question": "Какая главная цель использования инструмента Product Vision Board, разработанного Романом Пихлером?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Построение диаграммы Ганта для технической команды."
+      },
+      {
+        "label": "B",
+        "text": "Оценка производительности разработчиков (Velocity)."
+      },
+      {
+        "label": "C",
+        "text": "Быстрая и глубокая валидация идеи продукта и кристаллизация стратегии."
+      },
+      {
+        "label": "D",
+        "text": "Расчет финансовой модели и Unit-экономики."
+      },
+      {
+        "label": "E",
+        "text": "Создание подробного технического задания (PRD)."
+      }
+    ],
+    "correctText": "Быстрая и глубокая валидация идеи продукта и кристаллизация стратегии.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Что такое «Театр дат» (Date Theater) в контексте планирования продукта?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Этап тестирования гипотез через фальшивые лендинги."
+      },
+      {
+        "label": "B",
+        "text": "Ситуация, когда команда и стейкхолдеры ритуально согласовывают сроки, в реалистичность которых никто не верит."
+      },
+      {
+        "label": "C",
+        "text": "Формат проведения CustDev-интервью в виде театрализованной игры."
+      },
+      {
+        "label": "D",
+        "text": "Стратегия релиза продукта, приуроченная к крупным праздникам."
+      },
+      {
+        "label": "E",
+        "text": "Успешное выполнение всех задач бэклога ровно в срок."
+      }
+    ],
+    "correctText": "Ситуация, когда команда и стейкхолдеры ритуально согласовывают сроки, в реалистичность которых никто не верит.",
+    "correctIndex": 1
+  },
+  {
+    "question": "В формате дорожной карты Now-Next-Later (NNL), для чего предназначена категория «Later» (Позже)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Для задач с высокой степенью определенности и детализации."
+      },
+      {
+        "label": "B",
+        "text": "Для критических багфиксов и устранения технического долга."
+      },
+      {
+        "label": "C",
+        "text": "Для задач ближайшего будущего со сроком выполнения 1-3 месяца."
+      },
+      {
+        "label": "D",
+        "text": "Для амбициозных целей с высокой зоной неопределенности, где фичи служат лишь «заполнителями»."
+      },
+      {
+        "label": "E",
+        "text": "Для задач, от которых команда решила полностью отказаться."
+      }
+    ],
+    "correctText": "Для амбициозных целей с высокой зоной неопределенности, где фичи служат лишь «заполнителями».",
+    "correctIndex": 3
+  },
+  {
+    "question": "Рассчитайте физическую емкость (Physical Capacity) команды на основе следующих данных: период планирования — 10 рабочих дней, рабочий день — 8 часов, количество разработчиков в команде — 4.",
+    "options": [
+      {
+        "label": "A",
+        "text": "80 часов"
+      },
+      {
+        "label": "B",
+        "text": "160 часов"
+      },
+      {
+        "label": "C",
+        "text": "320 часов"
+      },
+      {
+        "label": "D",
+        "text": "400 часов"
+      },
+      {
+        "label": "E",
+        "text": "40 часов"
+      }
+    ],
+    "correctText": "320 часов",
+    "correctIndex": 2
+  },
+  {
+    "question": "Почему эксперты рекомендуют планировать загрузку команды только на 50-75% от теоретической емкости (формируя Purified Capacity)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Чтобы у разработчиков было время на работу в других компаниях."
+      },
+      {
+        "label": "B",
+        "text": "Чтобы оставить необходимый буфер для неизбежных рисков, багов, встреч и код-ревью («темная материя» разработки)."
+      },
+      {
+        "label": "C",
+        "text": "Потому что по трудовому кодексу разработчикам нельзя работать более 6 часов в день."
+      },
+      {
+        "label": "D",
+        "text": "Чтобы искусственно растянуть сроки перед стейкхолдерами."
+      },
+      {
+        "label": "E",
+        "text": "Чтобы сэкономить бюджет на заработных платах."
+      }
+    ],
+    "correctText": "Чтобы оставить необходимый буфер для неизбежных рисков, багов, встреч и код-ревью («темная материя» разработки).",
+    "correctIndex": 1
+  },
+  {
+    "question": "Какое распределение ресурсов (Allocation Mix) рекомендуется для здорового баланса портфеля в Roadmap?",
+    "options": [
+      {
+        "label": "A",
+        "text": "100% на новые фичи."
+      },
+      {
+        "label": "B",
+        "text": "50% на новые фичи, 50% на технический долг."
+      },
+      {
+        "label": "C",
+        "text": "60% Innovation/Growth, 20% Tech Debt, 10% UX, 10% R&D."
+      },
+      {
+        "label": "D",
+        "text": "80% Tech Debt, 20% Innovation/Growth."
+      },
+      {
+        "label": "E",
+        "text": "40% Innovation/Growth, 40% R&D, 20% UX."
+      }
+    ],
+    "correctText": "60% Innovation/Growth, 20% Tech Debt, 10% UX, 10% R&D.",
+    "correctIndex": 2
+  },
+  {
+    "question": "В чем заключается ключевое отличие Product Manager от Project Manager?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Продакт Менеджер отвечает на вопрос «Как и Когда?», а Проджект Менеджер — на вопрос «Что и Почему?»."
+      },
+      {
+        "label": "B",
+        "text": "Продакт Менеджер фокусируется на выполнении проекта в срок, а Проджект Менеджер — на метриках удержания."
+      },
+      {
+        "label": "C",
+        "text": "Продакт Менеджер отвечает за создание нужного продукта и бизнес-результат, а Проджект Менеджер — за исполнение проекта в срок и в рамках бюджета."
+      },
+      {
+        "label": "D",
+        "text": "Продакт Менеджер управляет только разработчиками, а Проджект Менеджер — только маркетингом."
+      },
+      {
+        "label": "E",
+        "text": "Это две абсолютно одинаковые роли с разными названиями."
+      }
+    ],
+    "correctText": "Продакт Менеджер отвечает за создание нужного продукта и бизнес-результат, а Проджект Менеджер — за исполнение проекта в срок и в рамках бюджета.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Какова главная цель трека «Discovery» в рамках концепции Dual-Track Agile?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Быстрая доставка готового кода пользователям."
+      },
+      {
+        "label": "B",
+        "text": "Снижение рисков (ценности, удобства, реализуемости, жизнеспособности) до начала написания кода."
+      },
+      {
+        "label": "C",
+        "text": "Тестирование производительности серверов."
+      },
+      {
+        "label": "D",
+        "text": "Подготовка маркетинговых материалов для релиза."
+      },
+      {
+        "label": "E",
+        "text": "Написание подробной технической документации."
+      }
+    ],
+    "correctText": "Снижение рисков (ценности, удобства, реализуемости, жизнеспособности) до начала написания кода.",
+    "correctIndex": 1
+  },
+  {
+    "question": "К какому пространству в рамках фреймворка «Problem Space vs. Solution Space» относится следующее утверждение: «Мне нужно попасть из дома в аэропорт к пяти утра, я боюсь опоздать»?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Solution Space (Пространство решения)"
+      },
+      {
+        "label": "B",
+        "text": "Innovation Space (Пространство инноваций)"
+      },
+      {
+        "label": "C",
+        "text": "Product Space (Пространство продукта)"
+      },
+      {
+        "label": "D",
+        "text": "Problem Space (Пространство проблемы)"
+      },
+      {
+        "label": "E",
+        "text": "Marketing Space (Пространство маркетинга)"
+      }
+    ],
+    "correctText": "Problem Space (Пространство проблемы)",
+    "correctIndex": 3
+  },
+  {
+    "question": "Какой из перечисленных вопросов соответствует правилам проведения CustDev-интервью по методологии «The Mom Test»?",
+    "options": [
+      {
+        "label": "A",
+        "text": "«Как вы думаете, это хорошая идея?»"
+      },
+      {
+        "label": "B",
+        "text": "«Купили бы вы наше приложение за 5 долларов в месяц?»"
+      },
+      {
+        "label": "C",
+        "text": "«Расскажите о последнем разе, когда вы сталкивались с этой проблемой?»"
+      },
+      {
+        "label": "D",
+        "text": "«Какую фичу нам стоит добавить в продукт?»"
+      },
+      {
+        "label": "E",
+        "text": "«Вам нравится дизайн нашего нового прототипа?»"
+      }
+    ],
+    "correctText": "«Расскажите о последнем разе, когда вы сталкивались с этой проблемой?»",
+    "correctIndex": 2
+  },
+  {
+    "question": "Что описывает категория «Must-Be» (Обязательные) в модели приоритизации KANO?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Функции, которые вызывают сильный восторг у пользователей."
+      },
+      {
+        "label": "B",
+        "text": "Функции, у которых работает правило «чем больше, тем лучше»."
+      },
+      {
+        "label": "C",
+        "text": "Базовые ожидания; их наличие воспринимается как данность, а отсутствие вызывает сильное недовольство."
+      },
+      {
+        "label": "D",
+        "text": "Функции, которые раздражают пользователя и приводят к оттоку."
+      },
+      {
+        "label": "E",
+        "text": "Функции, к которым клиент абсолютно безразличен."
+      }
+    ],
+    "correctText": "Базовые ожидания; их наличие воспринимается как данность, а отсутствие вызывает сильное недовольство.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Какое явление описывает концепция «Естественного Угасания Восторга» (Natural Decay of Delight) в модели KANO?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Со временем пользователи устают от продукта и перестают им пользоваться."
+      },
+      {
+        "label": "B",
+        "text": "Функции, которые вчера были «Вау-фичами» (Attractive), со временем становятся обыденными (Performance), а затем — базовыми ожиданиями (Must-Be)."
+      },
+      {
+        "label": "C",
+        "text": "Снижение маркетингового бюджета приводит к падению NPS."
+      },
+      {
+        "label": "D",
+        "text": "Постоянное добавление новых функций снижает общую скорость работы приложения."
+      },
+      {
+        "label": "E",
+        "text": "Пользователи забывают о функционале, если не напоминать о нем через push-уведомления."
+      }
+    ],
+    "correctText": "Функции, которые вчера были «Вау-фичами» (Attractive), со временем становятся обыденными (Performance), а затем — базовыми ожиданиями (Must-Be).",
+    "correctIndex": 1
+  },
+  {
+    "question": "Какая буква в методе приоритизации MoSCoW отвечает за фичи, которые команда сознательно исключает из релиза для предотвращения раздувания скоупа?",
+    "options": [
+      {
+        "label": "A",
+        "text": "M (Must Have)"
+      },
+      {
+        "label": "B",
+        "text": "S (Should Have)"
+      },
+      {
+        "label": "C",
+        "text": "C (Could Have)"
+      },
+      {
+        "label": "D",
+        "text": "O (Ought to Have)"
+      },
+      {
+        "label": "E",
+        "text": "W (Won't Have)"
+      }
+    ],
+    "correctText": "W (Won't Have)",
+    "correctIndex": 4
+  },
+  {
+    "question": "Какую плохую практику при использовании фреймворка MoSCoW называют самой губительной?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Отсутствие категории \"Could Have\"."
+      },
+      {
+        "label": "B",
+        "text": "Делегирование приоритизации разработчикам."
+      },
+      {
+        "label": "C",
+        "text": "Ситуация, когда 90% бэклога помечается стейкхолдерами как \"Must Have\"."
+      },
+      {
+        "label": "D",
+        "text": "Использование MoSCoW вместо RICE для стратегического планирования на 5 лет."
+      },
+      {
+        "label": "E",
+        "text": "Отказ от использования диаграммы Ганта."
+      }
+    ],
+    "correctText": "Ситуация, когда 90% бэклога помечается стейкхолдерами как \"Must Have\".",
+    "correctIndex": 2
+  },
+  {
+    "question": "Для эффективного использования метода MoSCoW рекомендуется вводить жесткое ограничение на ресурсы для \"Must Have\" задач. Какой лимит от общей емкости команды рекомендуется установить?",
+    "options": [
+      {
+        "label": "A",
+        "text": "20%"
+      },
+      {
+        "label": "B",
+        "text": "40%"
+      },
+      {
+        "label": "C",
+        "text": "60%"
+      },
+      {
+        "label": "D",
+        "text": "80%"
+      },
+      {
+        "label": "E",
+        "text": "100%"
+      }
+    ],
+    "correctText": "60%",
+    "correctIndex": 2
+  },
+  {
+    "question": "Кто из участников Agile-процесса является «лидером-служителем» (servant leader), который убирает препятствия (impediments) и помогает команде эффективно работать?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Product Owner"
+      },
+      {
+        "label": "B",
+        "text": "Scrum Master"
+      },
+      {
+        "label": "C",
+        "text": "Project Manager"
+      },
+      {
+        "label": "D",
+        "text": "CEO"
+      },
+      {
+        "label": "E",
+        "text": "Stakeholder"
+      }
+    ],
+    "correctText": "Scrum Master",
+    "correctIndex": 1
+  },
+  {
+    "question": "Из каких двух основных частей состоит инструмент Value Proposition Canvas (VPC)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Бизнес-модель и Финансовый план"
+      },
+      {
+        "label": "B",
+        "text": "Профиль Клиента и Карта Ценности"
+      },
+      {
+        "label": "C",
+        "text": "Пространство Проблемы и Пространство Решения"
+      },
+      {
+        "label": "D",
+        "text": "Целевая аудитория и Анализ Конкурентов"
+      },
+      {
+        "label": "E",
+        "text": "Метрики роста и Каналы привлечения"
+      }
+    ],
+    "correctText": "Профиль Клиента и Карта Ценности",
+    "correctIndex": 1
+  },
+  {
+    "question": "В Профиле Клиента (Customer Profile) в рамках VPC, что относится к категории «Проблемы / Боли» (Customer Pains)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Позитивные результаты, которых клиент хочет достичь."
+      },
+      {
+        "label": "B",
+        "text": "Функциональные и социальные задачи, которые нужно выполнить."
+      },
+      {
+        "label": "C",
+        "text": "Риски, негативные эмоции, нежелательные затраты и то, что мешает клиенту при выполнении «работ»."
+      },
+      {
+        "label": "D",
+        "text": "Перечень товаров и услуг, которые предлагает ваша компания."
+      },
+      {
+        "label": "E",
+        "text": "Факторы помощи (Pain Relievers), которые предлагает ваш продукт."
+      }
+    ],
+    "correctText": "Риски, негативные эмоции, нежелательные затраты и то, что мешает клиенту при выполнении «работ».",
+    "correctIndex": 2
+  },
+  {
+    "question": "В каком формате пишется классическая пользовательская история (User Story)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Дано [Условие], Когда [Действие], Тогда [Результат]."
+      },
+      {
+        "label": "B",
+        "text": "Когда [Ситуация], я хочу [Мотивация], чтобы [Ожидаемый результат]."
+      },
+      {
+        "label": "C",
+        "text": "Мы верим, что [Фича] принесет [Ценность] для [Сегмент]."
+      },
+      {
+        "label": "D",
+        "text": "Как [Персона], я хочу [Действие], чтобы [Ценность]."
+      },
+      {
+        "label": "E",
+        "text": "Для [Пользователь], которому нужно [Проблема], наш продукт — это [Решение]."
+      }
+    ],
+    "correctText": "Как [Персона], я хочу [Действие], чтобы [Ценность].",
+    "correctIndex": 3
+  },
+  {
+    "question": "В аббревиатуре INVEST (чек-лист проверки качества User Story), что означает критерий «I» (Independent)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Историю должен разрабатывать один независимый программист."
+      },
+      {
+        "label": "B",
+        "text": "История не зависит от бюджета проекта и финансируется отдельно."
+      },
+      {
+        "label": "C",
+        "text": "История не подлежит обсуждению со стейкхолдерами."
+      },
+      {
+        "label": "D",
+        "text": "Историю можно реализовать и выпустить независимо от других историй."
+      },
+      {
+        "label": "E",
+        "text": "История должна приносить независимый доход (Income)."
+      }
+    ],
+    "correctText": "Историю можно реализовать и выпустить независимо от других историй.",
+    "correctIndex": 3
+  },
+  {
+    "question": "Что означает критерий «S» (Small) в чек-листе INVEST для оценки User Story?",
+    "options": [
+      {
+        "label": "A",
+        "text": "История должна решаться изменением одной строчки кода."
+      },
+      {
+        "label": "B",
+        "text": "История должна охватывать максимально малую нишу целевой аудитории."
+      },
+      {
+        "label": "C",
+        "text": "Историю можно завершить за один спринт (в идеале за пару дней)."
+      },
+      {
+        "label": "D",
+        "text": "Бюджет на реализацию истории должен быть небольшим."
+      },
+      {
+        "label": "E",
+        "text": "История не должна затрагивать глобальную архитектуру системы."
+      }
+    ],
+    "correctText": "Историю можно завершить за один спринт (в идеале за пару дней).",
+    "correctIndex": 2
+  },
+  {
+    "question": "Что означает критерий «T» (Testable) в аббревиатуре INVEST?",
+    "options": [
+      {
+        "label": "A",
+        "text": "История должна быть протестирована на A/B тестах перед разработкой."
+      },
+      {
+        "label": "B",
+        "text": "Историю можно протестировать только силами продакт-менеджера."
+      },
+      {
+        "label": "C",
+        "text": "У истории есть четкие Критерии Приемки (Acceptance Criteria)."
+      },
+      {
+        "label": "D",
+        "text": "История должна включать автотесты, написанные искусственным интеллектом."
+      },
+      {
+        "label": "E",
+        "text": "История должна занимать не более одного дня на тестирование."
+      }
+    ],
+    "correctText": "У истории есть четкие Критерии Приемки (Acceptance Criteria).",
+    "correctIndex": 2
+  },
+  {
+    "question": "Что такое «Confirmation» (Подтверждение) в модели работы с User Story, известной как 3C (Card, Conversation, Confirmation)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Подпись генерального директора на техническом задании."
+      },
+      {
+        "label": "B",
+        "text": "Согласие разработчика взять задачу в спринт."
+      },
+      {
+        "label": "C",
+        "text": "Acceptance Criteria (Критерии Приемки) — формальный список того, как мы поймем, что история сделана правильно."
+      },
+      {
+        "label": "D",
+        "text": "Письменное подтверждение от клиента об оплате фичи."
+      },
+      {
+        "label": "E",
+        "text": "Автоматическое уведомление в Jira об успешном деплое."
+      }
+    ],
+    "correctText": "Acceptance Criteria (Критерии Приемки) — формальный список того, как мы поймем, что история сделана правильно.",
+    "correctIndex": 2
+  },
+  {
+    "question": "В чем заключается фундаментальное отличие формата Job Story от классической User Story?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Job Story фокусируется на технической реализации, а User Story — на бизнес-ценности."
+      },
+      {
+        "label": "B",
+        "text": "Job Story пишется исключительно маркетологами, а User Story — аналитиками."
+      },
+      {
+        "label": "C",
+        "text": "Job Story фокусируется на контексте и мотивации («Когда... я хочу...»), а не на типе пользователя (персоне)."
+      },
+      {
+        "label": "D",
+        "text": "Job Story не содержит ожидаемого результата."
+      },
+      {
+        "label": "E",
+        "text": "Job Story всегда используется в связке с диаграммами Ганта."
+      }
+    ],
+    "correctText": "Job Story фокусируется на контексте и мотивации («Когда... я хочу...»), а не на типе пользователя (персоне).",
+    "correctIndex": 2
+  },
+  {
+    "question": "На этапе Customer Validation (согласно Стиву Бланку), что является «моментом истины», доказывающим реальную готовность клиента использовать продукт?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Клиент хвалит идею продукта на интервью."
+      },
+      {
+        "label": "B",
+        "text": "Клиент просит добавить больше новых функций."
+      },
+      {
+        "label": "C",
+        "text": "Клиент делится контактами своих друзей."
+      },
+      {
+        "label": "D",
+        "text": "Клиент делает вложение (commitment) — например, вносит предоплату или подписывает Letter of Intent (LOI)."
+      },
+      {
+        "label": "E",
+        "text": "Клиент соглашается пройти опрос из 100 вопросов."
+      }
+    ],
+    "correctText": "Клиент делает вложение (commitment) — например, вносит предоплату или подписывает Letter of Intent (LOI).",
+    "correctIndex": 3
+  },
+  {
+    "question": "Что является ключевой характеристикой модели Product-Led Growth (PLG)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Основным драйвером привлечения, конверсии и удержания клиентов является сам продукт."
+      },
+      {
+        "label": "B",
+        "text": "Продажи осуществляются исключительно через «холодные» звонки C-Level руководителям."
+      },
+      {
+        "label": "C",
+        "text": "Длительный процесс внедрения продукта с обязательным участием интеграторов."
+      },
+      {
+        "label": "D",
+        "text": "Маркетинговый бюджет превышает бюджет на разработку продукта в 10 раз."
+      },
+      {
+        "label": "E",
+        "text": "Отсутствие бесплатной версии (freemium) или триального периода."
+      }
+    ],
+    "correctText": "Основным драйвером привлечения, конверсии и удержания клиентов является сам продукт.",
+    "correctIndex": 0
+  },
+  {
+    "question": "Кто такой PQL в контексте Product-Led Growth?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Product Quality Lead — руководитель отдела тестирования качества."
+      },
+      {
+        "label": "B",
+        "text": "Product Qualified Lead — пользователь, который уже использовал продукт и достиг порога ценности, сигнализируя о готовности к покупке."
+      },
+      {
+        "label": "C",
+        "text": "Project Quantity Limit — лимит на количество проектов в портфеле."
+      },
+      {
+        "label": "D",
+        "text": "Pricing Quote Level — максимальная скидка, которую может дать отдел продаж."
+      },
+      {
+        "label": "E",
+        "text": "Product Quarter Launch — квартальный запуск нового продукта."
+      }
+    ],
+    "correctText": "Product Qualified Lead — пользователь, который уже использовал продукт и достиг порога ценности, сигнализируя о готовности к покупке.",
+    "correctIndex": 1
+  },
+  {
+    "question": "Что рассчитывает метрика K-factor в продуктовой аналитике?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Стоимость привлечения одного платящего пользователя (CAC)."
+      },
+      {
+        "label": "B",
+        "text": "Маржинальный доход с одного заказа (Contribution Margin)."
+      },
+      {
+        "label": "C",
+        "text": "Коэффициент виральности — сколько новых пользователей приводит один существующий пользователь."
+      },
+      {
+        "label": "D",
+        "text": "Процент пользователей, отменивших подписку в течение месяца (Churn rate)."
+      },
+      {
+        "label": "E",
+        "text": "Индекс лояльности клиентов (NPS)."
+      }
+    ],
+    "correctText": "Коэффициент виральности — сколько новых пользователей приводит один существующий пользователь.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Ваша компания потратила 50 000 долларов на маркетинг и привлекла 400 новых клиентов. Рассчитайте показатель CAC (Customer Acquisition Cost).",
+    "options": [
+      {
+        "label": "A",
+        "text": "12.5 долларов"
+      },
+      {
+        "label": "B",
+        "text": "125 долларов"
+      },
+      {
+        "label": "C",
+        "text": "200 долларов"
+      },
+      {
+        "label": "D",
+        "text": "500 долларов"
+      },
+      {
+        "label": "E",
+        "text": "1250 долларов"
+      }
+    ],
+    "correctText": "125 долларов",
+    "correctIndex": 1
+  },
+  {
+    "question": "Вы анализируете юнит-экономику B2B SaaS продукта. Средний чек (ARPU) составляет 60 000 тенге в месяц, валовая маржа — 85%. Чему равна валовая прибыль с клиента в месяц (Gross Profit per Month)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "60 000 тенге"
+      },
+      {
+        "label": "B",
+        "text": "51 000 тенге"
+      },
+      {
+        "label": "C",
+        "text": "9 000 тенге"
+      },
+      {
+        "label": "D",
+        "text": "42 500 тенге"
+      },
+      {
+        "label": "E",
+        "text": "85 000 тенге"
+      }
+    ],
+    "correctText": "51 000 тенге",
+    "correctIndex": 1
+  },
+  {
+    "question": "Используя данные из предыдущего вопроса (Валовая прибыль = 51 000 тенге в месяц), рассчитайте LTV клиента, если месячный отток (Churn rate) составляет 2%.",
+    "options": [
+      {
+        "label": "A",
+        "text": "1 020 000 тенге"
+      },
+      {
+        "label": "B",
+        "text": "2 550 000 тенге"
+      },
+      {
+        "label": "C",
+        "text": "3 000 000 тенге"
+      },
+      {
+        "label": "D",
+        "text": "5 100 000 тенге"
+      },
+      {
+        "label": "E",
+        "text": "10 200 000 тенге"
+      }
+    ],
+    "correctText": "2 550 000 тенге",
+    "correctIndex": 1
+  },
+  {
+    "question": "В каком случае значение соотношения LTV/CAC, равное 11.6, считается поводом для стратегических действий в SaaS-компании?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Это означает, что бизнес убыточен и нужно срочно сокращать расходы."
+      },
+      {
+        "label": "B",
+        "text": "Это идеальный баланс, не требующий никаких изменений в стратегии."
+      },
+      {
+        "label": "C",
+        "text": "Это сигнализирует о том, что компания сильно недоинвестирует в рост, и бюджет на маркетинг нужно кратно увеличивать."
+      },
+      {
+        "label": "D",
+        "text": "Это означает, что продукт не обладает Product-Market Fit."
+      },
+      {
+        "label": "E",
+        "text": "Это указывает на высокий уровень оттока (Churn rate)."
+      }
+    ],
+    "correctText": "Это сигнализирует о том, что компания сильно недоинвестирует в рост, и бюджет на маркетинг нужно кратно увеличивать.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Что означает термин «Vibe Coding» в контексте применения искусственного интеллекта в продуктовом менеджменте (тренды 2026 года)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Написание кода исключительно под определенный музыкальный плейлист."
+      },
+      {
+        "label": "B",
+        "text": "Анализ тональности (эмоций) в отзывах клиентов."
+      },
+      {
+        "label": "C",
+        "text": "Создание программного обеспечения и рабочих прототипов с помощью текстовых промптов на естественном языке с использованием ИИ."
+      },
+      {
+        "label": "D",
+        "text": "Визуальное программирование с использованием блоков (No-Code), но без применения нейросетей."
+      },
+      {
+        "label": "E",
+        "text": "Процесс ручного ревью кода техническим директором."
+      }
+    ],
+    "correctText": "Создание программного обеспечения и рабочих прототипов с помощью текстовых промптов на естественном языке с использованием ИИ.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Как инструменты вроде Fireflies.ai или tl;dv улучшают рабочие процессы продуктовых команд?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Они автоматически пишут код для бэкенда."
+      },
+      {
+        "label": "B",
+        "text": "Они анализируют видеозаписи встреч, выделяют эмоциональный контекст и могут автоматически создавать тикеты на баги в Jira/Linear."
+      },
+      {
+        "label": "C",
+        "text": "Они автоматически запускают таргетированную рекламу в Facebook."
+      },
+      {
+        "label": "D",
+        "text": "Они полностью заменяют необходимость в проведении CustDev-интервью."
+      },
+      {
+        "label": "E",
+        "text": "Они генерируют финансовые отчеты для инвесторов."
+      }
+    ],
+    "correctText": "Они анализируют видеозаписи встреч, выделяют эмоциональный контекст и могут автоматически создавать тикеты на баги в Jira/Linear.",
+    "correctIndex": 1
+  },
+  {
+    "question": "Что представляет собой метод проверки гипотез «Fake-Door Testing» (Эксперимент с ложной дверью)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Полностью автоматизированный продукт, в котором нет ручного труда."
+      },
+      {
+        "label": "B",
+        "text": "Проведение A/B теста, в котором оба варианта абсолютно одинаковые."
+      },
+      {
+        "label": "C",
+        "text": "Метод оценки спроса через предоставление кнопки или пункта меню для функции, которая еще не реализована."
+      },
+      {
+        "label": "D",
+        "text": "Развертывание функции только для 1% пользователей (Canary release)."
+      },
+      {
+        "label": "E",
+        "text": "Предоставление услуги полностью вручную без ведома пользователя."
+      }
+    ],
+    "correctText": "Метод оценки спроса через предоставление кнопки или пункта меню для функции, которая еще не реализована.",
+    "correctIndex": 2
+  },
+  {
+    "question": "В чем разница между минимально жизнеспособными продуктами «Консьерж» (Concierge) и «Волшебник страны Оз» (Wizard of Oz)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "В Консьерж-MVP пользователь знает, что услугу оказывает человек, а в Волшебнике страны Оз он думает, что взаимодействует с автоматизированной системой."
+      },
+      {
+        "label": "B",
+        "text": "Волшебник страны Оз требует написания сложного кода, а Консьерж — нет."
+      },
+      {
+        "label": "C",
+        "text": "В Консьерж-MVP система полностью автоматизирована, а в Волшебнике страны Оз — нет."
+      },
+      {
+        "label": "D",
+        "text": "Волшебник страны Оз используется только в B2B, а Консьерж — только в B2C."
+      },
+      {
+        "label": "E",
+        "text": "Нет никакой разницы, это два названия одного и того же метода."
+      }
+    ],
+    "correctText": "В Консьерж-MVP пользователь знает, что услугу оказывает человек, а в Волшебнике страны Оз он думает, что взаимодействует с автоматизированной системой.",
+    "correctIndex": 0
+  },
+  {
+    "question": "Какую ошибку описывает «Парадокс Симпсона» при проведении А/В-тестирования?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Результаты теста меняются каждый день в течение первой недели."
+      },
+      {
+        "label": "B",
+        "text": "Агрегированные (общие) данные показывают один результат, в то время как сегментированные по когортам данные показывают противоположный."
+      },
+      {
+        "label": "C",
+        "text": "Пользователи активнее кликают на кнопку просто потому, что у нее поменялся цвет."
+      },
+      {
+        "label": "D",
+        "text": "Слишком маленький размер выборки не позволяет получить статистическую значимость."
+      },
+      {
+        "label": "E",
+        "text": "Проведение нескольких тестов одновременно искажает результаты друг друга."
+      }
+    ],
+    "correctText": "Агрегированные (общие) данные показывают один результат, в то время как сегментированные по когортам данные показывают противоположный.",
+    "correctIndex": 1
+  },
+  {
+    "question": "Что такое «Эффект новизны» (Novelty Effect) в А/В-тестировании?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ситуация, когда новый продукт сразу становится лидером рынка."
+      },
+      {
+        "label": "B",
+        "text": "Ошибка в коде, из-за которой новые пользователи не видят изменений."
+      },
+      {
+        "label": "C",
+        "text": "Временное увеличение вовлеченности пользователей из-за любопытства к новому элементу, которое со временем ослабевает."
+      },
+      {
+        "label": "D",
+        "text": "Постоянный и стабильный рост метрик после редизайна интерфейса."
+      },
+      {
+        "label": "E",
+        "text": "Явление, при котором старые пользователи отказываются от продукта при любом изменении."
+      }
+    ],
+    "correctText": "Временное увеличение вовлеченности пользователей из-за любопытства к новому элементу, которое со временем ослабевает.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Выберите правильную формулу для расчета маржинального дохода (Contribution Margin):",
+    "options": [
+      {
+        "label": "A",
+        "text": "Выручка + Постоянные затраты"
+      },
+      {
+        "label": "B",
+        "text": "Выручка - Переменные затраты"
+      },
+      {
+        "label": "C",
+        "text": "Валовая прибыль / CAC"
+      },
+      {
+        "label": "D",
+        "text": "LTV - CAC"
+      },
+      {
+        "label": "E",
+        "text": "Средний чек * Количество покупок"
+      }
+    ],
+    "correctText": "Выручка - Переменные затраты",
+    "correctIndex": 1
+  },
+  {
+    "question": "В онлайн-супермаркете средний чек (AOV) равен 15 000 тенге, себестоимость товаров (COGS) — 11 250 тенге. Переменные затраты на сборку, доставку и эквайринг составляют 1 800 тенге. Чему равен Contribution Margin 2 (СМ2, маржинальный доход после всех переменных затрат)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "3 750 тенге"
+      },
+      {
+        "label": "B",
+        "text": "1 950 тенге"
+      },
+      {
+        "label": "C",
+        "text": "13 200 тенге"
+      },
+      {
+        "label": "D",
+        "text": "15 000 тенге"
+      },
+      {
+        "label": "E",
+        "text": "1 800 тенге"
+      }
+    ],
+    "correctText": "1 950 тенге",
+    "correctIndex": 1
+  },
+  {
+    "question": "Какая модель используется для формирования привычек пользователей в продукте и критически важна для удержания в Product-Led Growth (PLG)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Матрица Эйзенхауэра"
+      },
+      {
+        "label": "B",
+        "text": "Модель Крючка (The Hook Model)"
+      },
+      {
+        "label": "C",
+        "text": "Модель Кано (KANO)"
+      },
+      {
+        "label": "D",
+        "text": "Диаграмма Исикавы"
+      },
+      {
+        "label": "E",
+        "text": "Пирамида Маслоу"
+      }
+    ],
+    "correctText": "Модель Крючка (The Hook Model)",
+    "correctIndex": 1
+  },
+  {
+    "question": "Как называется антипаттерн планирования, когда Roadmap состоит из бессвязного списка функций («Кнопка X», «Фильтр Y»), а не из решаемых проблем, превращая команду в «исполнителей»?",
+    "options": [
+      {
+        "label": "A",
+        "text": "The \"Solo\" PM (Одинокий ПМ)"
+      },
+      {
+        "label": "B",
+        "text": "Feature Factory (Фабрика фич)"
+      },
+      {
+        "label": "C",
+        "text": "The Static Document (Мертвый документ)"
+      },
+      {
+        "label": "D",
+        "text": "Date Theater (Театр дат)"
+      },
+      {
+        "label": "E",
+        "text": "Speculative Roadmap (Спекулятивная карта)"
+      }
+    ],
+    "correctText": "Feature Factory (Фабрика фич)",
+    "correctIndex": 1
+  },
+  {
+    "question": "На что нацелен трек «Delivery» в рамках концепции Dual-Track Agile?",
+    "options": [
+      {
+        "label": "A",
+        "text": "На поиск правильной целевой аудитории для продукта."
+      },
+      {
+        "label": "B",
+        "text": "На исследование и снижение рисков гипотез до разработки."
+      },
+      {
+        "label": "C",
+        "text": "На правильное воплощение задуманного (разработка, тестирование качества, выпуск продукта)."
+      },
+      {
+        "label": "D",
+        "text": "На проведение CustDev интервью."
+      },
+      {
+        "label": "E",
+        "text": "На разработку маркетинговой стратегии и бюджета."
+      }
+    ],
+    "correctText": "На правильное воплощение задуманного (разработка, тестирование качества, выпуск продукта).",
+    "correctIndex": 2
+  },
+  {
+    "question": "Какие четыре секции входят в Карту Эмпатии (Empathy Map)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Возраст, Пол, Доход, Профессия."
+      },
+      {
+        "label": "B",
+        "text": "Что они Говорят, Думают, Делают, Чувствуют."
+      },
+      {
+        "label": "C",
+        "text": "Проблемы, Выгоды, Задачи, Решения."
+      },
+      {
+        "label": "D",
+        "text": "Привлечение, Активация, Удержание, Доход."
+      },
+      {
+        "label": "E",
+        "text": "Сильные стороны, Слабые стороны, Возможности, Угрозы."
+      }
+    ],
+    "correctText": "Что они Говорят, Думают, Делают, Чувствуют.",
+    "correctIndex": 1
+  },
+  {
+    "question": "В Карте Ценности (Value Map) инструмента VPC, что описывает блок «Факторы Выгоды» (Gain Creators)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Как именно ваш продукт устраняет страхи клиента."
+      },
+      {
+        "label": "B",
+        "text": "Перечень физических товаров, которые вы продаете."
+      },
+      {
+        "label": "C",
+        "text": "Как конкретно ваши продукты помогают клиенту достичь позитивных результатов и ожиданий."
+      },
+      {
+        "label": "D",
+        "text": "Список конкурентных преимуществ перед другими компаниями."
+      },
+      {
+        "label": "E",
+        "text": "Задачи, которые клиент пытается выполнить в своей жизни."
+      }
+    ],
+    "correctText": "Как конкретно ваши продукты помогают клиенту достичь позитивных результатов и ожиданий.",
+    "correctIndex": 2
+  },
+  {
+    "question": "В Профиле Клиента (Customer Profile) инструмента VPC, на какие три типа делятся «Задачи клиента» (Customer Jobs)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Дешевые, Дорогие, Бесплатные."
+      },
+      {
+        "label": "B",
+        "text": "Срочные, Важные, Неважные."
+      },
+      {
+        "label": "C",
+        "text": "Внутренние, Внешние, Глобальные."
+      },
+      {
+        "label": "D",
+        "text": "Функциональные, Социальные, Эмоциональные."
+      },
+      {
+        "label": "E",
+        "text": "Индивидуальные, Командные, Корпоративные."
+      }
+    ],
+    "correctText": "Функциональные, Социальные, Эмоциональные.",
+    "correctIndex": 3
+  },
+  {
+    "question": "В формуле 3С для работы с User Story (Card, Conversation, Confirmation), что подразумевает этап «Conversation» (Диалог)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Переговоры с инвесторами о финансировании фичи."
+      },
+      {
+        "label": "B",
+        "text": "Диалог с клиентом во время продажи продукта."
+      },
+      {
+        "label": "C",
+        "text": "Обсуждение карточки между продакт-менеджером, разработчиками и тестировщиками для прояснения деталей."
+      },
+      {
+        "label": "D",
+        "text": "Написание кода разработчиками в парах (Pair Programming)."
+      },
+      {
+        "label": "E",
+        "text": "Отправка email-рассылки пользователям о новой функции."
+      }
+    ],
+    "correctText": "Обсуждение карточки между продакт-менеджером, разработчиками и тестировщиками для прояснения деталей.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Согласно Стиву Бланку, какова главная цель первого этапа CustDev — «Customer Discovery» (Обнаружение клиентов)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Найти соответствие продукта рынку (Product-Market Fit)."
+      },
+      {
+        "label": "B",
+        "text": "Создать компанию и выстроить отделы (Company Building)."
+      },
+      {
+        "label": "C",
+        "text": "Масштабировать продажи (Customer Creation)."
+      },
+      {
+        "label": "D",
+        "text": "Найти соответствие проблемы и решения (Problem-Solution Fit)."
+      },
+      {
+        "label": "E",
+        "text": "Выпустить финальную версию продукта на миллионную аудиторию."
+      }
+    ],
+    "correctText": "Найти соответствие проблемы и решения (Problem-Solution Fit).",
+    "correctIndex": 3
+  },
+  {
+    "question": "Сколько глубоких CustDev-интервью с правильным сегментом целевой аудитории обычно достаточно, чтобы выявить до 90% ключевых инсайтов и паттернов?",
+    "options": [
+      {
+        "label": "A",
+        "text": "1-2 интервью."
+      },
+      {
+        "label": "B",
+        "text": "10-15 интервью."
+      },
+      {
+        "label": "C",
+        "text": "50-70 интервью."
+      },
+      {
+        "label": "D",
+        "text": "Ровно 100 интервью."
+      },
+      {
+        "label": "E",
+        "text": "Не менее 500 интервью."
+      }
+    ],
+    "correctText": "10-15 интервью.",
+    "correctIndex": 1
+  },
+  {
+    "question": "В матрице приоритизации «Value vs. Effort» (Ценность против Усилий), в какой квадрант попадает задача с низкой ценностью (Low Value) и большими усилиями на реализацию (High Effort)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Сделать прямо сейчас (Quick Wins)."
+      },
+      {
+        "label": "B",
+        "text": "Сделать следующим шагом (Major Projects)."
+      },
+      {
+        "label": "C",
+        "text": "Сделать если/когда будет время (Fill-ins)."
+      },
+      {
+        "label": "D",
+        "text": "Никогда. Это лишняя задача."
+      },
+      {
+        "label": "E",
+        "text": "Делегировать стажерам."
+      }
+    ],
+    "correctText": "Никогда. Это лишняя задача.",
+    "correctIndex": 3
+  },
+  {
+    "question": "Что описывает категория «Attractive» (Привлекательные / Delighters) в модели KANO?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Базовые функции, которые ожидаются по умолчанию (например, наличие руля в автомобиле)."
+      },
+      {
+        "label": "B",
+        "text": "Неожиданные «вау-фичи», отсутствие которых не расстроит клиента, но наличие вызовет восторг."
+      },
+      {
+        "label": "C",
+        "text": "Функции, которые раздражают клиента и приводят к удалению приложения."
+      },
+      {
+        "label": "D",
+        "text": "Обычные функции, где удовлетворенность растет линейно (например, скорость интернета)."
+      },
+      {
+        "label": "E",
+        "text": "Задачи, которые команда берет в спринт только при наличии свободного времени."
+      }
+    ],
+    "correctText": "Неожиданные «вау-фичи», отсутствие которых не расстроит клиента, но наличие вызовет восторг.",
+    "correctIndex": 1
+  },
+  {
+    "question": "В чем разница между Blended CAC и Paid CAC в юнит-экономике?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Blended CAC учитывает только затраты на PR, а Paid CAC — только затраты на SEO."
+      },
+      {
+        "label": "B",
+        "text": "Blended CAC учитывает весь трафик (включая органический и бесплатный), а Paid CAC оценивает эффективность только платных каналов рекламы."
+      },
+      {
+        "label": "C",
+        "text": "Blended CAC — это стоимость удержания клиента, а Paid CAC — стоимость привлечения."
+      },
+      {
+        "label": "D",
+        "text": "Это одно и то же, просто термины из разных стран."
+      },
+      {
+        "label": "E",
+        "text": "Blended CAC используется только в B2C, а Paid CAC — только в B2B."
+      }
+    ],
+    "correctText": "Blended CAC учитывает весь трафик (включая органический и бесплатный), а Paid CAC оценивает эффективность только платных каналов рекламы.",
+    "correctIndex": 1
+  },
+  {
+    "question": "Какая формула используется для расчета срока окупаемости инвестиций в привлечение клиента (Payback Period)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "LTV / CAC"
+      },
+      {
+        "label": "B",
+        "text": "Выручка - Переменные затраты"
+      },
+      {
+        "label": "C",
+        "text": "CAC / Валовая прибыль с клиента в месяц (Gross Profit per Month)"
+      },
+      {
+        "label": "D",
+        "text": "Конверсия в триал * 100%"
+      },
+      {
+        "label": "E",
+        "text": "ARPU * Churn Rate"
+      }
+    ],
+    "correctText": "CAC / Валовая прибыль с клиента в месяц (Gross Profit per Month)",
+    "correctIndex": 2
+  },
+  {
+    "question": "Как корпоративному мессенджеру Slack удается иметь успешную юнит-экономику, несмотря на огромный CAC (до $7,700 на клиента в Enterprise сегменте)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Они полностью отказались от маркетингового бюджета и опираются только на органику."
+      },
+      {
+        "label": "B",
+        "text": "Они платят зарплату разработчикам акциями, а не деньгами."
+      },
+      {
+        "label": "C",
+        "text": "Высокий CAC оправдан, так как LTV корпоративного контракта исчисляется сотнями тысяч долларов, а срок жизни клиента стремится к бесконечности из-за высоких издержек переключения (Vendor Lock-in)."
+      },
+      {
+        "label": "D",
+        "text": "Они искусственно занижают CAC в финансовой отчетности, исключая зарплаты сейлзов."
+      },
+      {
+        "label": "E",
+        "text": "Продукт Slack является полностью бесплатным для всех корпораций."
+      }
+    ],
+    "correctText": "Высокий CAC оправдан, так как LTV корпоративного контракта исчисляется сотнями тысяч долларов, а срок жизни клиента стремится к бесконечности из-за высоких издержек переключения (Vendor Lock-in).",
+    "correctIndex": 2
+  },
+  {
+    "question": "В чем заключалась главная иллюзия юнит-экономики компании WeWork перед несостоявшимся IPO?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Они считали себя маркетплейсом, хотя были SaaS-платформой."
+      },
+      {
+        "label": "B",
+        "text": "Они пытались представить операционные расходы на аренду и ремонт как капитальные инвестиции, скрывая отрицательную маржинальность арбитража недвижимости."
+      },
+      {
+        "label": "C",
+        "text": "Они вообще не считали метрику CAC, опираясь только на виральный рост."
+      },
+      {
+        "label": "D",
+        "text": "Они продавали пожизненные абонементы по цене одного месяца."
+      },
+      {
+        "label": "E",
+        "text": "Они платили пользователям за то, чтобы те сидели в их офисах."
+      }
+    ],
+    "correctText": "Они пытались представить операционные расходы на аренду и ремонт как капитальные инвестиции, скрывая отрицательную маржинальность арбитража недвижимости.",
+    "correctIndex": 1
+  },
+  {
+    "question": "Как экосистема Kaspi.kz влияет на юнит-экономику своих высокомаржинальных продуктов (например, кредитов)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "За счет бесплатных и высокочастотных платежей создается привычка, что позволяет привлекать клиентов в кредитные продукты с околонулевым CAC."
+      },
+      {
+        "label": "B",
+        "text": "Они тратят миллиарды тенге на таргетированную рекламу кредитов в Instagram, чтобы компенсировать отток."
+      },
+      {
+        "label": "C",
+        "text": "Они полностью закрыли маркетплейс, чтобы сфокусироваться только на платежах."
+      },
+      {
+        "label": "D",
+        "text": "Они выдают кредиты только новым пользователям, которые ни разу не совершали переводы."
+      },
+      {
+        "label": "E",
+        "text": "Kaspi.kz работает по модели Sales-Led Growth через колл-центры."
+      }
+    ],
+    "correctText": "За счет бесплатных и высокочастотных платежей создается привычка, что позволяет привлекать клиентов в кредитные продукты с околонулевым CAC.",
+    "correctIndex": 0
+  },
+  {
+    "question": "Какое ключевое отличие в стратегии роста использует e-grocery стартап Pinemelon (США) по сравнению с материнским проектом Arbuz.kz (Казахстан) из-за дороговизны ручного труда?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Полный отказ от доставки и переход на самовывоз."
+      },
+      {
+        "label": "B",
+        "text": "Ставка на автоматизацию маркетинга (email/push-цепочки) для повышения LTV без раздувания штата сотрудников."
+      },
+      {
+        "label": "C",
+        "text": "Замена всех курьеров на автономных роботов-доставщиков."
+      },
+      {
+        "label": "D",
+        "text": "Снижение цен ниже уровня Walmart, чтобы победить в ценовой войне."
+      },
+      {
+        "label": "E",
+        "text": "Полный переход на Sales-Led Growth модель."
+      }
+    ],
+    "correctText": "Ставка на автоматизацию маркетинга (email/push-цепочки) для повышения LTV без раздувания штата сотрудников.",
+    "correctIndex": 1
+  },
+  {
+    "question": "Какая характеристика процесса онбординга (адаптации) является ключевой для модели Product-Led Growth (PLG)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Обязательное прохождение двухнедельного тренинга с инструктором."
+      },
+      {
+        "label": "B",
+        "text": "Внедрение продукта командой интеграторов в течение полугода."
+      },
+      {
+        "label": "C",
+        "text": "Самообслуживание: онбординг, обучение и апгрейд происходят непосредственно внутри самого продукта без участия продавца."
+      },
+      {
+        "label": "D",
+        "text": "Чтение документации объемом в 500 страниц до первой авторизации."
+      },
+      {
+        "label": "E",
+        "text": "Прохождение обязательного собеседования со службой безопасности."
+      }
+    ],
+    "correctText": "Самообслуживание: онбординг, обучение и апгрейд происходят непосредственно внутри самого продукта без участия продавца.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Какой фреймворк в PLG рассматривает онбординг пользователя как игру, где цель — выбить страйк (быстро получить ценность), а задача продукта — не дать шару скатиться в желоб (отток)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "The Hook Model"
+      },
+      {
+        "label": "B",
+        "text": "MOAT Framework"
+      },
+      {
+        "label": "C",
+        "text": "RICE Score"
+      },
+      {
+        "label": "D",
+        "text": "Bowling Alley Framework"
+      },
+      {
+        "label": "E",
+        "text": "Value Proposition Canvas"
+      }
+    ],
+    "correctText": "Bowling Alley Framework",
+    "correctIndex": 3
+  },
+  {
+    "question": "В инструменте Linear появилась функция Triage Intelligence. Какую рутинную задачу она автоматизирует с помощью ИИ?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Генерацию маркетинговых текстов для соцсетей."
+      },
+      {
+        "label": "B",
+        "text": "Написание серверного кода на языке Python."
+      },
+      {
+        "label": "C",
+        "text": "Анализ входящих багов, предсказание команды, проекта и приоритета, а также обнаружение дубликатов."
+      },
+      {
+        "label": "D",
+        "text": "Автоматическое увольнение неэффективных сотрудников."
+      },
+      {
+        "label": "E",
+        "text": "Создание дизайн-макетов в Figma по текстовому описанию."
+      }
+    ],
+    "correctText": "Анализ входящих багов, предсказание команды, проекта и приоритета, а также обнаружение дубликатов.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Какую уникальную механику использует ИИ-инструмент ChatPRD для помощи продакт-менеджеру в написании документации?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Он пишет код вместо разработчиков."
+      },
+      {
+        "label": "B",
+        "text": "Он просто копирует тексты из Википедии по ключевым словам."
+      },
+      {
+        "label": "C",
+        "text": "Он использует «сократический коучинг» — задает уточняющие вопросы продакт-менеджеру, чтобы выявить пробелы в логике (например, про оффлайн-режим)."
+      },
+      {
+        "label": "D",
+        "text": "Он переводит документацию на 100 языков мира за секунду."
+      },
+      {
+        "label": "E",
+        "text": "Он самостоятельно проводит интервью с реальными людьми по телефону."
+      }
+    ],
+    "correctText": "Он использует «сократический коучинг» — задает уточняющие вопросы продакт-менеджеру, чтобы выявить пробелы в логике (например, про оффлайн-режим).",
+    "correctIndex": 2
+  },
+  {
+    "question": "Какова основная функция AI-модуля Spark в платформе Productboard?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Отрисовка прототипов интерфейса."
+      },
+      {
+        "label": "B",
+        "text": "Интеллектуальный анализ тысяч отзывов из Zendesk/Slack, их автоматическая категоризация и привязка к конкретным функциям продукта."
+      },
+      {
+        "label": "C",
+        "text": "Запуск рекламных кампаний в Google Ads."
+      },
+      {
+        "label": "D",
+        "text": "Автоматическое тестирование программного кода (QA)."
+      },
+      {
+        "label": "E",
+        "text": "Расчет юнит-экономики и бухгалтерского баланса."
+      }
+    ],
+    "correctText": "Интеллектуальный анализ тысяч отзывов из Zendesk/Slack, их автоматическая категоризация и привязка к конкретным функциям продукта.",
+    "correctIndex": 1
+  },
+  {
+    "question": "Какую задачу решает инструмент конкурентной разведки Crayon?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Генерирует идеи для новых фич с помощью ChatGPT."
+      },
+      {
+        "label": "B",
+        "text": "Отслеживает цифровой след конкурентов (изменения на их сайтах, цены, месседжинг) с помощью компьютерного зрения."
+      },
+      {
+        "label": "C",
+        "text": "Автоматически взламывает базы данных конкурентов."
+      },
+      {
+        "label": "D",
+        "text": "Опрашивает бывших сотрудников конкурентов."
+      },
+      {
+        "label": "E",
+        "text": "Проводит A/B тестирование на сайте конкурента."
+      }
+    ],
+    "correctText": "Отслеживает цифровой след конкурентов (изменения на их сайтах, цены, месседжинг) с помощью компьютерного зрения.",
+    "correctIndex": 1
+  },
+  {
+    "question": "Что представляет собой методология Growth Hacking (Гроус-хакинг) в современном понимании?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Набор незаконных уловок для взлома алгоритмов поисковых систем."
+      },
+      {
+        "label": "B",
+        "text": "Стратегия исключительно для отдела продаж (Sales-Led Growth)."
+      },
+      {
+        "label": "C",
+        "text": "Систематический, инженерно-ориентированный подход к масштабированию бизнеса, основанный на данных и непрерывных экспериментах."
+      },
+      {
+        "label": "D",
+        "text": "Процесс найма самых дорогих маркетологов на рынке."
+      },
+      {
+        "label": "E",
+        "text": "Традиционный брендинг и покупка рекламы на телевидении."
+      }
+    ],
+    "correctText": "Систематический, инженерно-ориентированный подход к масштабированию бизнеса, основанный на данных и непрерывных экспериментах.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Расшифруйте воронку метрик AARRR, популярную в продуктовом менеджменте и Growth Hacking.",
+    "options": [
+      {
+        "label": "A",
+        "text": "Awareness, Analysis, Reporting, Review, Revenue."
+      },
+      {
+        "label": "B",
+        "text": "Acquisition, Activation, Retention, Referral, Revenue (Привлечение, Активация, Удержание, Рекомендации, Доход)."
+      },
+      {
+        "label": "C",
+        "text": "Agile, Architecture, Refactoring, Release, Retrospective."
+      },
+      {
+        "label": "D",
+        "text": "Audience, Action, Reaction, Result, Return."
+      },
+      {
+        "label": "E",
+        "text": "Attention, Attraction, Resolution, Retention, ROI."
+      }
+    ],
+    "correctText": "Acquisition, Activation, Retention, Referral, Revenue (Привлечение, Активация, Удержание, Рекомендации, Доход).",
+    "correctIndex": 1
+  },
+  {
+    "question": "Какие категории входят в фреймворк HEART, разработанный Google для оценки пользовательского опыта?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Happiness, Engagement, Adoption, Retention, Task success."
+      },
+      {
+        "label": "B",
+        "text": "Help, Empathy, Action, Reaction, Time."
+      },
+      {
+        "label": "C",
+        "text": "Hard work, Energy, Attitude, Result, Teamwork."
+      },
+      {
+        "label": "D",
+        "text": "Hacking, Engineering, Analytics, Research, Testing."
+      },
+      {
+        "label": "E",
+        "text": "High value, Effort, Acquisition, Revenue, Traffic."
+      }
+    ],
+    "correctText": "Happiness, Engagement, Adoption, Retention, Task success.",
+    "correctIndex": 0
+  },
+  {
+    "question": "Какова правильная структура формулировки гипотезы в рамках разработки, основанной на предположениях (Hypothesis-Led Development)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "\"Мы верим, что если сделаем красную кнопку, продажи вырастут\"."
+      },
+      {
+        "label": "B",
+        "text": "\"Сделать фичу X к концу квартала, чтобы порадовать инвесторов\"."
+      },
+      {
+        "label": "C",
+        "text": "\"Заменив сегмент X сегментом Y, мы прогнозируем улучшение поведения Z, оцениваемого по метрике M\"."
+      },
+      {
+        "label": "D",
+        "text": "\"Мы внедрим ИИ во все процессы, потому что это тренд 2026 года\"."
+      },
+      {
+        "label": "E",
+        "text": "\"Если мы потратим больше денег на маркетинг, у нас будет больше клиентов\"."
+      }
+    ],
+    "correctText": "\"Заменив сегмент X сегментом Y, мы прогнозируем улучшение поведения Z, оцениваемого по метрике M\".",
+    "correctIndex": 2
+  },
+  {
+    "question": "Какая распространенная ошибка экспериментов (А/В-тестов) описывается как «Взаимные помехи» (Interference)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Преждевременная остановка теста до достижения статистической значимости."
+      },
+      {
+        "label": "B",
+        "text": "Ситуация, когда пользователи кликают на кнопку только из-за ее новизны."
+      },
+      {
+        "label": "C",
+        "text": "Проведение нескольких независимых тестов одновременно на одной и той же группе пользователей, что приводит к искажению результатов."
+      },
+      {
+        "label": "D",
+        "text": "Анализ только общих (агрегированных) данных без разбивки по когортам."
+      },
+      {
+        "label": "E",
+        "text": "Тестирование функции, которой технически не существует."
+      }
+    ],
+    "correctText": "Проведение нескольких независимых тестов одновременно на одной и той же группе пользователей, что приводит к искажению результатов.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Зачем при запуске новых функций (развертывании экспериментов) используются «Переключатели режимов» (Feature Flags)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Для того чтобы пользователи могли сами менять дизайн приложения."
+      },
+      {
+        "label": "B",
+        "text": "Это инструменты дистанционного включения/выключения функций, позволяющие безопасно проводить тесты и мгновенно откатывать неудачные релизы."
+      },
+      {
+        "label": "C",
+        "text": "Для переключения языка интерфейса с русского на английский."
+      },
+      {
+        "label": "D",
+        "text": "Это метрика, показывающая, сколько раз пользователь открыл приложение."
+      },
+      {
+        "label": "E",
+        "text": "Это алгоритм, который автоматически удаляет неиспользуемые фичи из бэклога."
+      }
+    ],
+    "correctText": "Это инструменты дистанционного включения/выключения функций, позволяющие безопасно проводить тесты и мгновенно откатывать неудачные релизы.",
+    "correctIndex": 1
+  },
+  {
+    "question": "Какая главная цель работы продакт-менеджера (Product Manager)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Контролировать рабочие часы команды разработки."
+      },
+      {
+        "label": "B",
+        "text": "Создать продукт, который нужен пользователю и приносит доход бизнесу."
+      },
+      {
+        "label": "C",
+        "text": "Написание идеального программного кода."
+      },
+      {
+        "label": "D",
+        "text": "Привлечение инвестиций и продажа акций компании."
+      },
+      {
+        "label": "E",
+        "text": "Создание рекламных креативов для социальных сетей."
+      }
+    ],
+    "correctText": "Создать продукт, который нужен пользователю и приносит доход бизнесу.",
+    "correctIndex": 1
+  },
+  {
+    "question": "Какую основную функцию выполняет Дорожная карта продукта (Product Roadmap)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Выступает в роли детального технического задания для программистов."
+      },
+      {
+        "label": "B",
+        "text": "Заменяет собой финансовый план компании на год."
+      },
+      {
+        "label": "C",
+        "text": "Является стратегическим инструментом коммуникации, связывающим видение с текущими задачами команды."
+      },
+      {
+        "label": "D",
+        "text": "Служит списком всех возможных идей и пожеланий от клиентов."
+      },
+      {
+        "label": "E",
+        "text": "Является строгим договором с фиксированными датами релиза на 5 лет вперед."
+      }
+    ],
+    "correctText": "Является стратегическим инструментом коммуникации, связывающим видение с текущими задачами команды.",
+    "correctIndex": 2
+  },
+  {
+    "question": "В чем заключается суть подхода Dual-Track Agile?",
+    "options": [
+      {
+        "label": "A",
+        "text": "В компании работают две разные компании-подрядчика."
+      },
+      {
+        "label": "B",
+        "text": "Разработчики пишут код на двух разных языках программирования одновременно."
+      },
+      {
+        "label": "C",
+        "text": "Параллельно ведутся два процесса: исследование (Discovery) и разработка (Delivery)."
+      },
+      {
+        "label": "D",
+        "text": "Маркетинг и продажи объединяются в один отдел."
+      },
+      {
+        "label": "E",
+        "text": "Продукт создается одновременно для В2В и В2С рынков."
+      }
+    ],
+    "correctText": "Параллельно ведутся два процесса: исследование (Discovery) и разработка (Delivery).",
+    "correctIndex": 2
+  },
+  {
+    "question": "Какова главная цель этапа Discovery при создании продукта?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Написать как можно больше чистого кода."
+      },
+      {
+        "label": "B",
+        "text": "Нарисовать финальный дизайн всех экранов приложения."
+      },
+      {
+        "label": "C",
+        "text": "Снизить риски (востребованности, удобства, реализуемости) до начала написания кода."
+      },
+      {
+        "label": "D",
+        "text": "Определить точную дату выпуска продукта."
+      },
+      {
+        "label": "E",
+        "text": "Запустить масштабную рекламную кампанию."
+      }
+    ],
+    "correctText": "Снизить риски (востребованности, удобства, реализуемости) до начала написания кода.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Какое правило является основным при проведении проблемных интервью по методу \"The Mom Test\" (Спроси маму)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Спрашивать у пользователей, нравится ли им ваша идея."
+      },
+      {
+        "label": "B",
+        "text": "Рассказывать о своем продукте как можно больше, чтобы заинтересовать клиента."
+      },
+      {
+        "label": "C",
+        "text": "Обсуждать жизнь собеседника, его прошлый опыт и реальные проблемы, а не вашу идею."
+      },
+      {
+        "label": "D",
+        "text": "Задавать вопросы только о будущем: \"Купили бы вы это через год?\"."
+      },
+      {
+        "label": "E",
+        "text": "Обязательно продать продукт в конце интервью."
+      }
+    ],
+    "correctText": "Обсуждать жизнь собеседника, его прошлый опыт и реальные проблемы, а не вашу идею.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Что такое \"эластичный пользователь\" в контексте дизайна и создания продукта?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Пользователь, который легко адаптируется к любым изменениям интерфейса."
+      },
+      {
+        "label": "B",
+        "text": "Размытый, неконкретный образ аудитории, когда каждый член команды представляет клиента по-своему."
+      },
+      {
+        "label": "C",
+        "text": "Лояльный клиент, который прощает продукту любые ошибки."
+      },
+      {
+        "label": "D",
+        "text": "Пользователь, который платит за подписку каждый месяц без отмен."
+      },
+      {
+        "label": "E",
+        "text": "Человек, использующий продукт на разных устройствах одновременно."
+      }
+    ],
+    "correctText": "Размытый, неконкретный образ аудитории, когда каждый член команды представляет клиента по-своему.",
+    "correctIndex": 1
+  },
+  {
+    "question": "Какие четыре секции составляют Карту эмпатии (Empathy Map)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Стратегия, Тактика, Цели, Результаты."
+      },
+      {
+        "label": "B",
+        "text": "Покупки, Возвраты, Жалобы, Отзывы."
+      },
+      {
+        "label": "C",
+        "text": "Что пользователь Говорит, Думают, Делает, Чувствует."
+      },
+      {
+        "label": "D",
+        "text": "Возраст, Пол, Местоположение, Доход."
+      },
+      {
+        "label": "E",
+        "text": "Привлечение, Активация, Удержание, Доход."
+      }
+    ],
+    "correctText": "Что пользователь Говорит, Думают, Делает, Чувствует.",
+    "correctIndex": 2
+  },
+  {
+    "question": "В шаблоне Value Proposition Canvas (VPC), что относится к \"Задачам клиента\" (Customer Jobs)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "То, что клиент пытается сделать в своей жизни или работе (функциональные, социальные, эмоциональные задачи)."
+      },
+      {
+        "label": "B",
+        "text": "Финансовые затраты клиента на покупку продукта."
+      },
+      {
+        "label": "C",
+        "text": "Набор функций, которые разработчики должны внедрить в следующем спринте."
+      },
+      {
+        "label": "D",
+        "text": "Список багов, которые раздражают клиента."
+      },
+      {
+        "label": "E",
+        "text": "Услуги, которые компания предлагает клиенту бесплатно."
+      }
+    ],
+    "correctText": "То, что клиент пытается сделать в своей жизни или работе (функциональные, социальные, эмоциональные задачи).",
+    "correctIndex": 0
+  },
+  {
+    "question": "С каких слов традиционно начинается классическая пользовательская история (User Story)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "\"Я верю, что...\""
+      },
+      {
+        "label": "B",
+        "text": "\"Система должна...\""
+      },
+      {
+        "label": "C",
+        "text": "\"Как [Персона], я хочу...\""
+      },
+      {
+        "label": "D",
+        "text": "\"Дано [Условие], когда...\""
+      },
+      {
+        "label": "E",
+        "text": "\"В целях увеличения прибыли...\""
+      }
+    ],
+    "correctText": "\"Как [Персона], я хочу...\"",
+    "correctIndex": 2
+  },
+  {
+    "question": "Какую роль выполняет Scrum Master в Agile-команде?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Управляет бюджетом проекта и нанимает сотрудников."
+      },
+      {
+        "label": "B",
+        "text": "Пишет код вместе с разработчиками."
+      },
+      {
+        "label": "C",
+        "text": "Является \"лидером-служителем\", который устраняет препятствия и помогает команде следовать процессам Scrum."
+      },
+      {
+        "label": "D",
+        "text": "Единолично принимает решения о том, какие фичи пойдут в релиз."
+      },
+      {
+        "label": "E",
+        "text": "Общается с клиентами и продает им продукт."
+      }
+    ],
+    "correctText": "Является \"лидером-служителем\", который устраняет препятствия и помогает команде следовать процессам Scrum.",
+    "correctIndex": 2
+  },
+  {
+    "question": "В чек-листе качества User Story, известном как INVEST, что означает буква \"S\" (Small)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "История должна охватывать небольшой сегмент рынка."
+      },
+      {
+        "label": "B",
+        "text": "История должна быть настолько маленькой, чтобы ее можно было завершить за один спринт."
+      },
+      {
+        "label": "C",
+        "text": "История должна приносить небольшую, но стабильную прибыль."
+      },
+      {
+        "label": "D",
+        "text": "Историю должен выполнять младший (Junior) разработчик."
+      },
+      {
+        "label": "E",
+        "text": "Текст истории должен состоять не более чем из одного предложения."
+      }
+    ],
+    "correctText": "История должна быть настолько маленькой, чтобы ее можно было завершить за один спринт.",
+    "correctIndex": 1
+  },
+  {
+    "question": "В модели 3C (Card, Conversation, Confirmation) для User Story, что подразумевается под этапом \"Conversation\" (Диалог)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Переписка с клиентом в чате технической поддержки."
+      },
+      {
+        "label": "B",
+        "text": "Переговоры с инвесторами о финансировании."
+      },
+      {
+        "label": "C",
+        "text": "Живое обсуждение задачи между продакт-менеджером и командой разработки для прояснения деталей."
+      },
+      {
+        "label": "D",
+        "text": "Рассылка email-уведомлений пользователям."
+      },
+      {
+        "label": "E",
+        "text": "Ежегодный отчет генерального директора."
+      }
+    ],
+    "correctText": "Живое обсуждение задачи между продакт-менеджером и командой разработки для прояснения деталей.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Чем формат Job Story (\"Когда..., я хочу..., чтобы...\") отличается от классической User Story?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Job Story акцентирует внимание на техническом стеке."
+      },
+      {
+        "label": "B",
+        "text": "Job Story фокусируется на контексте ситуации и мотивации, а не на типе пользователя (персоне)."
+      },
+      {
+        "label": "C",
+        "text": "Job Story пишется только для внутренних инструментов компании."
+      },
+      {
+        "label": "D",
+        "text": "Job Story вообще не содержит описания ожидаемого результата."
+      },
+      {
+        "label": "E",
+        "text": "Job Story всегда длиннее и занимает несколько страниц."
+      }
+    ],
+    "correctText": "Job Story фокусируется на контексте ситуации и мотивации, а не на типе пользователя (персоне).",
+    "correctIndex": 1
+  },
+  {
+    "question": "Что измеряет показатель CAC (Customer Acquisition Cost)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Совокупные затраты на привлечение одного платящего клиента."
+      },
+      {
+        "label": "B",
+        "text": "Общую прибыль, которую клиент принесет за всю жизнь."
+      },
+      {
+        "label": "C",
+        "text": "Количество пользователей, покинувших приложение."
+      },
+      {
+        "label": "D",
+        "text": "Средний чек одной покупки."
+      },
+      {
+        "label": "E",
+        "text": "Процент людей, прошедших регистрацию."
+      }
+    ],
+    "correctText": "Совокупные затраты на привлечение одного платящего клиента.",
+    "correctIndex": 0
+  },
+  {
+    "question": "Что означает аббревиатура LTV (Lifetime Value) в продуктовой экономике?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Стоимость разработки одной фичи."
+      },
+      {
+        "label": "B",
+        "text": "Ежемесячная подписка на продукт."
+      },
+      {
+        "label": "C",
+        "text": "Общая валовая прибыль, которую компания ожидает получить от клиента за все время сотрудничества с ним."
+      },
+      {
+        "label": "D",
+        "text": "Скорость загрузки веб-страницы."
+      },
+      {
+        "label": "E",
+        "text": "Количество времени, которое пользователь проводит в приложении за один день."
+      }
+    ],
+    "correctText": "Общая валовая прибыль, которую компания ожидает получить от клиента за все время сотрудничества с ним.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Как рассчитывается срок окупаемости привлечения клиента (Payback Period)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "LTV умножить на CAC."
+      },
+      {
+        "label": "B",
+        "text": "CAC разделить на валовую прибыль с клиента в месяц."
+      },
+      {
+        "label": "C",
+        "text": "Выручка минус переменные затраты."
+      },
+      {
+        "label": "D",
+        "text": "Количество пользователей разделить на маркетинговый бюджет."
+      },
+      {
+        "label": "E",
+        "text": "Средний чек разделить на количество месяцев."
+      }
+    ],
+    "correctText": "CAC разделить на валовую прибыль с клиента в месяц.",
+    "correctIndex": 1
+  },
+  {
+    "question": "Какая концепция лежит в основе бизнес-модели Product-Led Growth (PLG)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Клиенты привлекаются исключительно через \"холодные\" звонки менеджеров по продажам."
+      },
+      {
+        "label": "B",
+        "text": "Рост компании происходит за счет агрессивной телевизионной рекламы."
+      },
+      {
+        "label": "C",
+        "text": "Главным драйвером привлечения, активации и удержания клиентов выступает сам продукт."
+      },
+      {
+        "label": "D",
+        "text": "Продукт предоставляется только по долгосрочным контрактам после личной встречи."
+      },
+      {
+        "label": "E",
+        "text": "Продукт продается только через партнерские сети."
+      }
+    ],
+    "correctText": "Главным драйвером привлечения, активации и удержания клиентов выступает сам продукт.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Кто такой PQL (Product Qualified Lead) в PLG-модели?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Пользователь, который оставил свой email в обмен на бесплатную книгу."
+      },
+      {
+        "label": "B",
+        "text": "Клиент, который пожаловался в службу поддержки."
+      },
+      {
+        "label": "C",
+        "text": "Инвестор, готовый вложить деньги в стартап."
+      },
+      {
+        "label": "D",
+        "text": "Пользователь, который уже воспользовался продуктом, ощутил его ценность и готов к покупке платной версии."
+      },
+      {
+        "label": "E",
+        "text": "Менеджер по продажам, выполнивший свой план."
+      }
+    ],
+    "correctText": "Пользователь, который уже воспользовался продуктом, ощутил его ценность и готов к покупке платной версии.",
+    "correctIndex": 3
+  },
+  {
+    "question": "Что показывает показатель Churn Rate?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Долю пользователей, совершивших покупку после регистрации."
+      },
+      {
+        "label": "B",
+        "text": "Процент пользователей, прекративших использование продукта или отменивших подписку за период."
+      },
+      {
+        "label": "C",
+        "text": "Количество новых пользователей, пришедших по рекомендации."
+      },
+      {
+        "label": "D",
+        "text": "Среднее время, проведенное в приложении."
+      },
+      {
+        "label": "E",
+        "text": "Отношение стоимости продукта к его себестоимости."
+      }
+    ],
+    "correctText": "Процент пользователей, прекративших использование продукта или отменивших подписку за период.",
+    "correctIndex": 1
+  },
+  {
+    "question": "Как называется MVP, при котором компания проверяет наличие спроса, размещая кнопку или лендинг для несуществующей функции?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Консьерж (Concierge)"
+      },
+      {
+        "label": "B",
+        "text": "Волшебник страны Оз (Wizard of Oz)"
+      },
+      {
+        "label": "C",
+        "text": "Эксперимент с ложной дверью (Fake-Door Testing)"
+      },
+      {
+        "label": "D",
+        "text": "A/B тестирование"
+      },
+      {
+        "label": "E",
+        "text": "Развертывание канареек (Canary Release)"
+      }
+    ],
+    "correctText": "Эксперимент с ложной дверью (Fake-Door Testing)",
+    "correctIndex": 2
+  },
+  {
+    "question": "В чем заключается суть MVP \"Консьерж\" (Concierge)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Система полностью автоматизирована с помощью ИИ."
+      },
+      {
+        "label": "B",
+        "text": "Продукт создается без написания кода, а услуга оказывается клиенту вручную при тесном личном взаимодействии."
+      },
+      {
+        "label": "C",
+        "text": "Разработчики пишут идеальный код до показа продукта пользователям."
+      },
+      {
+        "label": "D",
+        "text": "Клиент думает, что работает с алгоритмом, хотя за него все делают люди."
+      },
+      {
+        "label": "E",
+        "text": "Это просто презентация продукта в PowerPoint."
+      }
+    ],
+    "correctText": "Продукт создается без написания кода, а услуга оказывается клиенту вручную при тесном личном взаимодействии.",
+    "correctIndex": 1
+  },
+  {
+    "question": "Какая ошибка в анализе данных называется \"Парадоксом Симпсона\"?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Когда пользователи кликают на кнопку только потому, что она новая."
+      },
+      {
+        "label": "B",
+        "text": "Когда метрики растут в выходные и падают в будние дни."
+      },
+      {
+        "label": "C",
+        "text": "Когда агрегированные (общие) данные показывают одну тенденцию, а данные по отдельным когортам — совершенно противоположную."
+      },
+      {
+        "label": "D",
+        "text": "Когда проведение двух тестов одновременно портит результаты друг друга."
+      },
+      {
+        "label": "E",
+        "text": "Когда слишком маленькая выборка дает ложноположительный результат."
+      }
+    ],
+    "correctText": "Когда агрегированные (общие) данные показывают одну тенденцию, а данные по отдельным когортам — совершенно противоположную.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Что такое \"Эффект новизны\" (Novelty Effect) при проведении экспериментов с интерфейсом?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Снижение интереса к продукту из-за появления конкурентов."
+      },
+      {
+        "label": "B",
+        "text": "Стабильный рост метрик благодаря улучшению качества кода."
+      },
+      {
+        "label": "C",
+        "text": "Временный всплеск вовлеченности пользователей, вызванный исключительно любопытством к новому элементу."
+      },
+      {
+        "label": "D",
+        "text": "Отток старых пользователей из-за смены привычного дизайна."
+      },
+      {
+        "label": "E",
+        "text": "Игнорирование пользователями новых функций."
+      }
+    ],
+    "correctText": "Временный всплеск вовлеченности пользователей, вызванный исключительно любопытством к новому элементу.",
+    "correctIndex": 2
+  },
+  {
+    "question": "Как расшифровывается воронка AARRR (пиратские метрики)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Awareness, Analysis, Reporting, Review, Revenue"
+      },
+      {
+        "label": "B",
+        "text": "Acquisition, Activation, Retention, Referral, Revenue (Привлечение, Активация, Удержание, Рекомендации, Доход)"
+      },
+      {
+        "label": "C",
+        "text": "Agile, Architecture, Refactoring, Release, Retrospective"
+      },
+      {
+        "label": "D",
+        "text": "Attention, Attraction, Resolution, Retention, ROI"
+      },
+      {
+        "label": "E",
+        "text": "Action, Audience, Reaction, Result, Return"
+      }
+    ],
+    "correctText": "Acquisition, Activation, Retention, Referral, Revenue (Привлечение, Активация, Удержание, Рекомендации, Доход)",
+    "correctIndex": 1
+  },
+  {
+    "question": "Для чего продуктовые команды используют фреймворк HEART от Google?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Для расчета финансовой модели продукта."
+      },
+      {
+        "label": "B",
+        "text": "Для оценки и улучшения пользовательского опыта (UX) по метрикам счастья, вовлеченности, принятия, удержания и успеха задач."
+      },
+      {
+        "label": "C",
+        "text": "Для управления исходным кодом и багами."
+      },
+      {
+        "label": "D",
+        "text": "Для распределения долей между фаундерами стартапа."
+      },
+      {
+        "label": "E",
+        "text": "Для проведения собеседований при найме продакт-менеджеров."
+      }
+    ],
+    "correctText": "Для оценки и улучшения пользовательского опыта (UX) по метрикам счастья, вовлеченности, принятия, удержания и успеха задач.",
+    "correctIndex": 1
+  },
+  {
+    "question": "В матрице приоритизации \"Value vs. Effort\", как следует поступить с задачей, которая имеет высокую ценность (High Value) и требует мало усилий (Low Effort)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Оставить ее на потом."
+      },
+      {
+        "label": "B",
+        "text": "Запланировать на следующий год."
+      },
+      {
+        "label": "C",
+        "text": "Сделать прямо сейчас (Quick Wins)."
+      },
+      {
+        "label": "D",
+        "text": "Вообще не делать."
+      },
+      {
+        "label": "E",
+        "text": "Передать стороннему подрядчику."
+      }
+    ],
+    "correctText": "Сделать прямо сейчас (Quick Wins).",
+    "correctIndex": 2
+  },
+  {
+    "question": "Что означает буква \"W\" в методе приоритизации MoSCoW?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Will Have — сделаем обязательно."
+      },
+      {
+        "label": "B",
+        "text": "Want to Have — очень хотим сделать."
+      },
+      {
+        "label": "C",
+        "text": "Won't Have — сознательно отказываемся делать в этом релизе."
+      },
+      {
+        "label": "D",
+        "text": "Would Have — сделали бы, если бы были деньги."
+      },
+      {
+        "label": "E",
+        "text": "Weekly — задачи на неделю."
+      }
+    ],
+    "correctText": "Won't Have — сознательно отказываемся делать в этом релизе.",
+    "correctIndex": 2
+  },
+  {
+    "question": "В модели KANO, к какому типу относятся функции-«Delighters» (Привлекательные)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Те, отсутствие которых сильно злит клиента."
+      },
+      {
+        "label": "B",
+        "text": "Линейные функции: чем их больше, тем лучше."
+      },
+      {
+        "label": "C",
+        "text": "Базовые требования, воспринимаемые как должное."
+      },
+      {
+        "label": "D",
+        "text": "Неожиданные вау-функции, которые вызывают восторг, но их отсутствие не расстроит пользователя."
+      },
+      {
+        "label": "E",
+        "text": "Функции, которые пользователи вообще не замечают."
+      }
+    ],
+    "correctText": "Неожиданные вау-функции, которые вызывают восторг, но их отсутствие не расстроит пользователя.",
+    "correctIndex": 3
+  },
+  {
+    "question": "Для чего в разработке продуктов используются \"Переключатели функций\" (Feature Flags / Toggles)?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Чтобы пользователи могли менять цветовую тему приложения."
+      },
+      {
+        "label": "B",
+        "text": "Для дистанционного включения/выключения функций, безопасного тестирования на части аудитории и быстрого отката в случае ошибок."
+      },
+      {
+        "label": "C",
+        "text": "Для автоматического перевода приложения на другие языки."
+      },
+      {
+        "label": "D",
+        "text": "Для включения и выключения серверов по ночам ради экономии."
+      },
+      {
+        "label": "E",
+        "text": "Чтобы маркетологи могли сами писать программный код."
+      }
+    ],
+    "correctText": "Для дистанционного включения/выключения функций, безопасного тестирования на части аудитории и быстрого отката в случае ошибок.",
+    "correctIndex": 1
+  },
+  {
+    "question": "Что означает термин \"Vibe Coding\" в контексте использования искусственного интеллекта в продакт-менеджменте?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Написание кода разработчиками под расслабляющую музыку."
+      },
+      {
+        "label": "B",
+        "text": "Создание программного обеспечения и прототипов с помощью обычных текстовых запросов к ИИ на естественном языке."
+      },
+      {
+        "label": "C",
+        "text": "Оценка настроения команды с помощью пульс-опросов."
+      },
+      {
+        "label": "D",
+        "text": "Написание кода исключительно визуальными блоками без ИИ."
+      },
+      {
+        "label": "E",
+        "text": "Анализ тональности отзывов пользователей в App Store."
+      }
+    ],
+    "correctText": "Создание программного обеспечения и прототипов с помощью обычных текстовых запросов к ИИ на естественном языке.",
+    "correctIndex": 1
+  }
+];
+
+    const TEST_SIZE = 30;
+
+    const state = {
+      mode: "study",
+      filter: "all",
+      search: "",
+      studyAnswers: Array(QUESTIONS.length).fill(null),
+      testQuestions: [],
+      testAnswers: [],
+      testFinished: false
+    };
+
+    const elements = {
+      studyModeBtn: document.getElementById("studyModeBtn"),
+      testModeBtn: document.getElementById("testModeBtn"),
+      restartBtn: document.getElementById("restartBtn"),
+      finishTestBtn: document.getElementById("finishTestBtn"),
+      searchInput: document.getElementById("searchInput"),
+      filterButtons: document.querySelectorAll("[data-filter]"),
+      correctStat: document.getElementById("correctStat"),
+      wrongStat: document.getElementById("wrongStat"),
+      leftStat: document.getElementById("leftStat"),
+      resultStat: document.getElementById("resultStat"),
+      statusText: document.getElementById("statusText"),
+      modeHint: document.getElementById("modeHint"),
+      finalScreen: document.getElementById("finalScreen"),
+      questionsContainer: document.getElementById("questionsContainer")
+    };
+
+    function shuffle(items) {
+      const copy = [...items];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function startTest() {
+      state.testQuestions = shuffle(QUESTIONS).slice(0, Math.min(TEST_SIZE, QUESTIONS.length));
+      state.testAnswers = Array(state.testQuestions.length).fill(null);
+      state.testFinished = false;
+      state.filter = "all";
+      state.search = "";
+      elements.searchInput.value = "";
+      updateFilterButtons();
+    }
+
+    function resetStudy() {
+      state.studyAnswers = Array(QUESTIONS.length).fill(null);
+    }
+
+    function switchMode(mode) {
+      state.mode = mode;
+      state.filter = "all";
+      state.search = "";
+      elements.searchInput.value = "";
+      if (mode === "test" && state.testQuestions.length === 0) {
+        startTest();
+      }
+      updateModeButtons();
+      updateFilterButtons();
+      render();
+    }
+
+    function updateModeButtons() {
+      elements.studyModeBtn.classList.toggle("active", state.mode === "study");
+      elements.testModeBtn.classList.toggle("active", state.mode === "test");
+      elements.finishTestBtn.hidden = state.mode !== "test" || state.testFinished;
+    }
+
+    function updateFilterButtons() {
+      elements.filterButtons.forEach(button => {
+        button.classList.toggle("active", button.dataset.filter === state.filter);
+      });
+    }
+
+    function normalize(text) {
+      return String(text).toLowerCase().trim();
+    }
+
+    function matchesSearch(question) {
+      if (!state.search) return true;
+      const haystack = normalize([
+        question.question,
+        ...question.options.map(option => option.text)
+      ].join(" "));
+      return haystack.includes(normalize(state.search));
+    }
+
+    function isCorrect(question, selectedIndex) {
+      return selectedIndex === question.correctIndex;
+    }
+
+    function getCurrentSet() {
+      if (state.mode === "study") {
+        return {
+          questions: QUESTIONS,
+          answers: state.studyAnswers,
+          reveal: true
+        };
+      }
+      return {
+        questions: state.testQuestions,
+        answers: state.testAnswers,
+        reveal: state.testFinished
+      };
+    }
+
+    function getVisibleQuestions() {
+      const current = getCurrentSet();
+      return current.questions
+        .map((question, index) => ({ question, index }))
+        .filter(item => matchesSearch(item.question))
+        .filter(item => {
+          const answer = current.answers[item.index];
+          if (state.filter === "unanswered") return answer === null;
+          if (state.filter === "wrong") return answer !== null && current.reveal && !isCorrect(item.question, answer);
+          return true;
+        });
+    }
+
+    function calculateStats() {
+      const current = getCurrentSet();
+      const total = current.questions.length;
+      const answered = current.answers.filter(answer => answer !== null).length;
+      const correct = current.answers.reduce((sum, answer, index) => {
+        if (answer === null) return sum;
+        return sum + (isCorrect(current.questions[index], answer) ? 1 : 0);
+      }, 0);
+      const wrong = current.answers.reduce((sum, answer, index) => {
+        if (answer === null) return sum;
+        return sum + (!isCorrect(current.questions[index], answer) ? 1 : 0);
+      }, 0);
+      const left = total - answered;
+      const percent = total === 0 ? 0 : Math.round((correct / total) * 100);
+      return { total, answered, correct, wrong, left, percent };
+    }
+
+    function getGrade(percent) {
+      if (percent >= 90) return "Отличный результат";
+      if (percent >= 75) return "Хороший результат";
+      if (percent >= 55) return "Нужно закрепить";
+      return "Нужно повторить тему";
+    }
+
+    function renderStats() {
+      const stats = calculateStats();
+      const isTestBeforeFinish = state.mode === "test" && !state.testFinished;
+      elements.correctStat.textContent = isTestBeforeFinish ? "—" : stats.correct;
+      elements.wrongStat.textContent = isTestBeforeFinish ? "—" : stats.wrong + (state.mode === "test" && state.testFinished ? stats.left : 0);
+      elements.leftStat.textContent = stats.left;
+      elements.resultStat.textContent = isTestBeforeFinish ? `${stats.answered}/${stats.total}` : `${stats.percent}%`;
+
+      if (state.mode === "study") {
+        elements.statusText.textContent = `Режим изучения · показано ${getVisibleQuestions().length} из ${QUESTIONS.length} вопросов`;
+        elements.modeHint.textContent = "После выбора сразу видно, правильный ответ выбран или нет.";
+      } else {
+        elements.statusText.textContent = `Режим теста · показано ${getVisibleQuestions().length} из ${state.testQuestions.length} вопросов`;
+        elements.modeHint.textContent = state.testFinished
+          ? "Тест завершен. Правильные и неправильные ответы подсвечены."
+          : "Выберите ответы и нажмите «Завершить тест», чтобы увидеть результат.";
+      }
+    }
+
+    function renderFinalScreen() {
+      elements.finalScreen.innerHTML = "";
+      if (state.mode !== "test" || !state.testFinished) return;
+      const stats = calculateStats();
+      const correctedWrong = state.testQuestions.length - stats.correct;
+      const finalPercent = state.testQuestions.length === 0 ? 0 : Math.round((stats.correct / state.testQuestions.length) * 100);
+      const grade = getGrade(finalPercent);
+
+      const card = document.createElement("div");
+      card.className = "final-card";
+      card.innerHTML = `
+        <h2>${grade}</h2>
+        <div class="final-score">${finalPercent}%</div>
+        <p class="final-note">Правильных ответов: ${stats.correct} из ${state.testQuestions.length}. Ошибки и вопросы без ответа: ${correctedWrong}. Просмотрите подсветку ниже, чтобы закрепить тему.</p>
+        <button class="btn primary" type="button" id="againBtn">Пройти тест еще раз</button>
+      `;
+      elements.finalScreen.appendChild(card);
+      document.getElementById("againBtn").addEventListener("click", () => {
+        startTest();
+        render();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+
+    function createQuestionCard(question, index, visibleNumber, answer, reveal) {
+      const card = document.createElement("article");
+      card.className = "question-card";
+
+      const head = document.createElement("div");
+      head.className = "question-head";
+      head.innerHTML = `
+        <div class="question-number">${visibleNumber}</div>
+        <h2 class="question-title">${question.question}</h2>
+      `;
+      card.appendChild(head);
+
+      const options = document.createElement("div");
+      options.className = "options";
+
+      question.options.forEach((option, optionIndex) => {
+        const button = document.createElement("button");
+        button.className = "option";
+        button.type = "button";
+        button.innerHTML = `
+          <span class="option-label">${option.label}</span>
+          <span>${option.text}</span>
+        `;
+
+        const selected = answer === optionIndex;
+        if (selected) button.classList.add("selected");
+
+        if (reveal && answer !== null) {
+          if (optionIndex === question.correctIndex) button.classList.add("correct");
+          if (selected && optionIndex !== question.correctIndex) button.classList.add("wrong");
+        }
+
+        if (state.mode === "test" && state.testFinished) {
+          button.disabled = true;
+        }
+
+        button.addEventListener("click", () => selectAnswer(index, optionIndex));
+        options.appendChild(button);
+      });
+
+      card.appendChild(options);
+
+      if (reveal && answer !== null) {
+        const feedback = document.createElement("div");
+        const correct = isCorrect(question, answer);
+        feedback.className = `feedback ${correct ? "good" : "bad"}`;
+        feedback.textContent = correct
+          ? "Верно. Ответ выбран правильно."
+          : `Неверно. Правильный ответ: ${question.options[question.correctIndex].label}) ${question.options[question.correctIndex].text}`;
+        card.appendChild(feedback);
+      }
+
+      return card;
+    }
+
+    function selectAnswer(index, optionIndex) {
+      if (state.mode === "study") {
+        state.studyAnswers[index] = optionIndex;
+      } else {
+        if (state.testFinished) return;
+        state.testAnswers[index] = optionIndex;
+      }
+      render();
+    }
+
+    function renderQuestions() {
+      const current = getCurrentSet();
+      const visibleItems = getVisibleQuestions();
+      elements.questionsContainer.innerHTML = "";
+
+      if (visibleItems.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "По выбранным условиям вопросы не найдены.";
+        elements.questionsContainer.appendChild(empty);
+        return;
+      }
+
+      visibleItems.forEach((item, visibleIndex) => {
+        const answer = current.answers[item.index];
+        const card = createQuestionCard(item.question, item.index, visibleIndex + 1, answer, current.reveal);
+        elements.questionsContainer.appendChild(card);
+      });
+    }
+
+    function render() {
+      updateModeButtons();
+      renderFinalScreen();
+      renderStats();
+      renderQuestions();
+    }
+
+    elements.studyModeBtn.addEventListener("click", () => switchMode("study"));
+    elements.testModeBtn.addEventListener("click", () => switchMode("test"));
+
+    elements.restartBtn.addEventListener("click", () => {
+      if (state.mode === "study") {
+        resetStudy();
+      } else {
+        startTest();
+      }
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    elements.finishTestBtn.addEventListener("click", () => {
+      if (state.mode !== "test") return;
+      state.testFinished = true;
+      state.filter = "all";
+      updateFilterButtons();
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    elements.searchInput.addEventListener("input", event => {
+      state.search = event.target.value;
+      render();
+    });
+
+    elements.filterButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        state.filter = button.dataset.filter;
+        updateFilterButtons();
+        render();
+      });
+    });
+
+    render();
+  </script>
+</body>
+</html>
