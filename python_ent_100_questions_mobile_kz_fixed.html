@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Python алгоритмдері: ЕНТ тест</title>
+<style>
+:root {
+  --blue:#1565c0; --blue-dark:#0d47a1; --bg:#f4f8fd; --card:#ffffff;
+  --text:#17212f; --border:#d7e4f3; --ok:#16803a; --bad:#c62828; --soft:#eaf4ff;
+}
+* { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body {
+  margin:0; font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  background:var(--bg); color:var(--text); font-size:16px; line-height:1.45;
+}
+header {
+  position:sticky; top:0; z-index:10; background:linear-gradient(135deg,var(--blue-dark),var(--blue));
+  color:#fff; padding:14px 12px; box-shadow:0 3px 14px rgba(0,0,0,.16);
+}
+h1 { margin:0 0 4px; font-size:18px; line-height:1.2; }
+header p { margin:0; font-size:13px; opacity:.95; }
+main { width:100%; max-width:900px; margin:0 auto; padding:12px; }
+.card {
+  background:var(--card); border:1px solid var(--border); border-radius:16px; padding:13px;
+  margin-bottom:12px; box-shadow:0 5px 18px rgba(25,90,150,.08);
+}
+.mode-grid { display:grid; grid-template-columns:1fr; gap:9px; }
+button {
+  width:100%; min-height:48px; border:0; border-radius:13px; padding:12px;
+  font-size:16px; font-weight:700; background:var(--blue); color:#fff; cursor:pointer;
+}
+button.secondary { background:#eef6ff; color:var(--blue-dark); border:1px solid var(--border); }
+button:disabled { opacity:.6; }
+.badges { display:flex; flex-wrap:wrap; gap:7px; margin-top:10px; }
+.badge {
+  background:var(--soft); color:var(--blue-dark); border:1px solid var(--border);
+  border-radius:999px; padding:7px 10px; font-size:12px; font-weight:700;
+}
+.search {
+  width:100%; min-height:48px; border:1px solid var(--border); border-radius:13px;
+  padding:11px 12px; font-size:16px; margin-top:10px;
+}
+.question {
+  font-size:16.5px; font-weight:800; white-space:pre-wrap; overflow-wrap:anywhere; margin-bottom:11px;
+}
+.option {
+  display:block; text-align:left; width:100%; min-height:48px; margin:8px 0; padding:12px;
+  border:1px solid var(--border); border-radius:13px; background:#fff; color:var(--text);
+  font-size:15px; font-weight:600; line-height:1.35; white-space:pre-wrap; overflow-wrap:anywhere;
+}
+.correct { border-color:var(--ok)!important; background:#eaf8ef!important; color:#0d5d29!important; }
+.wrong { border-color:var(--bad)!important; background:#fff0f0!important; color:#9d1d1d!important; }
+.explain {
+  margin-top:11px; padding:11px; border-left:4px solid var(--blue); border-radius:10px;
+  background:#f7fbff; font-size:14.5px; white-space:pre-wrap; overflow-wrap:anywhere;
+}
+.controls { display:grid; grid-template-columns:1fr; gap:8px; margin-top:10px; }
+.progress { width:100%; height:10px; background:#dceafb; border-radius:999px; overflow:hidden; margin-top:10px; }
+.bar { height:100%; width:0%; background:var(--blue); transition:width .2s; }
+.hidden { display:none!important; }
+.result { font-size:18px; font-weight:800; color:var(--blue-dark); }
+@media (min-width:700px) {
+  h1 { font-size:24px; text-align:center; } header p { text-align:center; font-size:15px; }
+  .mode-grid { grid-template-columns:1fr 1fr; } .controls { grid-template-columns:1fr 1fr; }
+  .question { font-size:18px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Python алгоритмдері: ЕНТ-ға дайындыққа арналған 100 сұрақ</h1>
+  <p>Оқу режимі және тест режимі. Телефоннан ашуға бейімделген.</p>
+</header>
+<main>
+  <section class="card">
+    <div class="mode-grid">
+      <button type="button" onclick="setMode('learn')">Оқу режимі</button>
+      <button type="button" onclick="setMode('test')">Тест режимі</button>
+    </div>
+    <input id="searchBox" class="search hidden" type="search" placeholder="Оқу режимінде сұрақ іздеу..." oninput="renderLearn()">
+    <div class="badges">
+      <span class="badge">100 сұрақ</span><span class="badge">ABCD</span><span class="badge">1 дұрыс жауап</span><span class="badge">Мобильді нұсқа</span>
+    </div>
+  </section>
+  <section id="learnSection"></section>
+  <section id="testSection" class="hidden">
+    <div class="card">
+      <div class="badges"><span class="badge" id="counter">1-сұрақ / 100</span><span class="badge" id="score">Балл: 0</span></div>
+      <div class="progress"><div class="bar" id="bar"></div></div>
+    </div>
+    <div id="testCard"></div>
+    <div id="resultCard" class="card hidden">
+      <div class="result" id="finalResult"></div><p id="finalComment"></p>
+      <button type="button" onclick="restartTest()">Қайта өту</button>
+      <button type="button" class="secondary" onclick="setMode('learn')" style="margin-top:8px;">Оқу режиміне өту</button>
+    </div>
+  </section>
+</main>
+<script>
+var questions = [{"q": "1. Python тілінде бос A тізімін дұрыс жариялау жазбасы қайсы?", "options": {"A": "A = []", "B": "var A: array [1..10] of integer", "C": "A := array()", "D": "list A = new list()"}, "answer": "A", "explain": "Python тілінде тізім квадрат жақша арқылы құрылады: A = []."}, {"q": "2. Пернетақтадан n санын бүтін сан ретінде енгізетін дұрыс жазба қайсы?", "options": {"A": "n = input(int)", "B": "n = int(input())", "C": "int n = input()", "D": "n := readln()"}, "answer": "B", "explain": "input() мәнді жол ретінде қайтарады, ал int() оны бүтін санға түрлендіреді."}, {"q": "3. A тізімінің барлық элементтерін экранға шығаратын жазба қайсы?", "options": {"A": "for i in range(len(A)): print(A[i])", "B": "for i in A: input(i)", "C": "print(A[i]) циклсіз", "D": "for A in range(i): print(i)"}, "answer": "A", "explain": "Тізім индекстері 0-ден len(A)-1-ге дейін жүреді, сондықтан range(len(A)) барлық индекстерді қарап шығады."}, {"q": "4. Қай жазбада оң сан көрсетілген?", "options": {"A": "A[i] < 0", "B": "A[i] > 0", "C": "A[i] % 2 == 0", "D": "A[i] != 0"}, "answer": "B", "explain": "Оң сан нөлден қатаң түрде үлкен болады."}, {"q": "5. Қай жазбада теріс сан көрсетілген?", "options": {"A": "A[i] > 0", "B": "A[i] % 2 == 0", "C": "A[i] < 0", "D": "A[i] == 0"}, "answer": "C", "explain": "Теріс сан нөлден қатаң түрде кіші болады."}, {"q": "6. Қай жазбада жұп сан көрсетілген?", "options": {"A": "A[i] % 2 == 0", "B": "A[i] % 2 != 0", "C": "A[i] > 0", "D": "A[i] < 0"}, "answer": "A", "explain": "Сан 2-ге бөлінгендегі қалдық 0 болса, ол жұп сан болады."}, {"q": "7. Қай жазбада тақ сан көрсетілген?", "options": {"A": "A[i] % 2 == 0", "B": "A[i] % 2 != 0", "C": "A[i] == 0", "D": "A[i] > 0"}, "answer": "B", "explain": "Сан 2-ге бөлінгендегі қалдық 0-ге тең болмаса, ол тақ сан болады."}, {"q": "8. A тізімінің бірінші элементіне қалай жүгінеміз?", "options": {"A": "A[1]", "B": "A[0]", "C": "A(first)", "D": "A{0}"}, "answer": "B", "explain": "Python тілінде индекстеу 0-ден басталады."}, {"q": "9. A тізімінің төртінші элементіне қалай жүгінеміз?", "options": {"A": "A[4]", "B": "A[3]", "C": "A[0]", "D": "A[-4]"}, "answer": "B", "explain": "Төртінші элементтің индексі 3 болады, себебі санау 0-ден басталады."}, {"q": "10. A тізімінің әрбір элементін 2 есе арттыратын жазба қайсы?", "options": {"A": "for i in range(len(A)): A[i] = A[i] * 2", "B": "for i in range(len(A)): A[i] = A[i] + 2", "C": "for i in range(len(A)): A[i] = A[i] / 2", "D": "for i in range(len(A)): A[i] = 2"}, "answer": "A", "explain": "Ағымдағы мәнді 2-ге көбейту әр элементті екі есе арттырады."}, {"q": "11. A тізімінің әрбір элементін 2 есе кемітетін жазба қайсы?", "options": {"A": "for i in range(len(A)): A[i] = A[i] * 2", "B": "for i in range(len(A)): A[i] = A[i] / 2", "C": "for i in range(len(A)): A[i] = A[i] + 2", "D": "for i in range(len(A)): A[i] = A[i] - 2"}, "answer": "B", "explain": "2-ге бөлу элемент мәнін екі есе кемітеді."}, {"q": "12. A тізімі элементтерінің қосындысын табатын дұрыс алгоритмді көрсетіңіз.", "options": {"A": "S = 1; for i in range(n): S *= A[i]", "B": "S = 0; for i in range(n): S += A[i]", "C": "S = 0; for i in range(n): S -= A[i]", "D": "S = n; for i in range(n): S += i"}, "answer": "B", "explain": "Қосынды үшін бастапқы мән S = 0 болуы керек, содан кейін әр элемент қосылады."}, {"q": "13. A тізімі элементтерінің көбейтіндісін табатын дұрыс алгоритмді көрсетіңіз.", "options": {"A": "P = 0; for i in range(n): P *= A[i]", "B": "P = 1; for i in range(n): P *= A[i]", "C": "P = 1; for i in range(n): P += A[i]", "D": "P = n; for i in range(n): P *= i"}, "answer": "B", "explain": "Көбейтінді үшін бастапқы мән P = 1 болуы керек."}, {"q": "14. A тізіміндегі теріс элементтердің қосындысын табыңыз.", "options": {"A": "S = 0; for i in range(n):\n    if A[i] < 0: S += A[i]", "B": "S = 0; for i in range(n):\n    if A[i] > 0: S += A[i]", "C": "S = 1; for i in range(n):\n    if A[i] < 0: S *= A[i]", "D": "S = 0; for i in range(1,n):\n    if A[i] == 0: S += A[i]"}, "answer": "A", "explain": "A[i] < 0 шартын тексеріп, осындай элементтерді S айнымалысына қосу керек."}, {"q": "15. A тізіміндегі оң элементтердің көбейтіндісін табыңыз.", "options": {"A": "P = 0; for i in range(n):\n    if A[i] > 0: P *= A[i]", "B": "P = 1; for i in range(n):\n    if A[i] > 0: P *= A[i]", "C": "P = 1; for i in range(n):\n    if A[i] < 0: P *= A[i]", "D": "P = 1; for i in range(n):\n    if A[i] == 0: P *= A[i]"}, "answer": "B", "explain": "Оң элементтердің көбейтіндісі үшін P = 1, шарт A[i] > 0."}, {"q": "16. A тізіміндегі жұп элементтердің қосындысын табыңыз.", "options": {"A": "S = 0; for i in range(n):\n    if A[i] % 2 == 0: S += A[i]", "B": "S = 1; for i in range(n):\n    if A[i] % 2 == 0: S += A[i]", "C": "S = 0; for i in range(n):\n    if A[i] % 2 != 0: S += A[i]", "D": "S = 0; for i in range(n):\n    if i % 2 == 0: S += i"}, "answer": "A", "explain": "Индекс i емес, A[i] элементінің жұптығы тексеріледі."}, {"q": "17. A тізіміндегі тақ элементтердің көбейтіндісін табыңыз.", "options": {"A": "P = 1; for i in range(n):\n    if A[i] % 2 != 0: P *= A[i]", "B": "P = 0; for i in range(n):\n    if A[i] % 2 != 0: P *= A[i]", "C": "P = 1; for i in range(n):\n    if A[i] % 2 == 0: P *= A[i]", "D": "P = 1; for i in range(n):\n    if i % 2 != 0: P *= i"}, "answer": "A", "explain": "Тақ элемент үшін 2-ге бөлгендегі қалдық 0-ге тең емес."}, {"q": "18. A тізіміндегі оң элементтердің санын қалай табамыз?", "options": {"A": "k = 0; for x in A:\n    if x > 0: k += 1", "B": "k = 1; for x in A:\n    if x > 0: k += x", "C": "k = 0; for x in A:\n    if x < 0: k += 1", "D": "k = 0; for x in A:\n    if x == 0: k += 1"}, "answer": "A", "explain": "Әр оң элемент үшін санауыш 1-ге артады."}, {"q": "19. A тізіміндегі теріс элементтердің санын қалай табамыз?", "options": {"A": "k = 0; for x in A:\n    if x > 0: k += 1", "B": "k = 0; for x in A:\n    if x < 0: k += 1", "C": "k = 1; for x in A:\n    if x < 0: k *= x", "D": "k = 0; for x in A:\n    if x != 0: k += x"}, "answer": "B", "explain": "Теріс элемент x < 0 шарты арқылы анықталады."}, {"q": "20. A тізіміндегі жұп элементтердің санын қалай табамыз?", "options": {"A": "k = 0; for x in A:\n    if x % 2 == 0: k += 1", "B": "k = 0; for x in A:\n    if x % 2 != 0: k += 1", "C": "k = 0; for x in A:\n    if x > 0: k += 1", "D": "k = 0; for x in A:\n    if x == 2: k += 1"}, "answer": "A", "explain": "Жұптық x % 2 == 0 шарты арқылы тексеріледі."}, {"q": "21. Код нәтижесі қандай болады?\nA = [2, 4, 6]\nS = 0\nfor x in A:\n    S += x\nprint(S)", "options": {"A": "6", "B": "12", "C": "24", "D": "0"}, "answer": "B", "explain": "2 + 4 + 6 = 12."}, {"q": "22. Код нәтижесі қандай болады?\nA = [1, 3, 5]\nP = 1\nfor x in A:\n    P *= x\nprint(P)", "options": {"A": "9", "B": "15", "C": "8", "D": "1"}, "answer": "B", "explain": "1 * 3 * 5 = 15."}, {"q": "23. Код нәтижесі қандай болады?\nA = [-2, 5, -3, 4]\nS = 0\nfor x in A:\n    if x < 0:\n        S += x\nprint(S)", "options": {"A": "-5", "B": "9", "C": "-2", "D": "0"}, "answer": "A", "explain": "Теріс элементтер: -2 және -3. Қосындысы -5."}, {"q": "24. Код нәтижесі қандай болады?\nA = [2, -5, 4, 0]\nS = 0\nfor x in A:\n    if x > 0:\n        S += x\nprint(S)", "options": {"A": "1", "B": "6", "C": "2", "D": "0"}, "answer": "B", "explain": "Оң элементтер: 2 және 4. Қосындысы 6."}, {"q": "25. Код нәтижесі қандай болады?\nA = [1, 2, 3, 4]\nS = 0\nfor x in A:\n    if x % 2 == 0:\n        S += x\nprint(S)", "options": {"A": "4", "B": "6", "C": "10", "D": "2"}, "answer": "B", "explain": "Жұп элементтер: 2 және 4. Қосындысы 6."}, {"q": "26. Код нәтижесі қандай болады?\nA = [1, 2, 3, 4]\nS = 0\nfor x in A:\n    if x % 2 != 0:\n        S += x\nprint(S)", "options": {"A": "4", "B": "6", "C": "10", "D": "2"}, "answer": "A", "explain": "Тақ элементтер: 1 және 3. Қосындысы 4."}, {"q": "27. Код нәтижесі қандай болады?\nA = [5, 1, 7, 3]\nmx = A[0]\nfor x in A:\n    if x > mx:\n        mx = x\nprint(mx)", "options": {"A": "5", "B": "1", "C": "7", "D": "3"}, "answer": "C", "explain": "Тізімдегі ең үлкен элемент 7."}, {"q": "28. Код нәтижесі қандай болады?\nA = [5, 1, 7, 3]\nmn = A[0]\nfor x in A:\n    if x < mn:\n        mn = x\nprint(mn)", "options": {"A": "5", "B": "1", "C": "7", "D": "3"}, "answer": "B", "explain": "Тізімдегі ең кіші элемент 1."}, {"q": "29. Код нәтижесі қандай болады?\nA = [0, 2, 0, 5]\nk = 0\nfor x in A:\n    if x == 0:\n        k += 1\nprint(k)", "options": {"A": "0", "B": "1", "C": "2", "D": "5"}, "answer": "C", "explain": "Тізімде екі нөлдік элемент бар."}, {"q": "30. Код нәтижесі қандай болады?\nA = [10, 20, 30]\nprint(A[1])", "options": {"A": "10", "B": "20", "C": "30", "D": "Қате"}, "answer": "B", "explain": "A[1] — тізімнің екінші элементі, ол 20-ға тең."}, {"q": "31. Код нәтижесі қандай болады?\nA = [10, 20, 30]\nprint(A[-1])", "options": {"A": "10", "B": "20", "C": "30", "D": "Қате"}, "answer": "C", "explain": "-1 индексі тізімнің соңғы элементіне жүгінеді."}, {"q": "32. Код нәтижесі қандай болады?\nA = [1, 2, 3]\nA[0] = A[0] + 5\nprint(A)", "options": {"A": "[1, 2, 3]", "B": "[6, 2, 3]", "C": "[5, 2, 3]", "D": "[1, 7, 3]"}, "answer": "B", "explain": "Бірінші элемент 1 мәніне 5 қосылады, нәтижесінде 6 болады."}, {"q": "33. A тізіміндегі ең үлкен элементті табатын жазба қайсы?", "options": {"A": "mx = A[0]; for x in A:\n    if x > mx: mx = x", "B": "mx = 0; for x in A:\n    if x < mx: mx = x", "C": "mx = A[0]; for x in A:\n    if x == mx: mx = x", "D": "mx = 1; for x in A:\n    mx += x"}, "answer": "A", "explain": "Ағымдағы элемент ағымдағы максимумнан үлкен болса, максимум жаңартылады."}, {"q": "34. A тізіміндегі ең кіші элементті табатын жазба қайсы?", "options": {"A": "mn = A[0]; for x in A:\n    if x < mn: mn = x", "B": "mn = 0; for x in A:\n    if x > mn: mn = x", "C": "mn = A[0]; for x in A:\n    if x == mn: mn = x", "D": "mn = 1; for x in A:\n    mn *= x"}, "answer": "A", "explain": "Ағымдағы элемент ағымдағы минимумнан кіші болса, минимум жаңартылады."}, {"q": "35. A тізімі элементтерінің арифметикалық ортасын дұрыс табатын жазба қайсы?", "options": {"A": "sum(A) / len(A)", "B": "len(A) / sum(A)", "C": "sum(A) * len(A)", "D": "sum(A) - len(A)"}, "answer": "A", "explain": "Арифметикалық орта элементтер қосындысын олардың санына бөлу арқылы табылады."}, {"q": "36. Код нәтижесі қандай болады?\nA = [2, 4, 6]\nprint(sum(A) / len(A))", "options": {"A": "4.0", "B": "12", "C": "3", "D": "6"}, "answer": "A", "explain": "Қосынды 12, элемент саны 3, орта мән 4.0."}, {"q": "37. x элементін A тізімінің соңына қосатын жазба қайсы?", "options": {"A": "A.add(x)", "B": "A.append(x)", "C": "append.A(x)", "D": "A.insert_end(x)"}, "answer": "B", "explain": "append әдісі элементті тізімнің соңына қосады."}, {"q": "38. Код нәтижесі қандай болады?\nA = []\nA.append(5)\nA.append(7)\nprint(A)", "options": {"A": "[5, 7]", "B": "[]", "C": "[7, 5]", "D": "12"}, "answer": "A", "explain": "Алдымен 5, кейін 7 қосылады."}, {"q": "39. A тізімінің соңғы элементін өшіретін жазба қайсы?", "options": {"A": "A.pop()", "B": "A.delete()", "C": "A.remove_last", "D": "pop(A[0])"}, "answer": "A", "explain": "pop() әдісі аргументсіз қолданылса, соңғы элементті өшіреді және қайтарады."}, {"q": "40. Код нәтижесі қандай болады?\nA = [1, 2, 3]\nA.pop()\nprint(A)", "options": {"A": "[1, 2]", "B": "[2, 3]", "C": "[1, 2, 3]", "D": "[]"}, "answer": "A", "explain": "pop() соңғы 3 элементін өшіреді."}, {"q": "41. A тізімін өсу ретімен сұрыптайтын жазба қайсы?", "options": {"A": "A.sort()", "B": "A.sorted()", "C": "sort(A)", "D": "A.order()"}, "answer": "A", "explain": "sort() әдісі тізімді өз орнында сұрыптайды."}, {"q": "42. A тізімін кему ретімен сұрыптайтын жазба қайсы?", "options": {"A": "A.sort(reverse=True)", "B": "A.sort(reverse=False)", "C": "A.reverse_sort()", "D": "sort(A, down=True)"}, "answer": "A", "explain": "reverse=True параметрі кему ретін орнатады."}, {"q": "43. Код нәтижесі қандай болады?\nA = [3, 1, 2]\nA.sort()\nprint(A)", "options": {"A": "[1, 2, 3]", "B": "[3, 2, 1]", "C": "[3, 1, 2]", "D": "[2, 1, 3]"}, "answer": "A", "explain": "sort() тізімді өсу ретімен сұрыптайды."}, {"q": "44. Код нәтижесі қандай болады?\nA = [3, 1, 2]\nA.sort(reverse=True)\nprint(A)", "options": {"A": "[1, 2, 3]", "B": "[3, 2, 1]", "C": "[3, 1, 2]", "D": "[2, 3, 1]"}, "answer": "B", "explain": "reverse=True кему ретімен сұрыптайды."}, {"q": "45. A тізімінде 7 саны бар-жоғын тексеретін жазба қайсы?", "options": {"A": "7 in A", "B": "A in 7", "C": "A[7] exists", "D": "7 include A"}, "answer": "A", "explain": "in операторы элементтің коллекцияға тиістілігін тексереді."}, {"q": "46. Код нәтижесі қандай болады?\nA = [2, 4, 6]\nprint(4 in A)", "options": {"A": "True", "B": "False", "C": "4", "D": "Қате"}, "answer": "A", "explain": "4 саны A тізімінде бар."}, {"q": "47. Пернетақтадан енгізілген n бүтін саннан тізім құратын жазба қайсы?", "options": {"A": "A = [int(input()) for i in range(n)]", "B": "A = int(input()) for i in n", "C": "A = input(int, n)", "D": "A = [input()] * int"}, "answer": "A", "explain": "Тізімдік генератор енгізуді n рет қайталап, әр мәнді int түріне түрлендіреді."}, {"q": "48. Бір жолдан сандар тізімін енгізетін жазба қайсы?", "options": {"A": "A = list(map(int, input().split()))", "B": "A = int(input().split())", "C": "A = input(map(int))", "D": "A = split(input(int))"}, "answer": "A", "explain": "split() жолды бөледі, map(int, ...) бөліктерді санға түрлендіреді, list() тізім жасайды."}, {"q": "49. range(5) не береді?", "options": {"A": "1, 2, 3, 4, 5 сандарын", "B": "0, 1, 2, 3, 4 сандарын", "C": "Тек 5 санын", "D": "0, 1, 2, 3, 4, 5 сандарын"}, "answer": "B", "explain": "range(5) 0-ден 4-ке дейінгі мәндерді береді."}, {"q": "50. range(1, 5) не береді?", "options": {"A": "1, 2, 3, 4 сандарын", "B": "1, 2, 3, 4, 5 сандарын", "C": "0, 1, 2, 3, 4 сандарын", "D": "Тек 1 және 5 сандарын"}, "answer": "A", "explain": "range функциясында жоғарғы шекара кірмейді."}, {"q": "51. range(0, 10, 2) не береді?", "options": {"A": "0, 2, 4, 6, 8", "B": "0, 2, 4, 6, 8, 10", "C": "2, 4, 6, 8, 10", "D": "0, 1, 2, 3, 4"}, "answer": "A", "explain": "Үшінші аргумент — қадам. 10 жоғарғы шекара болғандықтан кірмейді."}, {"q": "52. Код нәтижесі қандай болады?\nfor i in range(3):\n    print(i)", "options": {"A": "1 2 3", "B": "0 1 2", "C": "0 1 2 3", "D": "3"}, "answer": "B", "explain": "range(3) 0, 1, 2 мәндерін береді."}, {"q": "53. Код нәтижесі қандай болады?\nS = 0\nfor i in range(1, 4):\n    S += i\nprint(S)", "options": {"A": "3", "B": "6", "C": "10", "D": "4"}, "answer": "B", "explain": "1 + 2 + 3 = 6."}, {"q": "54. 1-ден n-ге дейінгі сандардың қосындысын табатын жазба қайсы?", "options": {"A": "S = 0; for i in range(1, n+1): S += i", "B": "S = 1; for i in range(n): S *= i", "C": "S = 0; for i in range(1, n): S += n", "D": "S = n; for i in range(n): S += 1"}, "answer": "A", "explain": "n мәнін қосу үшін range(1, n+1) қолданылады."}, {"q": "55. n санының факториалын табатын жазба қайсы?", "options": {"A": "P = 1; for i in range(1, n+1): P *= i", "B": "P = 0; for i in range(1, n+1): P *= i", "C": "P = 1; for i in range(n): P += i", "D": "P = n; for i in range(1, n): P += i"}, "answer": "A", "explain": "Факториал — 1-ден n-ге дейінгі сандардың көбейтіндісі, бастапқы мән P = 1."}, {"q": "56. Код нәтижесі қандай болады?\nn = 5\nP = 1\nfor i in range(1, n+1):\n    P *= i\nprint(P)", "options": {"A": "15", "B": "120", "C": "25", "D": "5"}, "answer": "B", "explain": "5! = 1 * 2 * 3 * 4 * 5 = 120."}, {"q": "57. n саны 3-ке қалдықсыз бөлінетінін тексеретін жазба қайсы?", "options": {"A": "n / 3 == 0", "B": "n % 3 == 0", "C": "n // 3 == 0", "D": "n * 3 == 0"}, "answer": "B", "explain": "% операторы бөлуден қалған қалдықты қайтарады."}, {"q": "58. Код нәтижесі қандай болады?\nn = 14\nprint(n % 5)", "options": {"A": "2", "B": "4", "C": "5", "D": "0"}, "answer": "B", "explain": "14 = 5 * 2 + 4, қалдық 4."}, {"q": "59. Код нәтижесі қандай болады?\nn = 14\nprint(n // 5)", "options": {"A": "2", "B": "4", "C": "2.8", "D": "5"}, "answer": "A", "explain": "// — бүтін бөлу. 14 // 5 = 2."}, {"q": "60. n саны екі таңбалы екенін тексеретін жазба қайсы?", "options": {"A": "10 <= n <= 99", "B": "n < 10 and n > 99", "C": "n >= 0", "D": "n % 2 == 0"}, "answer": "A", "explain": "Оң екі таңбалы сан 10 мен 99 аралығында болады."}, {"q": "61. n саны оң үш таңбалы сан екенін тексеретін жазба қайсы?", "options": {"A": "100 <= n <= 999", "B": "10 <= n <= 99", "C": "n > 999", "D": "n % 100 == 0"}, "answer": "A", "explain": "Оң үш таңбалы сандар 100-ден 999-ға дейін."}, {"q": "62. n санының соңғы цифрын қалай аламыз?", "options": {"A": "n // 10", "B": "n % 10", "C": "n / 10", "D": "n * 10"}, "answer": "B", "explain": "10-ға бөлгендегі қалдық соңғы цифрға тең."}, {"q": "63. n санының соңғы цифрын қалай алып тастаймыз?", "options": {"A": "n % 10", "B": "n // 10", "C": "n / 10", "D": "n - 10"}, "answer": "B", "explain": "10-ға бүтін бөлу соңғы цифрды алып тастайды."}, {"q": "64. Код нәтижесі қандай болады?\nn = 257\nprint(n % 10)", "options": {"A": "2", "B": "5", "C": "7", "D": "25"}, "answer": "C", "explain": "257 санының соңғы цифры — 7."}, {"q": "65. Код нәтижесі қандай болады?\nn = 257\nprint(n // 10)", "options": {"A": "25", "B": "7", "C": "57", "D": "2"}, "answer": "A", "explain": "257 // 10 = 25."}, {"q": "66. Натурал n санының цифрларының қосындысын табатын жазба қайсы?", "options": {"A": "S = 0\nwhile n > 0:\n    S += n % 10\n    n //= 10", "B": "S = 1\nwhile n > 0:\n    S *= n % 10\n    n //= 10", "C": "S = 0\nwhile n > 0:\n    S += n\n    n %= 10", "D": "S = n % 10"}, "answer": "A", "explain": "Әр соңғы цифр S-ке қосылады, кейін сан n //= 10 арқылы қысқарады."}, {"q": "67. Натурал n санының цифрларының көбейтіндісін табатын жазба қайсы?", "options": {"A": "P = 0\nwhile n > 0:\n    P *= n % 10\n    n //= 10", "B": "P = 1\nwhile n > 0:\n    P *= n % 10\n    n //= 10", "C": "P = 1\nwhile n > 0:\n    P += n % 10\n    n //= 10", "D": "P = n"}, "answer": "B", "explain": "Көбейтінді үшін бастапқы мән 1 болуы керек."}, {"q": "68. Код нәтижесі қандай болады?\nn = 123\nS = 0\nwhile n > 0:\n    S += n % 10\n    n //= 10\nprint(S)", "options": {"A": "123", "B": "6", "C": "3", "D": "321"}, "answer": "B", "explain": "1 + 2 + 3 = 6."}, {"q": "69. Код нәтижесі қандай болады?\nn = 123\nP = 1\nwhile n > 0:\n    P *= n % 10\n    n //= 10\nprint(P)", "options": {"A": "6", "B": "123", "C": "321", "D": "0"}, "answer": "A", "explain": "1 * 2 * 3 = 6."}, {"q": "70. Натурал n санының цифрлар санын табатын жазба қайсы?", "options": {"A": "k = 0\nwhile n > 0:\n    k += 1\n    n //= 10", "B": "k = 1\nwhile n > 0:\n    k *= n\n    n //= 10", "C": "k = 0\nwhile n > 0:\n    k += n % 10", "D": "k = len(n)"}, "answer": "A", "explain": "Әр итерацияда бір цифр алынып тасталады, санауыш 1-ге артады."}, {"q": "71. Код нәтижесі қандай болады?\nn = 5042\nk = 0\nwhile n > 0:\n    k += 1\n    n //= 10\nprint(k)", "options": {"A": "2", "B": "3", "C": "4", "D": "5"}, "answer": "C", "explain": "5042 санында төрт цифр бар."}, {"q": "72. Натурал n санын кері айналдыратын жазба қайсы?", "options": {"A": "r = 0\nwhile n > 0:\n    r = r * 10 + n % 10\n    n //= 10", "B": "r = 1\nwhile n > 0:\n    r *= n % 10\n    n //= 10", "C": "r = n % 10", "D": "r = n // 10"}, "answer": "A", "explain": "Алгоритм n санының соңғы цифрын r санының соңына қосады."}, {"q": "73. Код нәтижесі қандай болады?\nn = 123\nr = 0\nwhile n > 0:\n    r = r * 10 + n % 10\n    n //= 10\nprint(r)", "options": {"A": "123", "B": "321", "C": "6", "D": "12"}, "answer": "B", "explain": "123 саны кері айналдырылғанда 321 болады."}, {"q": "74. s жолының палиндром екенін тексеретін жазба қайсы?", "options": {"A": "s == s[::-1]", "B": "s == s[1:]", "C": "s != s[::-1]", "D": "s[::-1] == 0"}, "answer": "A", "explain": "s[::-1] кесіндісі жолды кері ретпен қайтарады."}, {"q": "75. Код нәтижесі қандай болады?\ns = 'level'\nprint(s == s[::-1])", "options": {"A": "True", "B": "False", "C": "level", "D": "Қате"}, "answer": "A", "explain": "'level' солдан оңға да, оңнан солға да бірдей оқылады."}, {"q": "76. Код нәтижесі қандай болады?\ns = 'python'\nprint(s == s[::-1])", "options": {"A": "True", "B": "False", "C": "python", "D": "nohtyp"}, "answer": "B", "explain": "'python' палиндром емес."}, {"q": "77. Палиндромды классикалық тексеру алгоритмінде len(s) // 2 не үшін қолданылады?", "options": {"A": "Жолдың тек бірінші жартысын симметриялы символдармен салыстыру үшін", "B": "Жолдың жартысын өшіру үшін", "C": "Жолдың ортасын шығару үшін", "D": "Барлық символдарды ауыстыру үшін"}, "answer": "A", "explain": "Бірінші жартыдағы символдарды соңынан сәйкес символдармен салыстыру жеткілікті."}, {"q": "78. Python тілінде s[-1] индексі нені білдіреді?", "options": {"A": "Жолдың бірінші символын", "B": "Жолдың соңғы символын", "C": "Жолдың ортаңғы символын", "D": "Индекстеу қатесін"}, "answer": "B", "explain": "-1 теріс индексі тізбектің соңғы элементіне жүгінеді."}, {"q": "79. i индексіндегі символды жол соңынан симметриялы символмен салыстыратын жазба қайсы?", "options": {"A": "s[i] != s[-i-1]", "B": "s[i] != s[i+1]", "C": "s[i] == i", "D": "s[-i] == s[i]"}, "answer": "A", "explain": "s[i] символына симметриялы символ -i-1 индексінде орналасады."}, {"q": "80. Қай оператор циклді мерзімінен бұрын аяқтайды?", "options": {"A": "break", "B": "continue", "C": "pass", "D": "else"}, "answer": "A", "explain": "break ағымдағы циклді бірден тоқтатады."}, {"q": "81. continue операторы циклде не істейді?", "options": {"A": "Бүкіл бағдарламаны аяқтайды", "B": "Ағымдағы итерацияның қалған бөлігін өткізіп, келесі итерацияға өтеді", "C": "Тізім элементін өшіреді", "D": "Санауышты өзгертпей циклді қайта бастайды"}, "answer": "B", "explain": "continue циклді тоқтатпайды, келесі итерацияға өткізеді."}, {"q": "82. Python тілінде for циклінің else блогы қашан орындалады?", "options": {"A": "Цикл break операторынсыз аяқталса", "B": "Циклде қате болса", "C": "Цикл басталмаса", "D": "Әрқашан циклдің алдында"}, "answer": "A", "explain": "Циклдегі else блогы break арқылы үзілмеген жағдайда орындалады."}, {"q": "83. Код нәтижесі қандай болады?\nfor i in range(3):\n    if i == 1:\n        break\nelse:\n    print('OK')\nprint('END')", "options": {"A": "OK END", "B": "END", "C": "OK", "D": "Ештеңе шықпайды"}, "answer": "B", "explain": "i == 1 болғанда break орындалады, сондықтан else орындалмайды. Кейін END шығады."}, {"q": "84. Код нәтижесі қандай болады?\nfor i in range(3):\n    if i == 5:\n        break\nelse:\n    print('OK')", "options": {"A": "OK", "B": "5", "C": "Ештеңе шықпайды", "D": "Қате"}, "answer": "A", "explain": "break орындалмағандықтан, else блогы орындалады."}, {"q": "85. n санының жай сан екенін тексеретін жазба қайсы?", "options": {"A": "flag = True\nfor i in range(2, n):\n    if n % i == 0:\n        flag = False", "B": "flag = True\nfor i in range(2, n):\n    if n + i == 0:\n        flag = False", "C": "flag = False\nfor i in range(2, n):\n    flag = True", "D": "flag = n % 2 == 0"}, "answer": "A", "explain": "Сан 2-ден n-1-ге дейінгі бір санға бөлінсе, ол жай сан емес."}, {"q": "86. Код нәтижесі қандай болады?\nn = 7\nflag = True\nfor i in range(2, n):\n    if n % i == 0:\n        flag = False\nprint(flag)", "options": {"A": "True", "B": "False", "C": "7", "D": "Қате"}, "answer": "A", "explain": "7 саны 2, 3, 4, 5, 6 сандарына бөлінбейді, сондықтан ол жай сан."}, {"q": "87. Код нәтижесі қандай болады?\nn = 9\nflag = True\nfor i in range(2, n):\n    if n % i == 0:\n        flag = False\nprint(flag)", "options": {"A": "True", "B": "False", "C": "9", "D": "3"}, "answer": "B", "explain": "9 саны 3-ке бөлінеді, сондықтан ол жай сан емес."}, {"q": "88. n санының жай сан екенін тексеруді қалай оңтайландыруға болады?", "options": {"A": "Бөлгіштерді int(n**0.5) мәніне дейін тексеру", "B": "Тек n санын тексеру", "C": "Тек 1 санын тексеру", "D": "Цикл қолданбау"}, "answer": "A", "explain": "Егер n санының түбірден үлкен бөлгіші болса, оған сәйкес түбірден кіші жұп бөлгіш болады."}, {"q": "89. a және b сандарының ЕҮОБ-ын Евклид алгоритмімен табатын жазба қайсы?", "options": {"A": "while b != 0:\n    a, b = b, a % b", "B": "while b != 0:\n    a, b = a+b, b", "C": "while b != 0:\n    a = a * b", "D": "a = a % b"}, "answer": "A", "explain": "Евклид алгоритмі (a, b) жұбын (b, a % b) жұбына ауыстырады, b 0 болғанша қайталайды."}, {"q": "90. Код нәтижесі қандай болады?\na, b = 12, 8\nwhile b != 0:\n    a, b = b, a % b\nprint(a)", "options": {"A": "2", "B": "4", "C": "8", "D": "12"}, "answer": "B", "explain": "ЕҮОБ(12, 8) = 4."}, {"q": "91. a және b айнымалыларының мәндерін орындарымен ауыстыратын жазба қайсы?", "options": {"A": "a, b = b, a", "B": "a = b; b = a", "C": "a == b", "D": "swap(a, b) функциясы анықталмаған"}, "answer": "A", "explain": "Python тілінде мәндерді көптік меншіктеу арқылы ауыстыруға болады."}, {"q": "92. Код нәтижесі қандай болады?\na, b = 3, 5\na, b = b, a\nprint(a, b)", "options": {"A": "3 5", "B": "5 3", "C": "5 5", "D": "3 3"}, "answer": "B", "explain": "Айнымалылардың мәндері орындарымен ауысты."}, {"q": "93. A тізімінде x санының бірінші кездесу индексін қалай табамыз?", "options": {"A": "A.index(x)", "B": "A.find_index(x)", "C": "index(A, x)", "D": "A.search(x)"}, "answer": "A", "explain": "index әдісі табылған бірінші элементтің индексін қайтарады."}, {"q": "94. Егер A.index(x) x элементін таппаса, не болады?", "options": {"A": "-1 қайтарады", "B": "0 қайтарады", "C": "ValueError қатесі пайда болады", "D": "x элементін тізімге қосады"}, "answer": "C", "explain": "index әдісі элемент тізімде жоқ болса, ValueError қатесін шығарады."}, {"q": "95. Индексті іздемес бұрын x элементінің бар-жоғын қауіпсіз тексеретін жазба қайсы?", "options": {"A": "if x in A: print(A.index(x))", "B": "if A in x: print(A.index(x))", "C": "if x == A: print(A.index(x))", "D": "if x not A: print(A.index(x))"}, "answer": "A", "explain": "Алдымен x in A арқылы тексеріп, содан кейін index әдісін шақыру керек."}, {"q": "96. x-ке тең элементтердің санын есептейтін жазба қайсы?", "options": {"A": "A.count(x)", "B": "A.index(x)", "C": "A.sum(x)", "D": "A.len(x)"}, "answer": "A", "explain": "count әдісі элементтің неше рет кездесетінін қайтарады."}, {"q": "97. Код нәтижесі қандай болады?\nA = [2, 3, 2, 5, 2]\nprint(A.count(2))", "options": {"A": "1", "B": "2", "C": "3", "D": "5"}, "answer": "C", "explain": "2 саны үш рет кездеседі."}, {"q": "98. A тізімін B айнымалысына жеке көшірме ретінде дұрыс көшіру жазбасы қайсы?", "options": {"A": "B = A.copy()", "B": "B = A", "C": "B == A", "D": "copy B = A"}, "answer": "A", "explain": "A.copy() дәл сондай элементтері бар жаңа тізім құрады. B = A сол тізімге екінші сілтеме ғана жасайды."}, {"q": "99. Код нәтижесі қандай болады?\nA = [1, 2]\nB = A\nB[0] = 9\nprint(A)", "options": {"A": "[1, 2]", "B": "[9, 2]", "C": "[1, 9]", "D": "Қате"}, "answer": "B", "explain": "B және A бір тізімге сілтейді, сондықтан B өзгерсе, A да өзгереді."}, {"q": "100. Код нәтижесі қандай болады?\nA = [1, 2]\nB = A.copy()\nB[0] = 9\nprint(A)", "options": {"A": "[1, 2]", "B": "[9, 2]", "C": "[1, 9]", "D": "Қате"}, "answer": "A", "explain": "copy() бөлек тізім құрады, сондықтан A өзгермейді."}];
+
+var current = 0;
+var score = 0;
+var answered = false;
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, function(m) {
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m];
+  });
+}
+
+function setMode(mode) {
+  document.getElementById('learnSection').classList.toggle('hidden', mode !== 'learn');
+  document.getElementById('testSection').classList.toggle('hidden', mode !== 'test');
+  document.getElementById('searchBox').classList.toggle('hidden', mode !== 'learn');
+  if (mode === 'learn') renderLearn();
+  if (mode === 'test') restartTest();
+  window.scrollTo(0, 0);
+}
+
+function renderLearn() {
+  var term = document.getElementById('searchBox').value.toLowerCase().trim();
+  var html = '';
+  for (var i = 0; i < questions.length; i++) {
+    var q = questions[i];
+    var full = (q.q + ' ' + q.options.A + ' ' + q.options.B + ' ' + q.options.C + ' ' + q.options.D + ' ' + q.explain).toLowerCase();
+    if (term && full.indexOf(term) === -1) continue;
+    html += '<div class="card">';
+    html += '<div class="question">' + esc(q.q) + '</div>';
+    ['A','B','C','D'].forEach(function(k) {
+      var cls = k === q.answer ? 'option correct' : 'option';
+      html += '<div class="' + cls + '"><b>' + k + ')</b> ' + esc(q.options[k]) + '</div>';
+    });
+    html += '<div class="explain"><b>Дұрыс жауап: ' + q.answer + '.</b> ' + esc(q.explain) + '</div>';
+    html += '</div>';
+  }
+  document.getElementById('learnSection').innerHTML = html;
+}
+
+function renderTest() {
+  answered = false;
+  document.getElementById('resultCard').classList.add('hidden');
+  var q = questions[current];
+  document.getElementById('counter').textContent = (current + 1) + '-сұрақ / ' + questions.length;
+  document.getElementById('score').textContent = 'Балл: ' + score;
+  document.getElementById('bar').style.width = Math.round((current / questions.length) * 100) + '%';
+  var html = '<div class="card"><div class="question">' + esc(q.q) + '</div>';
+  ['A','B','C','D'].forEach(function(k) {
+    html += '<button type="button" class="option" onclick="chooseAnswer(\'' + k + '\', this)"><b>' + k + ')</b> ' + esc(q.options[k]) + '</button>';
+  });
+  html += '<div id="explainBox" class="explain hidden"></div><div class="controls">';
+  html += '<button type="button" id="nextBtn" onclick="nextQuestion()" disabled>Келесі сұрақ</button>';
+  html += '<button type="button" class="secondary" onclick="finishTest()">Тестті аяқтау</button>';
+  html += '</div></div>';
+  document.getElementById('testCard').innerHTML = html;
+}
+
+function chooseAnswer(key, btn) {
+  if (answered) return;
+  answered = true;
+  var q = questions[current];
+  if (key === q.answer) score++;
+  var buttons = document.querySelectorAll('#testCard .option');
+  for (var i = 0; i < buttons.length; i++) {
+    var letter = buttons[i].textContent.trim().charAt(0);
+    if (letter === q.answer) buttons[i].classList.add('correct');
+    if (letter === key && key !== q.answer) buttons[i].classList.add('wrong');
+    buttons[i].disabled = true;
+  }
+  var ex = document.getElementById('explainBox');
+  ex.classList.remove('hidden');
+  ex.innerHTML = '<b>Дұрыс жауап: ' + q.answer + '.</b> ' + esc(q.explain);
+  document.getElementById('score').textContent = 'Балл: ' + score;
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion() {
+  if (current < questions.length - 1) {
+    current++;
+    renderTest();
+    window.scrollTo(0, 0);
+  } else {
+    finishTest();
+  }
+}
+
+function finishTest() {
+  document.getElementById('testCard').innerHTML = '';
+  document.getElementById('bar').style.width = '100%';
+  document.getElementById('resultCard').classList.remove('hidden');
+  var percent = Math.round(score / questions.length * 100);
+  var comment = 'Базалық құрылымдарды қайталау қажет: индекстер, циклдер, шарттар, қосынды және көбейтінді.';
+  if (percent >= 85) comment = 'Жоғары нәтиже. Қателерді жеке-жеке талдау керек.';
+  else if (percent >= 70) comment = 'Жақсы деңгей. Қате кеткен тақырыптарды қайталаңыз.';
+  else if (percent >= 50) comment = 'Орташа деңгей. Тізімдер мен цикл алгоритмдері бойынша қайта жаттығу қажет.';
+  document.getElementById('finalResult').textContent = 'Нәтиже: ' + score + ' / ' + questions.length + ' (' + percent + '%)';
+  document.getElementById('finalComment').textContent = comment;
+}
+
+function restartTest() {
+  current = 0;
+  score = 0;
+  renderTest();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  setMode('learn');
+});
+</script>
+</body>
+</html>
