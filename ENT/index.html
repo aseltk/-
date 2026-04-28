@@ -129,10 +129,9 @@ function renderLearn() {
     html += '<div class="card">';
     html += '<div class="question">' + esc(q.q) + '</div>';
     ['A','B','C','D'].forEach(function(k) {
-      var cls = k === q.answer ? 'option correct' : 'option';
-      html += '<div class="' + cls + '"><b>' + k + ')</b> ' + esc(q.options[k]) + '</div>';
+      html += '<div class="option"><b>' + k + ')</b> ' + esc(q.options[k]) + '</div>';
     });
-    html += '<div class="explain"><b>Дұрыс жауап: ' + q.answer + '.</b> ' + esc(q.explain) + '</div>';
+    html += '<div class="explain"><b>Түсіндірме:</b> ' + esc(q.explain) + '</div>';
     html += '</div>';
   }
   document.getElementById('learnSection').innerHTML = html;
