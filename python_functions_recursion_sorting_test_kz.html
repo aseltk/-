@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python: функциялар, рекурсия және сұрыптау алгоритмдері | ҰБТ тест</title>
+  <style>
+    :root {
+      --blue-900: #061a40;
+      --blue-800: #0b2a5b;
+      --blue-700: #123c7c;
+      --emerald-600: #059669;
+      --emerald-500: #10b981;
+      --emerald-100: #d1fae5;
+      --white: #ffffff;
+      --gray-50: #f8fafc;
+      --gray-100: #eef2f7;
+      --gray-200: #e2e8f0;
+      --gray-600: #475569;
+      --red-500: #ef4444;
+      --text: #0f172a;
+      --shadow: 0 18px 45px rgba(6, 26, 64, 0.14);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, var(--blue-900), var(--blue-800) 42%, #073b4c);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .hero {
+      color: var(--white);
+      padding: 34px 18px 22px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin: 0 auto 12px;
+      max-width: 980px;
+      font-size: clamp(25px, 4vw, 42px);
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+    }
+
+    .hero p {
+      margin: 0 auto;
+      max-width: 840px;
+      color: #dbeafe;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 24px));
+      margin: 0 auto 40px;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel, .quiz-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.36);
+    }
+
+    .panel {
+      position: sticky;
+      top: 14px;
+      padding: 18px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 11px;
+      background: var(--emerald-100);
+      color: #065f46;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 12px 0 16px;
+    }
+
+    .stat {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .stat span {
+      display: block;
+      color: var(--gray-600);
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .stat strong {
+      font-size: 22px;
+      color: var(--blue-900);
+    }
+
+    .progress-wrap {
+      height: 12px;
+      background: var(--gray-100);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 8px 0 18px;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--emerald-600), var(--emerald-500));
+      transition: width 0.25s ease;
+    }
+
+    .btn-row {
+      display: grid;
+      gap: 10px;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      border-radius: 13px;
+      padding: 12px 14px;
+      font-weight: 700;
+      font-size: 14px;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .primary-btn {
+      background: var(--emerald-600);
+      color: var(--white);
+      box-shadow: 0 10px 22px rgba(5, 150, 105, .25);
+    }
+
+    .secondary-btn {
+      background: var(--blue-800);
+      color: var(--white);
+    }
+
+    .ghost-btn {
+      background: var(--gray-100);
+      color: var(--blue-900);
+    }
+
+    .note {
+      margin-top: 14px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--gray-600);
+    }
+
+    .quiz-card {
+      overflow: hidden;
+    }
+
+    .quiz-header {
+      background: linear-gradient(135deg, var(--blue-800), var(--blue-700));
+      color: var(--white);
+      padding: 20px 22px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .quiz-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .pill {
+      background: rgba(255,255,255,.14);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    form {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .question {
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      background: var(--gray-50);
+      padding: 16px;
+    }
+
+    .q-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .q-title {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--blue-900);
+      font-weight: 700;
+    }
+
+    .topic {
+      flex: 0 0 auto;
+      font-size: 12px;
+      color: #065f46;
+      background: var(--emerald-100);
+      padding: 6px 9px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    pre {
+      margin: 10px 0 12px;
+      background: #07152e;
+      color: #e2e8f0;
+      padding: 13px;
+      border-radius: 12px;
+      overflow-x: auto;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .answers {
+      display: grid;
+      gap: 9px;
+    }
+
+    label.option {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 11px 12px;
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      background: var(--white);
+      cursor: pointer;
+      line-height: 1.42;
+    }
+
+    label.option:hover {
+      border-color: var(--emerald-500);
+      background: #f0fdf4;
+    }
+
+    input[type="radio"] {
+      accent-color: var(--emerald-600);
+      margin-top: 2px;
+    }
+
+    .feedback {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .correct {
+      border-color: var(--emerald-500) !important;
+      background: #ecfdf5 !important;
+    }
+
+    .wrong {
+      border-color: var(--red-500) !important;
+      background: #fff1f2 !important;
+    }
+
+    .feedback.ok {
+      display: block;
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .feedback.bad {
+      display: block;
+      background: #fff1f2;
+      color: #991b1b;
+      border: 1px solid #fecdd3;
+    }
+
+    .result-box {
+      display: none;
+      margin: 0 18px 18px;
+      padding: 18px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #ecfdf5, #eff6ff);
+      border: 1px solid #bfdbfe;
+    }
+
+    .result-box h3 {
+      margin: 0 0 8px;
+      color: var(--blue-900);
+      font-size: 22px;
+    }
+
+    .result-box p {
+      margin: 5px 0;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 860px) {
+      .shell { grid-template-columns: 1fr; }
+      .panel { position: static; }
+      .quiz-header { flex-direction: column; align-items: flex-start; }
+      .q-top { flex-direction: column; }
+      .topic { align-self: flex-start; }
+      form { padding: 12px; }
+      .question { padding: 13px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <h1>Python: функциялар, рекурсия және сұрыптау алгоритмдері</h1>
+    <p>10–11 сынып оқушыларына арналған ҰБТ-ға дайындық тесті. Әр сұрақта бір дұрыс жауап бар. Тест Python синтаксисін, функциялардың жұмысын, рекурсияны және сұрыптау алгоритмдерінің логикасын тексереді.</p>
+  </header>
+
+  <main class="shell">
+    <aside class="panel">
+      <div class="badge">ҰБТ деңгейі · 50 сұрақ</div>
+      <div class="stat-grid">
+        <div class="stat"><span>Жауап берілді</span><strong id="answered">0</strong></div>
+        <div class="stat"><span>Ұпай</span><strong id="scoreMini">0</strong></div>
+      </div>
+      <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="btn-row">
+        <button class="primary-btn" type="button" onclick="checkTest()">Нәтижені тексеру</button>
+        <button class="secondary-btn" type="button" onclick="scrollToFirstUnanswered()">Бос сұрақты табу</button>
+        <button class="ghost-btn" type="button" onclick="resetTest()">Қайта бастау</button>
+      </div>
+      <div class="note">Бағалау шкаласы: 45–50 өте жақсы, 38–44 жақсы, 30–37 орташа, 0–29 тақырыпты қайталау қажет.</div>
+    </aside>
+
+    <section class="quiz-card">
+      <div class="quiz-header">
+        <h2>Интерактивті тест</h2>
+        <div class="pill">Функциялар · Рекурсия · Сұрыптау</div>
+      </div>
+      <div id="result" class="result-box"></div>
+      <form id="quizForm"></form>
+    </section>
+  </main>
+
+  <script>
+    const questions = [
+      {topic:'Функциялар', q:'Python тілінде функцияны анықтау үшін қай кілттік сөз қолданылады?', a:['function','def','func','lambda def'], c:1, e:'Функция def кілттік сөзі арқылы анықталады.'},
+      {topic:'Функциялар', q:'Берілген кодтың нәтижесі қандай?', code:'def f(x):\n    return x * 2\n\nprint(f(4))', a:['4','6','8','Қате шығады'], c:2, e:'f(4) мәні 4 * 2 = 8 болады.'},
+      {topic:'Функциялар', q:'return операторының негізгі қызметі қандай?', a:['Функцияны экранға шығарады','Функциядан мән қайтарады','Айнымалыны өшіреді','Циклді ғана тоқтатады'], c:1, e:'return функцияның нәтижесін шақырылған орынға қайтарады.'},
+      {topic:'Функциялар', q:'Берілген кодта қандай қате бар?', code:'def add(a, b):\n    s = a + b\n\nprint(add(2, 3))', a:['Синтаксистік қате','Функция None қайтарады','2 ғана шығады','5 дұрыс шығады'], c:1, e:'return жоқ болғандықтан функция None қайтарады.'},
+      {topic:'Функциялар', q:'Параметр дегеніміз не?', a:['Функция шақырылған кезде берілетін нақты мән','Функция анықтамасында көрсетілетін айнымалы','Тек сандық тип','Python кітапханасы'], c:1, e:'Параметр функция анықтамасындағы формалды айнымалы.'},
+      {topic:'Функциялар', q:'Аргумент дегеніміз не?', a:['Функцияға шақыру кезінде берілетін нақты мән','Функция атауы','return сөзінің орнына жазылатын сөз','Тек жолдық тип'], c:0, e:'Аргумент функция шақырылған кезде беріледі.'},
+      {topic:'Функциялар', q:'Берілген кодтың нәтижесі қандай?', code:'def power(a, b=2):\n    return a ** b\n\nprint(power(3))', a:['3','6','9','Қате'], c:2, e:'b параметрінің әдепкі мәні 2, сондықтан 3 ** 2 = 9.'},
+      {topic:'Функциялар', q:'Берілген кодтың нәтижесі қандай?', code:'def power(a, b=2):\n    return a ** b\n\nprint(power(2, 3))', a:['4','6','8','9'], c:2, e:'Екінші аргумент берілгендіктен b = 3, нәтиже 2 ** 3 = 8.'},
+      {topic:'Функциялар', q:'Жергілікті айнымалы қай жерде қолжетімді?', a:['Барлық бағдарламада','Тек функция ішінде','Тек цикл ішінде','Тек файл соңында'], c:1, e:'Функция ішінде құрылған айнымалы сол функция аясында ғана қолжетімді.'},
+      {topic:'Функциялар', q:'Берілген кодтың нәтижесі қандай?', code:'x = 10\ndef change():\n    x = 5\n    return x\n\nprint(change(), x)', a:['5 5','10 5','5 10','10 10'], c:2, e:'Функция ішіндегі x жергілікті, сырттағы x өзгермейді.'},
+      {topic:'Функциялар', q:'lambda функциясы қандай мақсатта қолданылады?', a:['Тек файл ашу үшін','Қысқа анонимді функция құру үшін','Класс құру үшін','Циклді тоқтату үшін'], c:1, e:'lambda қысқа, атаусыз функция құруға арналған.'},
+      {topic:'Функциялар', q:'Берілген кодтың нәтижесі қандай?', code:'f = lambda x: x + 3\nprint(f(7))', a:['3','7','10','Қате'], c:2, e:'lambda 7 + 3 = 10 қайтарады.'},
+      {topic:'Функциялар', q:'Функция бірнеше мән қайтара ала ма?', a:['Жоқ, Python рұқсат етпейді','Иә, кортеж түрінде қайтара алады','Тек екі мән ғана','Тек тізім арқылы ғана'], c:1, e:'Python бірнеше мәнді кортеж ретінде қайтара алады.'},
+      {topic:'Функциялар', q:'Берілген кодтың нәтижесі қандай?', code:'def calc(a, b):\n    return a+b, a*b\n\nx, y = calc(2, 5)\nprint(x, y)', a:['7 10','10 7','2 5','Қате'], c:0, e:'a+b = 7, a*b = 10.'},
+      {topic:'Функциялар', q:'Функцияны қолданудың негізгі артықшылығы қандай?', a:['Кодты міндетті түрде баяулатады','Кодты қайта қолдануға және құрылымдауға мүмкіндік береді','Тек мәтінмен жұмыс істейді','Айнымалы қолдануды жояды'], c:1, e:'Функциялар кодты модульдерге бөледі және қайталап қолдануға мүмкіндік береді.'},
+      {topic:'Функциялар', q:'Берілген кодта функция неше рет шақырылады?', code:'def hello():\n    print("Hi")\n\nhello()\nhello()', a:['0','1','2','3'], c:2, e:'hello() екі рет жазылған, сондықтан екі рет шақырылады.'},
+      {topic:'Функциялар', q:'*args қандай жағдайда қолданылады?', a:['Белгісіз мөлшердегі позициялық аргументтерді қабылдау үшін','Тек бір аргумент қабылдау үшін','Файл атауын сақтау үшін','Айнымалыны жою үшін'], c:0, e:'*args функцияға кез келген мөлшерде позициялық аргумент беруге мүмкіндік береді.'},
+      {topic:'Функциялар', q:'Берілген кодтың нәтижесі қандай?', code:'def total(*args):\n    return sum(args)\n\nprint(total(1, 2, 3, 4))', a:['4','6','10','Қате'], c:2, e:'sum(1,2,3,4) = 10.'},
+      {topic:'Функциялар', q:'**kwargs қандай деректерді қабылдайды?', a:['Тек тізімдерді','Атаулы аргументтерді сөздік түрінде','Тек бүтін сандарды','Тек бос мәндерді'], c:1, e:'**kwargs атаулы аргументтерді dict ретінде жинайды.'},
+      {topic:'Функциялар', q:'Функция атауын таңдауда дұрыс нұсқа қайсы?', a:['2sum','my-function','my_function','class'], c:2, e:'my_function Python идентификатор ережесіне сай.'},
+      {topic:'Рекурсия', q:'Рекурсия дегеніміз не?', a:['Функцияның өзін-өзі шақыруы','Циклдің тоқтауы','Тізімді өшіру','Кодты түсініктеме ету'], c:0, e:'Рекурсияда функция өз ішінде өзін шақырады.'},
+      {topic:'Рекурсия', q:'Рекурсивті функцияда міндетті түрде не болуы керек?', a:['Екі цикл','Базалық жағдай','Тек global айнымалы','print операторы'], c:1, e:'Базалық жағдай болмаса, рекурсия тоқтамайды.'},
+      {topic:'Рекурсия', q:'Берілген кодтың нәтижесі қандай?', code:'def f(n):\n    if n == 0:\n        return 0\n    return n + f(n-1)\n\nprint(f(4))', a:['4','6','10','24'], c:2, e:'4+3+2+1+0 = 10.'},
+      {topic:'Рекурсия', q:'Факториалдың дұрыс рекурсивті формуласы қайсы?', a:['n! = n + (n-1)!','n! = n * (n-1)!','n! = n / (n-1)!','n! = n - (n-1)!'], c:1, e:'Факториал: n! = n * (n-1)!.'},
+      {topic:'Рекурсия', q:'Берілген кодтың нәтижесі қандай?', code:'def fact(n):\n    if n == 1:\n        return 1\n    return n * fact(n-1)\n\nprint(fact(5))', a:['5','15','120','Қате'], c:2, e:'5! = 5*4*3*2*1 = 120.'},
+      {topic:'Рекурсия', q:'fact(0) үшін классикалық базалық жағдай қандай болуы тиіс?', a:['0 қайтару','1 қайтару','None қайтару','-1 қайтару'], c:1, e:'0! = 1, сондықтан fact(0) үшін 1 қайтарылады.'},
+      {topic:'Рекурсия', q:'Берілген функция нені есептейді?', code:'def g(n):\n    if n == 1:\n        return 1\n    return g(n-1) + 2', a:['n санының квадратын','1-ден n-ге дейінгі қосындыны','2n - 1 мәнін','n! мәнін'], c:2, e:'g(1)=1, әр қадамда 2 қосылады: нәтиже 2n-1.'},
+      {topic:'Рекурсия', q:'Рекурсияның негізгі қауіптерінің бірі қандай?', a:['Жад пен шақыру стекінің толып кетуі','Python файлдарының өшуі','Айнымалы атауларының автоматты өзгеруі','Интернеттің өшуі'], c:0, e:'Терең рекурсия RecursionError немесе стек толуына әкеледі.'},
+      {topic:'Рекурсия', q:'Берілген кодта қандай мәселе бар?', code:'def f(n):\n    return f(n-1)\n\nf(5)', a:['Базалық жағдай жоқ','Синтаксис қате','Функция тек бір рет орындалады','n мәтін болуы керек'], c:0, e:'Тоқтайтын шарт жоқ, сондықтан рекурсия шексіз жалғасады.'},
+      {topic:'Рекурсия', q:'Фибоначчи тізбегінің рекурсивті анықтамасы қайсы?', a:['F(n)=F(n-1)*F(n-2)','F(n)=F(n-1)+F(n-2)','F(n)=F(n-1)-F(n-2)','F(n)=n!'], c:1, e:'Фибоначчи: F(n)=F(n-1)+F(n-2).'},
+      {topic:'Рекурсия', q:'Берілген кодтың нәтижесі қандай?', code:'def fib(n):\n    if n <= 1:\n        return n\n    return fib(n-1) + fib(n-2)\n\nprint(fib(6))', a:['5','6','8','13'], c:2, e:'F(6)=8, егер F(0)=0, F(1)=1 болса.'},
+      {topic:'Рекурсия', q:'Қай есеп рекурсия арқылы табиғи түрде шешіледі?', a:['Тек экран түсін өзгерту','Ағаш құрылымын аралау','Айнымалы атауын өзгерту','Пернетақтаны тазалау'], c:1, e:'Ағаш, граф, бөлшектеу есептері рекурсивті ойлауға қолайлы.'},
+      {topic:'Рекурсия', q:'Берілген кодтың нәтижесі қандай?', code:'def show(n):\n    if n == 0:\n        return\n    print(n, end=" ")\n    show(n-1)\n\nshow(3)', a:['1 2 3','3 2 1','0 1 2 3','3 3 3'], c:1, e:'Алдымен n басылады, содан кейін n-1 шақырылады.'},
+      {topic:'Рекурсия', q:'Берілген кодтың нәтижесі қандай?', code:'def show(n):\n    if n == 0:\n        return\n    show(n-1)\n    print(n, end=" ")\n\nshow(3)', a:['1 2 3','3 2 1','0 1 2','Қате'], c:0, e:'Алдымен кіші мәндерге түседі, содан соң басып шығарады.'},
+      {topic:'Рекурсия', q:'Рекурсивті шешімді итерациялық шешімге ауыстырғанда көбіне не қолданылады?', a:['Цикл','HTML','CSS','SQL JOIN'], c:0, e:'Рекурсияның көптеген түрін for немесе while циклімен ауыстыруға болады.'},
+      {topic:'Сұрыптау', q:'Сұрыптау алгоритмінің мақсаты қандай?', a:['Деректерді белгілі бір тәртіппен орналастыру','Деректерді міндетті түрде жою','Файлды жабу','Айнымалы типін өзгерту'], c:0, e:'Сұрыптау элементтерді өсу немесе кему ретімен орналастырады.'},
+      {topic:'Сұрыптау', q:'Python-дағы sorted() функциясы не қайтарады?', a:['Бастапқы тізімді өзгертеді және None қайтарады','Жаңа сұрыпталған тізім қайтарады','Тек кортеж қайтарады','Тек жол қайтарады'], c:1, e:'sorted() жаңа сұрыпталған list қайтарады.'},
+      {topic:'Сұрыптау', q:'list.sort() әдісінің ерекшелігі қандай?', a:['Жаңа тізім қайтарады','Бастапқы тізімді орнында сұрыптайды','Тізімді өшіреді','Тек жолдарға қолданылады'], c:1, e:'sort() бастапқы тізімді өзгертеді және әдетте None қайтарады.'},
+      {topic:'Сұрыптау', q:'Берілген кодтың нәтижесі қандай?', code:'a = [3, 1, 2]\nprint(sorted(a))\nprint(a)', a:['[1, 2, 3] және [1, 2, 3]','[1, 2, 3] және [3, 1, 2]','[3, 2, 1] және [3, 1, 2]','Қате'], c:1, e:'sorted(a) жаңа тізім береді, a өзгермейді.'},
+      {topic:'Сұрыптау', q:'Берілген кодтың нәтижесі қандай?', code:'a = [3, 1, 2]\na.sort()\nprint(a)', a:['[3, 1, 2]','[1, 2, 3]','None','Қате'], c:1, e:'sort() тізімді орнында сұрыптайды.'},
+      {topic:'Сұрыптау', q:'Көпіршікті сұрыптау алгоритмінің негізгі идеясы қандай?', a:['Ең кіші элементті бірден табу','Көрші элементтерді салыстырып, орындарын ауыстыру','Тізімді екіге бөлу','Хэш кесте құру'], c:1, e:'Bubble sort көрші элементтерді салыстырып ауыстырады.'},
+      {topic:'Сұрыптау', q:'Таңдау арқылы сұрыптау алгоритмі әр қадамда не істейді?', a:['Ең кіші немесе ең үлкен элементті таңдап, орнына қояды','Тізімді кездейсоқ араластырады','Тек бірінші элементті жояды','Рекурсияны міндетті қолданады'], c:0, e:'Selection sort минимумды таңдап, тиісті орынға ауыстырады.'},
+      {topic:'Сұрыптау', q:'Кірістіру арқылы сұрыптау қай идеяға негізделеді?', a:['Элементті сұрыпталған бөлікке өз орнына енгізу','Элементтерді тек өшіру','Тізімді міндетті түрде екіге бөлу','Барлық элементті бірдей ету'], c:0, e:'Insertion sort жаңа элементті сұрыпталған бөлікке енгізеді.'},
+      {topic:'Сұрыптау', q:'Merge sort алгоритмінің негізгі стратегиясы қандай?', a:['Бөліп ал да, біріктір','Кездейсоқ таңда','Тек көрші элементтерді ауыстыр','Бір ғана цикл қолдан'], c:0, e:'Merge sort divide and conquer қағидасына сүйенеді.'},
+      {topic:'Сұрыптау', q:'Quick sort алгоритмінде pivot дегеніміз не?', a:['Файл атауы','Тірек элемент','Қате түрі','Цикл санағышы'], c:1, e:'Pivot — салыстыру және бөлу үшін таңдалатын тірек элемент.'},
+      {topic:'Сұрыптау', q:'Bubble sort алгоритмінің орташа уақыттық күрделілігі қандай?', a:['O(1)','O(log n)','O(n)','O(n²)'], c:3, e:'Bubble sort орташа жағдайда O(n²).'},
+      {topic:'Сұрыптау', q:'Merge sort алгоритмінің уақыттық күрделілігі көбіне қандай?', a:['O(n log n)','O(n²)','O(1)','O(2ⁿ)'], c:0, e:'Merge sort әдетте O(n log n) уақытта жұмыс істейді.'},
+      {topic:'Сұрыптау', q:'Берілген кодтың нәтижесі қандай?', code:'a = ["alma", "kiwi", "banan"]\nprint(sorted(a, key=len))', a:['["alma", "kiwi", "banan"]','["banan", "alma", "kiwi"]','["alma", "kiwi", "banan"] ұзындық бойынша','Қате'], c:2, e:'key=len жолдарды ұзындығы бойынша сұрыптайды: 4, 4, 5.'},
+      {topic:'Сұрыптау', q:'reverse=True параметрі не істейді?', a:['Өсу ретімен сұрыптайды','Кему ретімен сұрыптайды','Тізімді өшіреді','Тек бірінші элементті қайтарады'], c:1, e:'reverse=True сұрыптау ретін кері бағытқа өзгертеді.'},
+      {topic:'Сұрыптау', q:'Берілген кодтың нәтижесі қандай?', code:'a = [5, 1, 4, 2]\nprint(sorted(a, reverse=True))', a:['[1, 2, 4, 5]','[5, 4, 2, 1]','[5, 1, 4, 2]','Қате'], c:1, e:'reverse=True кему ретімен сұрыптайды.'},
+      {topic:'Алгоритмдер', q:'Алгоритмнің дискреттілік қасиеті нені білдіреді?', a:['Алгоритм нақты қадамдарға бөлінеді','Алгоритм міндетті түрде шексіз болады','Алгоритм тек Python-да жазылады','Алгоритмде шарт болмайды'], c:0, e:'Дискреттілік алгоритмнің жеке-жеке қадамдардан тұратынын білдіреді.'}
+    ];
+
+    const form = document.getElementById('quizForm');
+    const answeredEl = document.getElementById('answered');
+    const scoreMiniEl = document.getElementById('scoreMini');
+    const progressBar = document.getElementById('progressBar');
+    const resultBox = document.getElementById('result');
+
+    function renderQuiz() {
+      form.innerHTML = questions.map((item, i) => `
+        <article class="question" id="q${i}">
+          <div class="q-top">
+            <p class="q-title">${i + 1}. ${item.q}</p>
+            <span class="topic">${item.topic}</span>
+          </div>
+          ${item.code ? `<pre><code>${escapeHtml(item.code)}</code></pre>` : ''}
+          <div class="answers">
+            ${item.a.map((ans, j) => `
+              <label class="option" data-q="${i}" data-a="${j}">
+                <input type="radio" name="q${i}" value="${j}" onchange="updateProgress()" />
+                <span>${escapeHtml(ans)}</span>
+              </label>
+            `).join('')}
+          </div>
+          <div class="feedback" id="f${i}"></div>
+        </article>
+      `).join('');
+    }
+
+    function escapeHtml(text) {
+      return String(text).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+    }
+
+    function updateProgress() {
+      let answered = 0;
+      questions.forEach((_, i) => {
+        if (document.querySelector(`input[name="q${i}"]:checked`)) answered++;
+      });
+      answeredEl.textContent = answered;
+      progressBar.style.width = `${answered / questions.length * 100}%`;
+      localStorage.setItem('python_ent_test_answers', JSON.stringify(getAnswers()));
+    }
+
+    function getAnswers() {
+      return questions.map((_, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        return selected ? Number(selected.value) : null;
+      });
+    }
+
+    function restoreAnswers() {
+      try {
+        const saved = JSON.parse(localStorage.getItem('python_ent_test_answers') || '[]');
+        saved.forEach((value, i) => {
+          if (value !== null && value !== undefined) {
+            const input = document.querySelector(`input[name="q${i}"][value="${value}"]`);
+            if (input) input.checked = true;
+          }
+        });
+      } catch(e) {}
+      updateProgress();
+    }
+
+    function checkTest() {
+      let score = 0;
+      questions.forEach((item, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        const options = document.querySelectorAll(`label[data-q="${i}"]`);
+        options.forEach(opt => opt.classList.remove('correct', 'wrong'));
+        const feedback = document.getElementById(`f${i}`);
+        const correctOption = document.querySelector(`label[data-q="${i}"][data-a="${item.c}"]`);
+        correctOption.classList.add('correct');
+
+        if (selected && Number(selected.value) === item.c) {
+          score++;
+          feedback.className = 'feedback ok';
+          feedback.textContent = `Дұрыс. ${item.e}`;
+        } else {
+          if (selected) {
+            document.querySelector(`label[data-q="${i}"][data-a="${selected.value}"]`).classList.add('wrong');
+          }
+          feedback.className = 'feedback bad';
+          feedback.textContent = `Қате. Дұрыс жауап: ${item.a[item.c]}. ${item.e}`;
+        }
+      });
+
+      scoreMiniEl.textContent = score;
+      const percent = Math.round(score / questions.length * 100);
+      let level = '';
+      if (score >= 45) level = 'өте жақсы дайындық';
+      else if (score >= 38) level = 'жақсы дайындық';
+      else if (score >= 30) level = 'орташа дайындық';
+      else level = 'тақырыпты жүйелі қайталау қажет';
+
+      resultBox.style.display = 'block';
+      resultBox.innerHTML = `<h3>Нәтиже: ${score}/50 · ${percent}%</h3>
+        <p><strong>Деңгей:</strong> ${level}.</p>
+        <p><strong>Ұсыныс:</strong> қате шыққан сұрақтарды функция параметрлері, return, рекурсияның базалық жағдайы, sorted()/sort(), Bubble/Selection/Insertion/Merge/Quick sort логикасы бойынша қайта талдаңыз.</p>`;
+      resultBox.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }
+
+    function scrollToFirstUnanswered() {
+      for (let i = 0; i < questions.length; i++) {
+        if (!document.querySelector(`input[name="q${i}"]:checked`)) {
+          document.getElementById(`q${i}`).scrollIntoView({behavior: 'smooth', block: 'center'});
+          return;
+        }
+      }
+      resultBox.style.display = 'block';
+      resultBox.innerHTML = '<h3>Барлық сұраққа жауап берілді.</h3><p>Енді нәтижені тексеруге болады.</p>';
+      resultBox.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }
+
+    function resetTest() {
+      localStorage.removeItem('python_ent_test_answers');
+      resultBox.style.display = 'none';
+      scoreMiniEl.textContent = '0';
+      renderQuiz();
+      updateProgress();
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    renderQuiz();
+    restoreAnswers();
+  </script>
+</body>
+</html>
