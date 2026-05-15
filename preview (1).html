@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Нейрондық желілер: тест және оқу режимі</title>
+  <style>
+    :root {
+      --blue: #0b2f5b;
+      --blue-2: #164a82;
+      --blue-soft: #eaf3fb;
+      --emerald: #0f9f72;
+      --emerald-2: #087653;
+      --emerald-soft: #dff8ee;
+      --bg: #f4f8fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #64748b;
+      --border: #d8e2ec;
+      --wrong: #b91c1c;
+      --wrong-bg: #fee2e2;
+      --right: #047857;
+      --right-bg: #d1fae5;
+      --warn-bg: #fff7ed;
+      --warn: #c2410c;
+      --shadow: 0 10px 30px rgba(11, 47, 91, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, "Helvetica Neue", sans-serif;
+      background: linear-gradient(180deg, #eaf2f8 0%, var(--bg) 100%);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--blue), var(--emerald-2));
+      color: #ffffff;
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      line-height: 1.2;
+    }
+
+    header p {
+      margin: 0;
+      color: #dbeafe;
+      max-width: 890px;
+      font-size: 16px;
+    }
+
+    .mode-menu {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .mode-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .mode-card h2 {
+      margin: 0 0 8px;
+      color: var(--blue);
+      font-size: 22px;
+    }
+
+    .mode-card p {
+      margin: 0 0 16px;
+      color: var(--muted);
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 16px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.12s ease, background 0.12s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
+
+    .btn-primary {
+      background: var(--emerald);
+      color: #ffffff;
+    }
+
+    .btn-secondary {
+      background: var(--blue);
+      color: #ffffff;
+    }
+
+    .btn-light {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .btn-outline {
+      background: #ffffff;
+      color: var(--blue);
+      border: 1px solid var(--border);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .info-card,
+    .score-card,
+    .question-card,
+    .learn-card,
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .info-card,
+    .score-card,
+    .summary-card {
+      padding: 18px;
+    }
+
+    .info-card h2,
+    .summary-card h2 {
+      margin: 0 0 10px;
+      color: var(--blue);
+      font-size: 21px;
+    }
+
+    .formula {
+      display: inline-block;
+      background: #eef7f3;
+      color: var(--emerald-2);
+      border: 1px solid #b7e4d4;
+      border-radius: 10px;
+      padding: 3px 8px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .score-number {
+      font-size: 34px;
+      font-weight: 800;
+      color: var(--emerald-2);
+      margin: 2px 0;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .notice {
+      display: none;
+      margin: 14px 0 0;
+      background: var(--warn-bg);
+      color: var(--warn);
+      border: 1px solid #fed7aa;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    .notice.show {
+      display: block;
+    }
+
+    .test-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .question-card {
+      padding: 20px;
+    }
+
+    .q-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .q-number {
+      min-width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--blue);
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+    }
+
+    .q-title {
+      flex: 1;
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      padding-top: 7px;
+    }
+
+    .tag {
+      font-size: 12px;
+      color: var(--emerald-2);
+      background: var(--emerald-soft);
+      padding: 5px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    .options {
+      display: grid;
+      gap: 9px;
+      margin-top: 12px;
+    }
+
+    label.option {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      align-items: start;
+      gap: 10px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      cursor: pointer;
+      background: #ffffff;
+    }
+
+    label.option:hover {
+      border-color: var(--emerald);
+      background: #f6fffb;
+    }
+
+    input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--emerald);
+    }
+
+    .option.correct {
+      background: var(--right-bg);
+      border-color: var(--right);
+    }
+
+    .option.incorrect {
+      background: var(--wrong-bg);
+      border-color: var(--wrong);
+    }
+
+    .explanation {
+      display: none;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #f8fafc;
+      border-left: 5px solid var(--blue);
+      color: #334155;
+    }
+
+    .explanation.show {
+      display: block;
+    }
+
+    .learn-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .learn-nav {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 14px;
+      position: sticky;
+      top: 14px;
+      max-height: 82vh;
+      overflow: auto;
+    }
+
+    .learn-nav h3 {
+      margin: 0 0 10px;
+      color: var(--blue);
+      font-size: 17px;
+    }
+
+    .nav-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .nav-item {
+      text-align: left;
+      background: #f8fafc;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 9px 10px;
+      border-radius: 10px;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    .nav-item.active {
+      background: var(--emerald-soft);
+      border-color: var(--emerald);
+      color: var(--emerald-2);
+    }
+
+    .learn-card {
+      padding: 22px;
+    }
+
+    .learn-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .learn-card h2 {
+      margin: 0;
+      color: var(--blue);
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    .block {
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 16px;
+      margin-top: 14px;
+      background: #ffffff;
+    }
+
+    .block h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: var(--emerald-2);
+    }
+
+    .answer-line {
+      background: var(--blue-soft);
+      border-left: 5px solid var(--blue);
+    }
+
+    .example-line {
+      background: #f6fffb;
+      border-left: 5px solid var(--emerald);
+    }
+
+    .learn-controls {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .progress-wrap {
+      width: 100%;
+      background: #e2e8f0;
+      border-radius: 999px;
+      height: 10px;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--emerald));
+      border-radius: 999px;
+      transition: width 0.2s ease;
+    }
+
+    .summary-card {
+      margin-top: 18px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .mini {
+      background: #fbfdff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .mini strong {
+      color: var(--blue);
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 860px) {
+      .mode-menu,
+      .toolbar,
+      .learn-layout,
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .learn-nav {
+        position: static;
+        max-height: none;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .page {
+        padding: 14px 10px 32px;
+      }
+
+      header {
+        padding: 20px;
+        border-radius: 18px;
+      }
+
+      header h1 {
+        font-size: 23px;
+      }
+
+      .mode-card,
+      .info-card,
+      .score-card,
+      .question-card,
+      .learn-card,
+      .summary-card {
+        border-radius: 16px;
+      }
+
+      .q-head,
+      .learn-top {
+        display: grid;
+        grid-template-columns: 42px 1fr;
+      }
+
+      .tag {
+        grid-column: 1 / -1;
+        width: fit-content;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .learn-controls {
+        flex-direction: column;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      header,
+      .mode-card,
+      .info-card,
+      .score-card,
+      .question-card,
+      .learn-card,
+      .summary-card,
+      .learn-nav {
+        box-shadow: none;
+      }
+
+      .btn-row,
+      .learn-controls,
+      .learn-nav,
+      .mode-menu {
+        display: none;
+      }
+
+      .question-card,
+      .learn-card,
+      .summary-card {
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Нейрондық желілердің әрекет ету қағидалары</h1>
+      <p>Интерактивті материал: ЕНТ форматындағы тест және оқу режимі. Тақырыптар: синапс, салмақ, өлшенген сома, белсендіру функциясы, сигмоидті функция, қате, итерация және кезең.</p>
+    </header>
+
+    <section id="modeMenu" class="mode-menu">
+      <div class="mode-card">
+        <h2>1-режим. Тест тапсыру</h2>
+        <p>Оқушы сұрақтарға жауап береді, кейін нәтижесін көреді. Дұрыс және қате жауаптар автоматты түрде белгіленеді.</p>
+        <button class="btn-primary" onclick="openTestMode()">Тестті өту</button>
+      </div>
+      <div class="mode-card">
+        <h2>2-режим. Оқу режимі</h2>
+        <p>Әр сұраққа қысқаша разъяснение, дұрыс жауап және есептің шешілу мысалы беріледі.</p>
+        <button class="btn-secondary" onclick="openLearnMode()">Оқу режимін ашу</button>
+      </div>
+    </section>
+
+    <section id="testMode" class="hidden">
+      <div class="toolbar">
+        <div class="info-card">
+          <h2>Тест режимі</h2>
+          <p>Әр сұрақта <strong>5 жауап нұсқасы</strong> бар. Бір ғана дұрыс жауапты таңдаңыз. Барлық сұраққа жауап бергеннен кейін <strong>«Тексеру»</strong> батырмасын басыңыз.</p>
+          <p>Негізгі формула: <span class="formula">net = Σxi · wi</span>. Сигмоидті функция: <span class="formula">φ(net) = 1 / (1 + e<sup>−αnet</sup>)</span>.</p>
+          <div id="notice" class="notice">Барлық сұрақтарға жауап беріңіз.</div>
+          <div class="btn-row">
+            <button class="btn-outline" onclick="backToMenu()">Басты мәзір</button>
+            <button class="btn-secondary" onclick="openLearnMode()">Оқу режиміне өту</button>
+          </div>
+        </div>
+
+        <div class="score-card">
+          <div class="muted">Нәтиже</div>
+          <div id="score" class="score-number">0 / 30</div>
+          <div id="percent" class="muted">0%</div>
+          <div class="btn-row" style="margin-top: 14px;">
+            <button class="btn-primary" onclick="checkTest()">Тексеру</button>
+            <button class="btn-light" onclick="resetTest()">Қайта бастау</button>
+          </div>
+        </div>
+      </div>
+
+      <main id="testList" class="test-list"></main>
+    </section>
+
+    <section id="learnMode" class="hidden">
+      <div class="toolbar">
+        <div class="info-card">
+          <h2>Оқу режимі</h2>
+          <p>Бұл режимде әр сұрақ жеке түсіндіріледі. Оқушы алдымен сұрақты оқиды, кейін дұрыс жауапты, разъяснение мен мысалды көреді.</p>
+          <div class="progress-wrap"><div id="learnProgress" class="progress-bar"></div></div>
+        </div>
+        <div class="score-card">
+          <div class="muted">Қазіргі сұрақ</div>
+          <div id="learnCounter" class="score-number">1 / 30</div>
+          <div class="btn-row">
+            <button class="btn-outline" onclick="backToMenu()">Басты мәзір</button>
+            <button class="btn-primary" onclick="openTestMode()">Тестті өту</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="learn-layout">
+        <aside class="learn-nav">
+          <h3>Сұрақтар тізімі</h3>
+          <div id="learnNav" class="nav-list"></div>
+        </aside>
+
+        <main>
+          <article id="learnCard" class="learn-card"></article>
+
+          <section class="summary-card">
+            <h2>Қысқаша тірек формулалар</h2>
+            <div class="summary-grid">
+              <div class="mini"><strong>Өлшенген сома:</strong><br>net = x1·w1 + x2·w2 + ... + xn·wn</div>
+              <div class="mini"><strong>Бірреттік секіру:</strong><br>net ≥ b болса out = 1, net &lt; b болса out = 0</div>
+              <div class="mini"><strong>Орташа квадраттық қате:</strong><br>Δ = ((O1−A1)² + ... + (On−An)²) / n</div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </section>
+
+    <div class="footer-note">Файл автономды жұмыс істейді: интернет қажет емес.</div>
+  </div>
+
+  <script>
+    const questions = [{"q": "Нейрондық желідегі синапс дегеніміз не?", "options": ["Нейронның шығу сигналы", "Кіріс сигналын салмақпен байланыстыратын байланыс", "Деректер жиынтығы", "Қате мәні", "Оқыту кезеңі"], "answer": 1, "type": "теория", "explanation": "Синапс — нейрондар арасындағы байланыс. Жасанды нейрондық желіде ол кіріс сигналы мен салмақ коэффициентін байланыстырады.", "example": "Мысал: x1 = 1 сигналы w1 = 0,4 салмағы арқылы өтсе, оның нейронға әсері 1 · 0,4 = 0,4 болады."}, {"q": "Нейрондық желіде салмақ коэффициенті не үшін қолданылады?", "options": ["Нейрондар санын азайту үшін", "Кіріс сигналының маңызын көрсету үшін", "Қате формуласын жою үшін", "Деректерді өшіру үшін", "График салу үшін"], "answer": 1, "type": "теория", "explanation": "Салмақ коэффициенті әр кіріс сигналының шешімге әсер ету деңгейін көрсетеді. Салмақ үлкен болса, сол кірістің әсері де жоғары болады.", "example": "Мысал: билет бағасының салмағы 0,8, ал фильм рейтингінің салмағы 0,2 болса, шешімге билет бағасы көбірек әсер етеді."}, {"q": "Өлшенген сома қандай формуламен есептеледі?", "options": ["net = x + w", "net = x − w", "net = Σxi · wi", "net = x / w", "net = w − x"], "answer": 2, "type": "формула", "explanation": "Өлшенген сома барлық кіріс сигналдарының өз салмақтарына көбейтінділерінің қосындысы арқылы есептеледі.", "example": "Берілгені: x1 = 1, x2 = 0, w1 = 0,5, w2 = 0,3. Шешуі: net = 1 · 0,5 + 0 · 0,3 = 0,5."}, {"q": "Белсендіру функциясының негізгі міндеті қандай?", "options": ["Кіріс деректерін сақтау", "Салмақтарды кездейсоқ таңдау", "Өлшенген соманы нейронның шығыс сигналына түрлендіру", "Деректер жиынтығын өшіру", "Нейрондар санын көбейту"], "answer": 2, "type": "теория", "explanation": "Белсендіру функциясы net мәнін өңдеп, нейронның out шығыс сигналын қалыптастырады.", "example": "Мысал: net = 6, шек b = 5. Бірреттік секіру функциясы бойынша net ≥ b, сондықтан out = 1."}, {"q": "Бірреттік секіру функциясында шығыс мәні қандай болады?", "options": ["Тек теріс сан", "0 немесе 1", "0 мен 100 аралығы", "Тек 1", "Тек 0"], "answer": 1, "type": "теория", "explanation": "Бірреттік секіру функциясы шешімді екі мән арқылы береді: 0 — іске қосылмады, 1 — іске қосылды.", "example": "Мысал: киноға бару керек пе? out = 1 болса — бару, out = 0 болса — бармау."}, {"q": "Егер бірреттік секіру функциясында net ≥ b болса, нейронның шығысы қандай болады?", "options": ["0", "−1", "1", "0,5", "b"], "answer": 2, "type": "ереже", "explanation": "Егер өлшенген сома шекке тең немесе одан үлкен болса, нейрон іске қосылады.", "example": "Берілгені: net = 7, b = 5. Себебі 7 ≥ 5, сондықтан out = 1."}, {"q": "Егер бірреттік секіру функциясында net < b болса, нейронның шығысы қандай болады?", "options": ["0", "1", "b", "net", "w"], "answer": 0, "type": "ереже", "explanation": "Егер өлшенген сома шектен кіші болса, нейрон іске қосылмайды.", "example": "Берілгені: net = 3, b = 5. Себебі 3 < 5, сондықтан out = 0."}, {"q": "Сигмоидті функцияның формуласы қайсы?", "options": ["φ(net) = net²", "φ(net) = 1 / (1 + e−αnet)", "φ(net) = x · w", "φ(net) = net + b", "φ(net) = Σw"], "answer": 1, "type": "формула", "explanation": "Логистикалық сигмоидті функция net мәнін 0 мен 1 аралығындағы санға түрлендіреді.", "example": "Егер net = 0 және α = 1 болса: φ(0) = 1 / (1 + e⁰) = 1 / 2 = 0,5."}, {"q": "Сигмоидті функцияның шығыс мәні қандай аралықта болады?", "options": ["−1 мен 1 аралығы", "0 мен 1 аралығы", "1 мен 10 аралығы", "0 мен 100 аралығы", "Кез келген нақты сан"], "answer": 1, "type": "теория", "explanation": "Сигмоидті функцияның мәні 0 мен 1 аралығында жатады. Ол 0-ге немесе 1-ге жақындайды, бірақ әдетте дәл тең болмайды.", "example": "Мысал: out = 0,87 болса, нейрон шешімді жоғары ықтималдықпен қолдайды деп түсіндіріледі."}, {"q": "Нейрондық желіні оқыту кезінде қате нені көрсетеді?", "options": ["Кіріс сигналдарының санын", "Күтілетін жауап пен алынған жауаптың айырмашылығын", "Нейрондар түсін", "Желінің қабат санын", "Салмақтардың атауын"], "answer": 1, "type": "теория", "explanation": "Қате желінің нақты жауабы күтілетін жауаптан қаншалықты алшақ екенін көрсетеді.", "example": "Берілгені: алынған жауап O = 0,7, дұрыс жауап A = 1. Айырмашылық: 1 − 0,7 = 0,3."}, {"q": "Орташа квадраттық қате қандай мақсатта қолданылады?", "options": ["Нейрон санын санау үшін", "Желінің қателік деңгейін бағалау үшін", "Кіріс сигналдарын кездейсоқ өзгерту үшін", "Графикті бояу үшін", "Файл сақтау үшін"], "answer": 1, "type": "теория", "explanation": "Орташа квадраттық қате бірнеше нәтиженің жалпы қателік деңгейін бағалайды.", "example": "Мысал: қателер 0,04 және 0,16 болса, орташа мәні: (0,04 + 0,16) / 2 = 0,10."}, {"q": "Dataset дегеніміз не?", "options": ["Нейронның салмағы", "Оқытуға арналған деректер жиынтығы", "Тек бір ғана сан", "Белсендіру функциясы", "Қате формуласы"], "answer": 1, "type": "ұғым", "explanation": "Dataset — нейрондық желі оқитын мысалдар жиынтығы. Онда кіріс деректері және дұрыс жауаптар болуы мүмкін.", "example": "Мысал: «рейтинг, билет бағасы, уақыт, адам саны» параметрлері және «киноға бару/бармау» жауабы dataset бола алады."}, {"q": "Итерация дегеніміз не?", "options": ["Желіні бір деректер жиынтығымен бір рет оқыту қадамы", "Нейронның түсі", "Салмақтың атауы", "Шығыс қабаты", "Кіріс қабаты"], "answer": 0, "type": "ұғым", "explanation": "Итерация — оқыту барысында орындалатын бір қайталану қадамы.", "example": "Мысал: желі бір оқу мысалын өңдеп, қатені есептеп, салмақтарды түзетсе, бұл бір итерация ретінде қарастырылады."}, {"q": "Кезең дегеніміз не?", "options": ["Бір нейронның салмағы", "Барлық оқыту деректері арқылы толық өту", "Тек бір кіріс сигналы", "Бір формула", "Бір график"], "answer": 1, "type": "ұғым", "explanation": "Кезең — dataset ішіндегі барлық оқу мысалдары арқылы бір толық өту.", "example": "Мысал: dataset-та 100 мысал болса, желі осы 100 мысалдың бәрін бір рет өңдесе, бұл 1 кезең болады."}, {"q": "Жасырын қабат қай жерде орналасады?", "options": ["Тек кіріс қабатында", "Кіріс пен шығыс қабаттарының арасында", "Тек шығыс қабатында", "Dataset ішінде", "Қате формуласында"], "answer": 1, "type": "теория", "explanation": "Жасырын қабат кіріс қабаты мен шығыс қабатының арасында орналасады және аралық есептеулерді орындайды.", "example": "Мысал: x1 және x2 кірістері алдымен H1, H2 жасырын нейрондарына беріледі, содан кейін нәтиже O1 шығыс нейронына өтеді."}, {"q": "Көпқабатты нейрондық желінің қарапайым бірқабатты желіден айырмашылығы қандай?", "options": ["Онда салмақтар болмайды", "Онда жасырын қабаттар болады", "Ол тек 0 шығарады", "Ол белсендіру функциясын қолданбайды", "Ол деректерді қабылдамайды"], "answer": 1, "type": "теория", "explanation": "Көпқабатты нейрондық желіде кіріс пен шығыс арасында бір немесе бірнеше жасырын қабат болады.", "example": "Мысал: кіріс қабаты → жасырын қабат 1 → жасырын қабат 2 → шығыс қабаты құрылымы көпқабатты желіге жатады."}, {"q": "Кері байланысы жоқ желіде сигнал қалай таралады?", "options": ["Тек артқа қарай", "Оңнан солға қарай", "Кірістен шығысқа қарай бір бағытта", "Шығыстан кіріске қарай", "Кездейсоқ бағытта"], "answer": 2, "type": "теория", "explanation": "Кері байланысы жоқ желіде сигнал бір бағытта таралады: кіріс қабатынан жасырын қабаттарға, одан шығыс қабатына.", "example": "Мысал: x → H → O бағытымен есептеу жүрсе және нәтиже қайтадан кіріске берілмесе, бұл тікелей таралу желісі."}, {"q": "Кері байланысты нейрондық желінің ерекшелігі қандай?", "options": ["Сигнал тек бір рет өтеді", "Шығыс нәтижесі қайтадан кіріске әсер етуі мүмкін", "Онда салмақ болмайды", "Ол тек кесте құрады", "Ол қате есептемейді"], "answer": 1, "type": "теория", "explanation": "Кері байланысты желіде алдыңғы қадамдағы нәтиже келесі есептеуге әсер етуі мүмкін.", "example": "Мысал: мәтінді болжауда алдыңғы сөз туралы ақпарат келесі сөзді анықтауға әсер етеді."}, {"q": "Логистикалық функция көбіне қандай мақсатта қолданылады?", "options": ["Шешімді ықтималдыққа ұқсас мән түрінде беру үшін", "Тек мәтін жазу үшін", "Файл өлшемін азайту үшін", "Пернетақтаны басқару үшін", "Бағдарламаны тоқтату үшін"], "answer": 0, "type": "теория", "explanation": "Логистикалық функция 0 мен 1 аралығындағы мән береді. Сондықтан оны ықтималдыққа ұқсас нәтиже ретінде түсіндіреді.", "example": "Мысал: out = 0,82 болса, жүйе «киноға бару» шешімін 82% ықтималдыққа жақын деп қабылдауы мүмкін."}, {"q": "Егер нейрон шығысы 0,9 болса, бұл нені білдіреді?", "options": ["Нейрон шешімге қарсы", "Нейрон шешімді қолдайды, ықтималдығы жоғары", "Қате 90%", "Кіріс сигналы жоқ", "Салмақ нөлге тең"], "answer": 1, "type": "талдау", "explanation": "0,9 мәні 1-ге жақын. Бұл нейрон берілген шешімді жоғары деңгейде қолдайтынын білдіреді.", "example": "Мысал: «киноға бару» үшін out = 0,9 болса, жүйе бару шешімін таңдауға бейім."}, {"q": "Берілгені: x1 = 1, x2 = 0, w1 = 0,4, w2 = 0,7. Өлшенген соманы табыңыз.", "options": ["0,4", "0,7", "1,1", "0", "−0,4"], "answer": 0, "type": "есеп", "explanation": "Өлшенген сома формуласы: net = x1 · w1 + x2 · w2.", "example": "Шешуі: net = 1 · 0,4 + 0 · 0,7 = 0,4 + 0 = 0,4. Жауабы: 0,4."}, {"q": "Берілгені: x1 = 1, x2 = 1, w1 = 0,3, w2 = 0,5. net мәнін табыңыз.", "options": ["0,2", "0,5", "0,8", "1,0", "1,5"], "answer": 2, "type": "есеп", "explanation": "Екі кіріс те 1-ге тең, сондықтан екі салмақ та есепке алынады.", "example": "Шешуі: net = 1 · 0,3 + 1 · 0,5 = 0,3 + 0,5 = 0,8. Жауабы: 0,8."}, {"q": "Берілгені: x1 = 0, x2 = 1, x3 = 1, w1 = 0,2, w2 = 0,4, w3 = 0,6. net мәні қандай?", "options": ["0,2", "0,4", "0,6", "1,0", "1,2"], "answer": 3, "type": "есеп", "explanation": "x1 = 0 болғандықтан, бірінші салмақтың үлесі 0 болады.", "example": "Шешуі: net = 0 · 0,2 + 1 · 0,4 + 1 · 0,6 = 0 + 0,4 + 0,6 = 1,0. Жауабы: 1,0."}, {"q": "Бірреттік секіру функциясында b = 5. Егер net = 4 болса, нейрон шығысы қандай?", "options": ["1", "0", "4", "5", "−1"], "answer": 1, "type": "есеп", "explanation": "Бірреттік секіру функциясында net шектен кіші болса, шығыс 0 болады.", "example": "Шешуі: 4 < 5, сондықтан out = 0. Жауабы: 0."}, {"q": "Бірреттік секіру функциясында b = 5. Егер net = 5 болса, нейрон шығысы қандай?", "options": ["0", "1", "5", "−5", "0,5"], "answer": 1, "type": "есеп", "explanation": "net шекке тең болса да, шарт орындалады: net ≥ b.", "example": "Шешуі: 5 ≥ 5, сондықтан out = 1. Жауабы: 1."}, {"q": "Берілгені: x1 = 1, x2 = 1, w1 = 2, w2 = 3. Шек b = 4. Бірреттік секіру функциясы бойынша out мәнін табыңыз.", "options": ["0", "1", "2", "3", "4"], "answer": 1, "type": "есеп", "explanation": "Алдымен өлшенген соманы есептейміз, содан кейін оны шекпен салыстырамыз.", "example": "Шешуі: net = 1 · 2 + 1 · 3 = 5. 5 ≥ 4, сондықтан out = 1. Жауабы: 1."}, {"q": "Берілгені: O = 0,6, A = 1. Бір ғана нәтиже үшін квадраттық қатені табыңыз.", "options": ["0,16", "0,4", "0,6", "1,6", "0,36"], "answer": 0, "type": "есеп", "explanation": "Квадраттық қате нақты жауап пен күтілетін жауап айырмасының квадраты арқылы табылады.", "example": "Шешуі: Δ = (O − A)² = (0,6 − 1)² = (−0,4)² = 0,16. Жауабы: 0,16."}, {"q": "Берілгені: O1 = 0,8, A1 = 1; O2 = 0,4, A2 = 0. Орташа квадраттық қатені табыңыз.", "options": ["0,10", "0,16", "0,20", "0,40", "1,20"], "answer": 0, "type": "есеп", "explanation": "Екі нәтиже бар, сондықтан квадраттық қателердің қосындысын 2-ге бөлеміз.", "example": "Шешуі: Δ = ((0,8−1)² + (0,4−0)²) / 2 = (0,04 + 0,16) / 2 = 0,10. Жауабы: 0,10."}, {"q": "Берілгені: out = 0,34, ideal = 1. Егер n = 1 болса, қате мәнін табыңыз.", "options": ["0,34", "0,43", "0,66", "1,34", "0,12"], "answer": 1, "type": "есеп", "explanation": "Бір ғана нәтиже болғандықтан, орташа мән сол бір квадраттық қатеге тең.", "example": "Шешуі: Δ = (0,34 − 1)² = (−0,66)² = 0,4356 ≈ 0,43. Жауабы: 0,43."}, {"q": "Сигмоидті функцияда net = 0 болса, φ(net) мәні қандай болады? α = 1.", "options": ["0", "0,25", "0,5", "1", "−1"], "answer": 2, "type": "есеп", "explanation": "net = 0 кезінде e⁰ = 1. Сондықтан бөлім 1 + 1 = 2 болады.", "example": "Шешуі: φ(0) = 1 / (1 + e⁰) = 1 / (1 + 1) = 1 / 2 = 0,5. Жауабы: 0,5."}];
+    let currentLearnIndex = 0;
+
+    const modeMenu = document.getElementById("modeMenu");
+    const testMode = document.getElementById("testMode");
+    const learnMode = document.getElementById("learnMode");
+    const testList = document.getElementById("testList");
+    const learnNav = document.getElementById("learnNav");
+    const learnCard = document.getElementById("learnCard");
+
+    function openTestMode() {
+      modeMenu.classList.add("hidden");
+      learnMode.classList.add("hidden");
+      testMode.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function openLearnMode() {
+      modeMenu.classList.add("hidden");
+      testMode.classList.add("hidden");
+      learnMode.classList.remove("hidden");
+      renderLearn(currentLearnIndex);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function backToMenu() {
+      testMode.classList.add("hidden");
+      learnMode.classList.add("hidden");
+      modeMenu.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderTest() {
+      testList.innerHTML = "";
+      questions.forEach((item, index) => {
+        const card = document.createElement("section");
+        card.className = "question-card";
+        card.dataset.index = index;
+
+        const optionsHtml = item.options.map((opt, optIndex) => `
+          <label class="option" data-option="${optIndex}">
+            <input type="radio" name="q${index}" value="${optIndex}" />
+            <span>${String.fromCharCode(65 + optIndex)}) ${opt}</span>
+          </label>
+        `).join("");
+
+        card.innerHTML = `
+          <div class="q-head">
+            <div class="q-number">${index + 1}</div>
+            <div class="q-title">${item.q}</div>
+            <div class="tag">${item.type}</div>
+          </div>
+          <div class="options">${optionsHtml}</div>
+          <div class="explanation" id="exp-${index}">
+            <strong>Разъяснение:</strong> ${item.explanation}<br>
+            <strong>Мысал:</strong> ${item.example}
+          </div>
+        `;
+
+        testList.appendChild(card);
+      });
+    }
+
+    function renderLearnNav() {
+      learnNav.innerHTML = "";
+      questions.forEach((item, index) => {
+        const button = document.createElement("button");
+        button.className = "nav-item";
+        button.textContent = `${index + 1}. ${item.type}`;
+        button.onclick = () => renderLearn(index);
+        learnNav.appendChild(button);
+      });
+    }
+
+    function renderLearn(index) {
+      currentLearnIndex = index;
+      const item = questions[index];
+      const correctLetter = String.fromCharCode(65 + item.answer);
+      const correctText = item.options[item.answer];
+
+      learnCard.innerHTML = `
+        <div class="learn-top">
+          <div class="q-number">${index + 1}</div>
+          <h2>${item.q}</h2>
+          <div class="tag">${item.type}</div>
+        </div>
+
+        <div class="block answer-line">
+          <h3>Дұрыс жауап</h3>
+          <p><strong>${correctLetter}) ${correctText}</strong></p>
+        </div>
+
+        <div class="block">
+          <h3>Разъяснение</h3>
+          <p>${item.explanation}</p>
+        </div>
+
+        <div class="block example-line">
+          <h3>Мысал және шешуі</h3>
+          <p>${item.example}</p>
+        </div>
+
+        <div class="learn-controls">
+          <button class="btn-light" onclick="prevLearn()" ${index === 0 ? "disabled" : ""}>Алдыңғы сұрақ</button>
+          <button class="btn-primary" onclick="nextLearn()" ${index === questions.length - 1 ? "disabled" : ""}>Келесі сұрақ</button>
+        </div>
+      `;
+
+      document.getElementById("learnCounter").textContent = `${index + 1} / ${questions.length}`;
+      document.getElementById("learnProgress").style.width = `${((index + 1) / questions.length) * 100}%`;
+
+      document.querySelectorAll(".nav-item").forEach((btn, i) => {
+        btn.classList.toggle("active", i === index);
+      });
+    }
+
+    function nextLearn() {
+      if (currentLearnIndex < questions.length - 1) {
+        renderLearn(currentLearnIndex + 1);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+
+    function prevLearn() {
+      if (currentLearnIndex > 0) {
+        renderLearn(currentLearnIndex - 1);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+
+    function clearMarks() {
+      document.querySelectorAll(".option").forEach(option => {
+        option.classList.remove("correct", "incorrect");
+      });
+      document.querySelectorAll(".explanation").forEach(exp => exp.classList.remove("show"));
+      document.getElementById("notice").classList.remove("show");
+    }
+
+    function checkTest() {
+      clearMarks();
+      let score = 0;
+      let answered = 0;
+
+      questions.forEach((item, index) => {
+        const selected = document.querySelector(`input[name="q${index}"]:checked`);
+        const card = document.querySelector(`.question-card[data-index="${index}"]`);
+
+        if (selected) {
+          answered++;
+          const selectedValue = Number(selected.value);
+          const selectedLabel = card.querySelector(`.option[data-option="${selectedValue}"]`);
+          const correctLabel = card.querySelector(`.option[data-option="${item.answer}"]`);
+
+          if (selectedValue === item.answer) {
+            score++;
+            selectedLabel.classList.add("correct");
+          } else {
+            selectedLabel.classList.add("incorrect");
+            correctLabel.classList.add("correct");
+          }
+
+          document.getElementById(`exp-${index}`).classList.add("show");
+        }
+      });
+
+      if (answered < questions.length) {
+        document.getElementById("notice").classList.add("show");
+      }
+
+      updateScore(score);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function resetTest() {
+      clearMarks();
+      document.querySelectorAll("input[type='radio']").forEach(input => {
+        input.checked = false;
+      });
+      updateScore(0);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function updateScore(score) {
+      document.getElementById("score").textContent = `${score} / ${questions.length}`;
+      const percent = Math.round((score / questions.length) * 100);
+      document.getElementById("percent").textContent = `${percent}%`;
+    }
+
+    renderTest();
+    renderLearnNav();
+    renderLearn(0);
+  </script>
+</body>
+</html>
