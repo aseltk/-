@@ -1,0 +1,4092 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python ЕНТ тренажері: 50 тапсырма</title>
+  <style>
+    :root {
+      --blue:#0b1f4d;
+      --blue2:#12377a;
+      --green:#00a878;
+      --bg:#f4f7fb;
+      --card:#ffffff;
+      --text:#1f2937;
+      --muted:#64748b;
+      --border:#dbe3ef;
+      --code:#0f172a;
+      --warn:#fff7ed;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin:0;
+      font-family: Arial, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+    }
+    header {
+      background:linear-gradient(135deg,var(--blue),var(--blue2));
+      color:white;
+      padding:34px 18px;
+      text-align:center;
+    }
+    header h1 {
+      margin:0 0 10px;
+      font-size:clamp(24px,4vw,42px);
+    }
+    header p {
+      max-width:950px;
+      margin:0 auto;
+      color:#dce9ff;
+      font-size:17px;
+    }
+    .toolbar {
+      position:sticky;
+      top:0;
+      z-index:20;
+      background:white;
+      border-bottom:1px solid var(--border);
+      padding:12px;
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .toolbar button, .toplink {
+      border:0;
+      background:var(--blue);
+      color:white;
+      padding:10px 14px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:700;
+      text-decoration:none;
+    }
+    .toolbar button:hover, .toplink:hover { background:var(--green); }
+    main {
+      max-width:1120px;
+      margin:22px auto;
+      padding:0 14px 44px;
+    }
+    .intro {
+      background:white;
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:18px;
+      margin-bottom:18px;
+    }
+    .intro b { color:var(--blue); }
+    .card {
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:20px;
+      padding:18px;
+      margin:18px 0;
+      box-shadow:0 8px 22px rgba(15,23,42,.06);
+    }
+    .card-head {
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:14px;
+    }
+    .num {
+      min-width:48px;
+      height:48px;
+      border-radius:50%;
+      background:var(--green);
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      font-size:18px;
+    }
+    h2 {
+      margin:0;
+      color:var(--blue);
+      font-size:21px;
+    }
+    .level {
+      margin:3px 0 0;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .tabs {
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin:12px 0;
+    }
+    .tab {
+      border:1px solid var(--border);
+      background:#eef4ff;
+      color:var(--blue);
+      padding:9px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:700;
+    }
+    .tab.active {
+      background:var(--green);
+      color:white;
+      border-color:var(--green);
+    }
+    .panel { display:none; }
+    .panel.active { display:block; }
+    pre {
+      background:var(--code);
+      color:#e5e7eb;
+      padding:14px;
+      border-radius:14px;
+      overflow:auto;
+      font-size:14px;
+    }
+    code { font-family:Consolas, monospace; }
+    .question {
+      background:#f8fafc;
+      border-left:5px solid var(--green);
+      padding:12px 14px;
+      border-radius:12px;
+    }
+    textarea {
+      width:100%;
+      min-height:160px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:12px;
+      font-family:Consolas, monospace;
+      font-size:14px;
+      resize:vertical;
+      background:white;
+    }
+    details.teacher {
+      background:var(--warn);
+      border:1px solid #fed7aa;
+      border-radius:12px;
+      padding:11px 13px;
+      margin-top:12px;
+    }
+    summary {
+      cursor:pointer;
+      font-weight:800;
+      color:var(--blue);
+    }
+    footer {
+      text-align:center;
+      color:var(--muted);
+      padding:22px;
+    }
+    @media (max-width:700px) {
+      .card { padding:14px; border-radius:16px; }
+      .card-head { align-items:flex-start; }
+      .tabs { flex-direction:column; }
+      .tab { width:100%; }
+      pre { font-size:13px; }
+    }
+  </style>
+</head>
+<body id="top">
+<header>
+  <h1>Python ЕНТ тренажері</h1>
+  <p>50 толық тапсырма: кодты талдау, қатені табу және есепті өз бетімен шешу.</p>
+</header>
+
+<div class="toolbar">
+  <button onclick="filterCards('all')">Барлығы</button>
+  <button onclick="filterCards('medium')">1–25 орташа</button>
+  <button onclick="filterCards('hard')">26–50 күрделі</button>
+  <a class="toplink" href="#top">Жоғарыға</a>
+</div>
+
+<main>
+  <section class="intro">
+    <p><b>Мақсаты:</b> оқушыларды ЕНТ форматындағы Python контекстік сұрақтарына дайындау: кодты оқу, алгоритмді түсіндіру, қатені табу және өз шешімін жазу.</p>
+    <p><b>Маңызды:</b> дұрыс жауаптар бірден көрінбейді. </p>
+  </section>
+
+  
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">1</span>
+    <div>
+      <h2>Тізім элементтерінің қосындысы</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(1, 'task')" class="tab active" id="btn-1-task">Тапсырма</button>
+    <button onclick="showTab(1, 'debug')" class="tab" id="btn-1-debug">Debug: қатені тап</button>
+    <button onclick="showTab(1, 'solve')" class="tab" id="btn-1-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-1-task">
+    <p><b>Мәтіндік жағдай:</b> Мектеп оқушысы бес тесттен алған ұпайларын тізімге сақтады. Бағдарлама осы ұпайлардың жалпы қосындысын есептеуі керек. Кодты оқып, алгоритмнің қалай жұмыс істейтінін түсіндіріңіз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>scores = [12, 15, 9, 18, 14]
+
+total = 0
+for score in scores:
+    total += score
+
+print(&quot;Жалпы ұпай:&quot;, total)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-1-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>scores = [12, 15, 9, 18, 14]
+
+total = 0
+for score in scores:
+    total = score
+
+print(&quot;Жалпы ұпай:&quot;, total)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате total = score жолында. Бұл жол әр айналым сайын total мәнін жаңа score мәнімен алмастырады. Сондықтан соңында тек соңғы элемент қалады. Дұрысы: total += score.</p>
+      <pre><code>scores = [12, 15, 9, 18, 14]
+
+total = 0
+for score in scores:
+    total += score
+
+print(&quot;Жалпы ұпай:&quot;, total)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-1-solve">
+    <p><b>Практикалық тапсырма:</b> Пайдаланушыдан 5 ұпай енгізіп, оларды тізімге сақтаңыз. Кейін барлық ұпайдың қосындысын шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>scores = [12, 15, 9, 18, 14]
+
+total = 0
+for score in scores:
+    total += score
+
+print(&quot;Жалпы ұпай:&quot;, total)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">2</span>
+    <div>
+      <h2>Орташа мәнді есептеу</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(2, 'task')" class="tab active" id="btn-2-task">Тапсырма</button>
+    <button onclick="showTab(2, 'debug')" class="tab" id="btn-2-debug">Debug: қатені тап</button>
+    <button onclick="showTab(2, 'solve')" class="tab" id="btn-2-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-2-task">
+    <p><b>Мәтіндік жағдай:</b> Берілген тізімде оқушының бірнеше сабақ бойынша бағалары сақталған. Бағдарлама осы бағалардың орташа мәнін табуы керек. Орташа мәнді табу үшін қосындыны элементтер санына бөлу қажет.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>marks = [80, 75, 90, 60, 95]
+
+total = sum(marks)
+average = total / len(marks)
+
+print(&quot;Орташа баға:&quot;, average)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-2-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>marks = [80, 75, 90, 60, 95]
+
+total = sum(marks)
+average = total
+
+print(&quot;Орташа баға:&quot;, average)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате average = total жолында. Орташа мән қосындының өзі емес. Оны элементтер санына бөлу керек: average = total / len(marks).</p>
+      <pre><code>marks = [80, 75, 90, 60, 95]
+
+total = sum(marks)
+average = total / len(marks)
+
+print(&quot;Орташа баға:&quot;, average)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-2-solve">
+    <p><b>Практикалық тапсырма:</b> N баға енгізілсін. Бағалардың орташа мәнін есептеп, экранға шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>marks = [80, 75, 90, 60, 95]
+
+total = sum(marks)
+average = total / len(marks)
+
+print(&quot;Орташа баға:&quot;, average)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">3</span>
+    <div>
+      <h2>Максимумды табу</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(3, 'task')" class="tab active" id="btn-3-task">Тапсырма</button>
+    <button onclick="showTab(3, 'debug')" class="tab" id="btn-3-debug">Debug: қатені тап</button>
+    <button onclick="showTab(3, 'solve')" class="tab" id="btn-3-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-3-task">
+    <p><b>Мәтіндік жағдай:</b> Сыныптағы оқушылардың нәтижелері тізімде берілген. Бағдарлама ең жоғары нәтижені табуы керек. Алгоритм тізімнің бірінші элементін бастапқы максимум деп алып, кейін қалған элементтермен салыстырады.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>results = [7, 18, 3, 25, 10]
+
+max_result = results[0]
+for x in results:
+    if x &gt; max_result:
+        max_result = x
+
+print(&quot;Ең жоғары нәтиже:&quot;, max_result)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-3-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>results = [7, 18, 3, 25, 10]
+
+max_result = 0
+for x in results:
+    if x &lt; max_result:
+        max_result = x
+
+print(&quot;Ең жоғары нәтиже:&quot;, max_result)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате салыстыру шартында: if x &lt; max_result. Максимум табу үшін x &gt; max_result шарты қолданылуы керек. Бастапқы мәнді results[0] деп алған дұрыс.</p>
+      <pre><code>results = [7, 18, 3, 25, 10]
+
+max_result = results[0]
+for x in results:
+    if x &gt; max_result:
+        max_result = x
+
+print(&quot;Ең жоғары нәтиже:&quot;, max_result)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-3-solve">
+    <p><b>Практикалық тапсырма:</b> Тізімдегі ең үлкен санды кіріктірілген max() функциясын қолданбай табыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>results = [7, 18, 3, 25, 10]
+
+max_result = results[0]
+for x in results:
+    if x &gt; max_result:
+        max_result = x
+
+print(&quot;Ең жоғары нәтиже:&quot;, max_result)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">4</span>
+    <div>
+      <h2>Минимумды табу</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(4, 'task')" class="tab active" id="btn-4-task">Тапсырма</button>
+    <button onclick="showTab(4, 'debug')" class="tab" id="btn-4-debug">Debug: қатені тап</button>
+    <button onclick="showTab(4, 'solve')" class="tab" id="btn-4-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-4-task">
+    <p><b>Мәтіндік жағдай:</b> Дүкендегі бірнеше тауардың бағасы берілген. Бағдарлама ең арзан тауардың бағасын анықтауы керек. Ол үшін минимумды бірінші элементтен бастап салыстыру қажет.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>prices = [7000, 4500, 9200, 3100, 5000]
+
+min_price = prices[0]
+for price in prices:
+    if price &lt; min_price:
+        min_price = price
+
+print(&quot;Ең төмен баға:&quot;, min_price)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-4-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>prices = [7000, 4500, 9200, 3100, 5000]
+
+min_price = prices[0]
+for price in prices:
+    if price &gt; min_price:
+        min_price = price
+
+print(&quot;Ең төмен баға:&quot;, min_price)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате if price &gt; min_price шартында. Бұл шарт максимумды іздейді. Минимум үшін if price &lt; min_price болуы керек.</p>
+      <pre><code>prices = [7000, 4500, 9200, 3100, 5000]
+
+min_price = prices[0]
+for price in prices:
+    if price &lt; min_price:
+        min_price = price
+
+print(&quot;Ең төмен баға:&quot;, min_price)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-4-solve">
+    <p><b>Практикалық тапсырма:</b> Пайдаланушы енгізген бағалар ішінен ең төмен бағаны табыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>prices = [7000, 4500, 9200, 3100, 5000]
+
+min_price = prices[0]
+for price in prices:
+    if price &lt; min_price:
+        min_price = price
+
+print(&quot;Ең төмен баға:&quot;, min_price)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">5</span>
+    <div>
+      <h2>Жұп сандарды санау</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(5, 'task')" class="tab active" id="btn-5-task">Тапсырма</button>
+    <button onclick="showTab(5, 'debug')" class="tab" id="btn-5-debug">Debug: қатені тап</button>
+    <button onclick="showTab(5, 'solve')" class="tab" id="btn-5-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-5-task">
+    <p><b>Мәтіндік жағдай:</b> Тізімде бірнеше бүтін сан берілген. Бағдарлама жұп сандардың санын анықтауы керек. Жұп сан 2-ге қалдықсыз бөлінеді.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>numbers = [2, 5, 8, 11, 14, 17]
+
+count = 0
+for n in numbers:
+    if n % 2 == 0:
+        count += 1
+
+print(&quot;Жұп сандар саны:&quot;, count)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-5-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>numbers = [2, 5, 8, 11, 14, 17]
+
+count = 0
+for n in numbers:
+    if n / 2 == 0:
+        count += 1
+
+print(&quot;Жұп сандар саны:&quot;, count)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате n / 2 == 0 шартында. Бұл бөлу нәтижесін тексереді. Жұптықты тексеру үшін қалдық операциясы қолданылады: n % 2 == 0.</p>
+      <pre><code>numbers = [2, 5, 8, 11, 14, 17]
+
+count = 0
+for n in numbers:
+    if n % 2 == 0:
+        count += 1
+
+print(&quot;Жұп сандар саны:&quot;, count)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-5-solve">
+    <p><b>Практикалық тапсырма:</b> Кез келген тізімдегі жұп сандар санын есептейтін бағдарлама жазыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>numbers = [2, 5, 8, 11, 14, 17]
+
+count = 0
+for n in numbers:
+    if n % 2 == 0:
+        count += 1
+
+print(&quot;Жұп сандар саны:&quot;, count)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">6</span>
+    <div>
+      <h2>Тақ сандарды санау</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(6, 'task')" class="tab active" id="btn-6-task">Тапсырма</button>
+    <button onclick="showTab(6, 'debug')" class="tab" id="btn-6-debug">Debug: қатені тап</button>
+    <button onclick="showTab(6, 'solve')" class="tab" id="btn-6-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-6-task">
+    <p><b>Мәтіндік жағдай:</b> Тізімдегі тақ сандар санын анықтаңыз. Тақ сан 2-ге бөлінгенде қалдық 1 болады.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>numbers = [2, 5, 8, 11, 14, 17]
+
+count = 0
+for n in numbers:
+    if n % 2 != 0:
+        count += 1
+
+print(&quot;Тақ сандар саны:&quot;, count)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-6-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>numbers = [2, 5, 8, 11, 14, 17]
+
+count = 0
+for n in numbers:
+    if n % 2 == 0:
+        count += 1
+
+print(&quot;Тақ сандар саны:&quot;, count)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: n % 2 == 0. Дұрыс нұсқа: n % 2 != 0. Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>numbers = [2, 5, 8, 11, 14, 17]
+
+count = 0
+for n in numbers:
+    if n % 2 != 0:
+        count += 1
+
+print(&quot;Тақ сандар саны:&quot;, count)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-6-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>numbers = [2, 5, 8, 11, 14, 17]
+
+count = 0
+for n in numbers:
+    if n % 2 != 0:
+        count += 1
+
+print(&quot;Тақ сандар саны:&quot;, count)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">7</span>
+    <div>
+      <h2>10-нан үлкен сандар қосындысы</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(7, 'task')" class="tab active" id="btn-7-task">Тапсырма</button>
+    <button onclick="showTab(7, 'debug')" class="tab" id="btn-7-debug">Debug: қатені тап</button>
+    <button onclick="showTab(7, 'solve')" class="tab" id="btn-7-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-7-task">
+    <p><b>Мәтіндік жағдай:</b> Тізімдегі 10-нан үлкен сандардың қосындысын есептеңіз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>numbers = [4, 15, 8, 22, 10, 13]
+
+total = 0
+for n in numbers:
+    if n &gt; 10:
+        total += n
+
+print(&quot;Қосынды:&quot;, total)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-7-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>numbers = [4, 15, 8, 22, 10, 13]
+
+total = 0
+for n in numbers:
+    if n &gt;= 10:
+        total += n
+
+print(&quot;Қосынды:&quot;, total)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: n &gt;= 10. Дұрыс нұсқа: n &gt; 10. Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>numbers = [4, 15, 8, 22, 10, 13]
+
+total = 0
+for n in numbers:
+    if n &gt; 10:
+        total += n
+
+print(&quot;Қосынды:&quot;, total)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-7-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>numbers = [4, 15, 8, 22, 10, 13]
+
+total = 0
+for n in numbers:
+    if n &gt; 10:
+        total += n
+
+print(&quot;Қосынды:&quot;, total)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">8</span>
+    <div>
+      <h2>Санды тізімнен іздеу</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(8, 'task')" class="tab active" id="btn-8-task">Тапсырма</button>
+    <button onclick="showTab(8, 'debug')" class="tab" id="btn-8-debug">Debug: қатені тап</button>
+    <button onclick="showTab(8, 'solve')" class="tab" id="btn-8-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-8-task">
+    <p><b>Мәтіндік жағдай:</b> Берілген target саны тізімде бар-жоғын анықтаңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>numbers = [3, 6, 9, 12, 15]
+target = 9
+
+found = False
+for n in numbers:
+    if n == target:
+        found = True
+
+if found:
+    print(&quot;Сан тізімде бар&quot;)
+else:
+    print(&quot;Сан тізімде жоқ&quot;)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-8-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>numbers = [3, 6, 9, 12, 15]
+target = 9
+
+found = True
+for n in numbers:
+    if n == target:
+        found = True
+
+if found:
+    print(&quot;Сан тізімде бар&quot;)
+else:
+    print(&quot;Сан тізімде жоқ&quot;)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: found = True. Дұрыс нұсқа: if n == target: found = True. Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>numbers = [3, 6, 9, 12, 15]
+target = 9
+
+found = False
+for n in numbers:
+    if n == target:
+        found = True
+
+if found:
+    print(&quot;Сан тізімде бар&quot;)
+else:
+    print(&quot;Сан тізімде жоқ&quot;)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-8-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>numbers = [3, 6, 9, 12, 15]
+target = 9
+
+found = False
+for n in numbers:
+    if n == target:
+        found = True
+
+if found:
+    print(&quot;Сан тізімде бар&quot;)
+else:
+    print(&quot;Сан тізімде жоқ&quot;)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">9</span>
+    <div>
+      <h2>Бірінші максимум индексі</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(9, 'task')" class="tab active" id="btn-9-task">Тапсырма</button>
+    <button onclick="showTab(9, 'debug')" class="tab" id="btn-9-debug">Debug: қатені тап</button>
+    <button onclick="showTab(9, 'solve')" class="tab" id="btn-9-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-9-task">
+    <p><b>Мәтіндік жағдай:</b> Тізімдегі ең үлкен элементтің бірінші тұрған индексін табыңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>numbers = [5, 9, 2, 9, 7]
+
+max_value = numbers[0]
+index = 0
+
+for i in range(len(numbers)):
+    if numbers[i] &gt; max_value:
+        max_value = numbers[i]
+        index = i
+
+print(&quot;Максимум индексі:&quot;, index)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-9-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>numbers = [5, 9, 2, 9, 7]
+
+max_value = numbers[0]
+index = 0
+
+for i in range(len(numbers)):
+    if numbers[i] &gt; max_value:
+        max_value = numbers[i]
+        index = n
+
+print(&quot;Максимум индексі:&quot;, index)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: index = n. Дұрыс нұсқа: index = i. Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>numbers = [5, 9, 2, 9, 7]
+
+max_value = numbers[0]
+index = 0
+
+for i in range(len(numbers)):
+    if numbers[i] &gt; max_value:
+        max_value = numbers[i]
+        index = i
+
+print(&quot;Максимум индексі:&quot;, index)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-9-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>numbers = [5, 9, 2, 9, 7]
+
+max_value = numbers[0]
+index = 0
+
+for i in range(len(numbers)):
+    if numbers[i] &gt; max_value:
+        max_value = numbers[i]
+        index = i
+
+print(&quot;Максимум индексі:&quot;, index)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">10</span>
+    <div>
+      <h2>Оң сандар саны</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(10, 'task')" class="tab active" id="btn-10-task">Тапсырма</button>
+    <button onclick="showTab(10, 'debug')" class="tab" id="btn-10-debug">Debug: қатені тап</button>
+    <button onclick="showTab(10, 'solve')" class="tab" id="btn-10-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-10-task">
+    <p><b>Мәтіндік жағдай:</b> Тізімдегі тек оң сандарды санаңыз. Нөл оң санға жатпайды.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>numbers = [-3, 5, 0, 7, -1, 4]
+
+count = 0
+for n in numbers:
+    if n &gt; 0:
+        count += 1
+
+print(&quot;Оң сандар саны:&quot;, count)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-10-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>numbers = [-3, 5, 0, 7, -1, 4]
+
+count = 0
+for n in numbers:
+    if n &gt;= 0:
+        count += 1
+
+print(&quot;Оң сандар саны:&quot;, count)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: n &gt;= 0. Дұрыс нұсқа: n &gt; 0. Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>numbers = [-3, 5, 0, 7, -1, 4]
+
+count = 0
+for n in numbers:
+    if n &gt; 0:
+        count += 1
+
+print(&quot;Оң сандар саны:&quot;, count)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-10-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>numbers = [-3, 5, 0, 7, -1, 4]
+
+count = 0
+for n in numbers:
+    if n &gt; 0:
+        count += 1
+
+print(&quot;Оң сандар саны:&quot;, count)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">11</span>
+    <div>
+      <h2>Теріс сандар саны</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(11, 'task')" class="tab active" id="btn-11-task">Тапсырма</button>
+    <button onclick="showTab(11, 'debug')" class="tab" id="btn-11-debug">Debug: қатені тап</button>
+    <button onclick="showTab(11, 'solve')" class="tab" id="btn-11-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-11-task">
+    <p><b>Мәтіндік жағдай:</b> Тізімдегі теріс сандардың санын есептеңіз. Нөл теріс санға жатпайды.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>numbers = [-3, 5, 0, 7, -1, 4]
+
+count = 0
+for n in numbers:
+    if n &lt; 0:
+        count += 1
+
+print(&quot;Теріс сандар саны:&quot;, count)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-11-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>numbers = [-3, 5, 0, 7, -1, 4]
+
+count = 0
+for n in numbers:
+    if n &lt;= 0:
+        count += 1
+
+print(&quot;Теріс сандар саны:&quot;, count)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: n &lt;= 0. Дұрыс нұсқа: n &lt; 0. Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>numbers = [-3, 5, 0, 7, -1, 4]
+
+count = 0
+for n in numbers:
+    if n &lt; 0:
+        count += 1
+
+print(&quot;Теріс сандар саны:&quot;, count)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-11-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>numbers = [-3, 5, 0, 7, -1, 4]
+
+count = 0
+for n in numbers:
+    if n &lt; 0:
+        count += 1
+
+print(&quot;Теріс сандар саны:&quot;, count)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">12</span>
+    <div>
+      <h2>Теріс мәндерді 0-ге ауыстыру</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(12, 'task')" class="tab active" id="btn-12-task">Тапсырма</button>
+    <button onclick="showTab(12, 'debug')" class="tab" id="btn-12-debug">Debug: қатені тап</button>
+    <button onclick="showTab(12, 'solve')" class="tab" id="btn-12-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-12-task">
+    <p><b>Мәтіндік жағдай:</b> Тізімдегі барлық теріс элементтерді 0 мәнімен алмастырыңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>numbers = [-2, 4, -7, 9, 0]
+
+for i in range(len(numbers)):
+    if numbers[i] &lt; 0:
+        numbers[i] = 0
+
+print(&quot;Жаңартылған тізім:&quot;, numbers)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-12-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>numbers = [-2, 4, -7, 9, 0]
+
+for i in range(len(numbers)):
+    if numbers[i] &lt; 0:
+        n = 0
+
+print(&quot;Жаңартылған тізім:&quot;, numbers)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: n = 0. Дұрыс нұсқа: numbers[i] = 0. Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>numbers = [-2, 4, -7, 9, 0]
+
+for i in range(len(numbers)):
+    if numbers[i] &lt; 0:
+        numbers[i] = 0
+
+print(&quot;Жаңартылған тізім:&quot;, numbers)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-12-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>numbers = [-2, 4, -7, 9, 0]
+
+for i in range(len(numbers)):
+    if numbers[i] &lt; 0:
+        numbers[i] = 0
+
+print(&quot;Жаңартылған тізім:&quot;, numbers)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">13</span>
+    <div>
+      <h2>Өсу ретімен сұрыптау</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(13, 'task')" class="tab active" id="btn-13-task">Тапсырма</button>
+    <button onclick="showTab(13, 'debug')" class="tab" id="btn-13-debug">Debug: қатені тап</button>
+    <button onclick="showTab(13, 'solve')" class="tab" id="btn-13-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-13-task">
+    <p><b>Мәтіндік жағдай:</b> Сандар тізімін кіші мәннен үлкен мәнге қарай сұрыптаңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>numbers = [9, 1, 5, 3, 7]
+
+numbers.sort()
+
+print(&quot;Сұрыпталған тізім:&quot;, numbers)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-13-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>numbers = [9, 1, 5, 3, 7]
+
+numbers.sort(reverse=True)
+
+print(&quot;Сұрыпталған тізім:&quot;, numbers)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: numbers.sort(reverse=True). Дұрыс нұсқа: numbers.sort(). Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>numbers = [9, 1, 5, 3, 7]
+
+numbers.sort()
+
+print(&quot;Сұрыпталған тізім:&quot;, numbers)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-13-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>numbers = [9, 1, 5, 3, 7]
+
+numbers.sort()
+
+print(&quot;Сұрыпталған тізім:&quot;, numbers)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">14</span>
+    <div>
+      <h2>Кему ретімен сұрыптау</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(14, 'task')" class="tab active" id="btn-14-task">Тапсырма</button>
+    <button onclick="showTab(14, 'debug')" class="tab" id="btn-14-debug">Debug: қатені тап</button>
+    <button onclick="showTab(14, 'solve')" class="tab" id="btn-14-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-14-task">
+    <p><b>Мәтіндік жағдай:</b> Сандар тізімін үлкен мәннен кіші мәнге қарай сұрыптаңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>numbers = [9, 1, 5, 3, 7]
+
+numbers.sort(reverse=True)
+
+print(&quot;Сұрыпталған тізім:&quot;, numbers)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-14-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>numbers = [9, 1, 5, 3, 7]
+
+numbers.sort()
+
+print(&quot;Сұрыпталған тізім:&quot;, numbers)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: numbers.sort(). Дұрыс нұсқа: numbers.sort(reverse=True). Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>numbers = [9, 1, 5, 3, 7]
+
+numbers.sort(reverse=True)
+
+print(&quot;Сұрыпталған тізім:&quot;, numbers)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-14-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>numbers = [9, 1, 5, 3, 7]
+
+numbers.sort(reverse=True)
+
+print(&quot;Сұрыпталған тізім:&quot;, numbers)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">15</span>
+    <div>
+      <h2>Құпиясөзді тексеру</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(15, 'task')" class="tab active" id="btn-15-task">Тапсырма</button>
+    <button onclick="showTab(15, 'debug')" class="tab" id="btn-15-debug">Debug: қатені тап</button>
+    <button onclick="showTab(15, 'solve')" class="tab" id="btn-15-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-15-task">
+    <p><b>Мәтіндік жағдай:</b> Пайдаланушы енгізген құпиясөз дұрыс құпиясөзбен бірдей болса, жүйеге кіруге рұқсат беріңіз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>password = &#x27;Python2026&#x27;
+correct = &#x27;Python2026&#x27;
+
+if password == correct:
+    print(&quot;Рұқсат берілді&quot;)
+else:
+    print(&quot;Қате құпиясөз&quot;)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-15-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>password = &#x27;Python2026&#x27;
+correct = &#x27;Python2026&#x27;
+
+if password = correct:
+    print(&quot;Рұқсат берілді&quot;)
+else:
+    print(&quot;Қате құпиясөз&quot;)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: password = correct. Дұрыс нұсқа: password == correct. Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>password = &#x27;Python2026&#x27;
+correct = &#x27;Python2026&#x27;
+
+if password == correct:
+    print(&quot;Рұқсат берілді&quot;)
+else:
+    print(&quot;Қате құпиясөз&quot;)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-15-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>password = &#x27;Python2026&#x27;
+correct = &#x27;Python2026&#x27;
+
+if password == correct:
+    print(&quot;Рұқсат берілді&quot;)
+else:
+    print(&quot;Қате құпиясөз&quot;)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">16</span>
+    <div>
+      <h2>Дауысты әріптерді санау</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(16, 'task')" class="tab active" id="btn-16-task">Тапсырма</button>
+    <button onclick="showTab(16, 'debug')" class="tab" id="btn-16-debug">Debug: қатені тап</button>
+    <button onclick="showTab(16, 'solve')" class="tab" id="btn-16-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-16-task">
+    <p><b>Мәтіндік жағдай:</b> Берілген мәтіндегі дауысты әріптер санын есептеңіз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>text = &#x27;informatika&#x27;
+vowels = &#x27;aeiou&#x27;
+
+count = 0
+for ch in text:
+    if ch in vowels:
+        count += 1
+
+print(&quot;Дауысты саны:&quot;, count)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-16-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>text = &#x27;informatika&#x27;
+vowels = &#x27;aeiou&#x27;
+
+count = 0
+for ch in text:
+    if ch in text:
+        count += 1
+
+print(&quot;Дауысты саны:&quot;, count)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: ch in text. Дұрыс нұсқа: ch in vowels. Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>text = &#x27;informatika&#x27;
+vowels = &#x27;aeiou&#x27;
+
+count = 0
+for ch in text:
+    if ch in vowels:
+        count += 1
+
+print(&quot;Дауысты саны:&quot;, count)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-16-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>text = &#x27;informatika&#x27;
+vowels = &#x27;aeiou&#x27;
+
+count = 0
+for ch in text:
+    if ch in vowels:
+        count += 1
+
+print(&quot;Дауысты саны:&quot;, count)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">17</span>
+    <div>
+      <h2>Сөйлемдегі сөздер саны</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(17, 'task')" class="tab active" id="btn-17-task">Тапсырма</button>
+    <button onclick="showTab(17, 'debug')" class="tab" id="btn-17-debug">Debug: қатені тап</button>
+    <button onclick="showTab(17, 'solve')" class="tab" id="btn-17-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-17-task">
+    <p><b>Мәтіндік жағдай:</b> Берілген сөйлемде қанша сөз бар екенін анықтаңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>text = &#x27;Python tilin uirenu manyzdy&#x27;
+
+count = len(text.split())
+
+print(&quot;Сөз саны:&quot;, count)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-17-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>text = &#x27;Python tilin uirenu manyzdy&#x27;
+
+count = len(text)
+
+print(&quot;Сөз саны:&quot;, count)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: len(text). Дұрыс нұсқа: len(text.split()). Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>text = &#x27;Python tilin uirenu manyzdy&#x27;
+
+count = len(text.split())
+
+print(&quot;Сөз саны:&quot;, count)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-17-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>text = &#x27;Python tilin uirenu manyzdy&#x27;
+
+count = len(text.split())
+
+print(&quot;Сөз саны:&quot;, count)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">18</span>
+    <div>
+      <h2>Жолды кері жазу</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(18, 'task')" class="tab active" id="btn-18-task">Тапсырма</button>
+    <button onclick="showTab(18, 'debug')" class="tab" id="btn-18-debug">Debug: қатені тап</button>
+    <button onclick="showTab(18, 'solve')" class="tab" id="btn-18-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-18-task">
+    <p><b>Мәтіндік жағдай:</b> Берілген мәтінді соңынан басына қарай шығарыңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>text = &#x27;python&#x27;
+
+reversed_text = text[::-1]
+
+print(&quot;Кері мәтін:&quot;, reversed_text)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-18-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>text = &#x27;python&#x27;
+
+reversed_text = text.reverse()
+
+print(&quot;Кері мәтін:&quot;, reversed_text)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: text.reverse(). Дұрыс нұсқа: text[::-1]. Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>text = &#x27;python&#x27;
+
+reversed_text = text[::-1]
+
+print(&quot;Кері мәтін:&quot;, reversed_text)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-18-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>text = &#x27;python&#x27;
+
+reversed_text = text[::-1]
+
+print(&quot;Кері мәтін:&quot;, reversed_text)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">19</span>
+    <div>
+      <h2>Палиндромды тексеру</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(19, 'task')" class="tab active" id="btn-19-task">Тапсырма</button>
+    <button onclick="showTab(19, 'debug')" class="tab" id="btn-19-debug">Debug: қатені тап</button>
+    <button onclick="showTab(19, 'solve')" class="tab" id="btn-19-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-19-task">
+    <p><b>Мәтіндік жағдай:</b> Сөз солдан оңға және оңнан солға бірдей оқылса, ол палиндром деп аталады.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>text = &#x27;level&#x27;
+
+if text == text[::-1]:
+    print(&quot;Палиндром&quot;)
+else:
+    print(&quot;Палиндром емес&quot;)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-19-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>text = &#x27;level&#x27;
+
+if text == text[1:]:
+    print(&quot;Палиндром&quot;)
+else:
+    print(&quot;Палиндром емес&quot;)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: text == text[1:]. Дұрыс нұсқа: text == text[::-1]. Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>text = &#x27;level&#x27;
+
+if text == text[::-1]:
+    print(&quot;Палиндром&quot;)
+else:
+    print(&quot;Палиндром емес&quot;)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-19-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>text = &#x27;level&#x27;
+
+if text == text[::-1]:
+    print(&quot;Палиндром&quot;)
+else:
+    print(&quot;Палиндром емес&quot;)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">20</span>
+    <div>
+      <h2>Көбейту кестесі</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(20, 'task')" class="tab active" id="btn-20-task">Тапсырма</button>
+    <button onclick="showTab(20, 'debug')" class="tab" id="btn-20-debug">Debug: қатені тап</button>
+    <button onclick="showTab(20, 'solve')" class="tab" id="btn-20-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-20-task">
+    <p><b>Мәтіндік жағдай:</b> Берілген n саны үшін 1-ден 10-ға дейін көбейту кестесін шығарыңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>n = 7
+
+for i in range(1, 11):
+    print(n, &quot;*&quot;, i, &quot;=&quot;, n * i)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-20-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>n = 7
+
+for i in range(1, 10):
+    print(n, &quot;*&quot;, i, &quot;=&quot;, n * i)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: range(1, 10). Дұрыс нұсқа: range(1, 11). Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>n = 7
+
+for i in range(1, 11):
+    print(n, &quot;*&quot;, i, &quot;=&quot;, n * i)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-20-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>n = 7
+
+for i in range(1, 11):
+    print(n, &quot;*&quot;, i, &quot;=&quot;, n * i)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">21</span>
+    <div>
+      <h2>Факториал есептеу</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(21, 'task')" class="tab active" id="btn-21-task">Тапсырма</button>
+    <button onclick="showTab(21, 'debug')" class="tab" id="btn-21-debug">Debug: қатені тап</button>
+    <button onclick="showTab(21, 'solve')" class="tab" id="btn-21-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-21-task">
+    <p><b>Мәтіндік жағдай:</b> n! мәнін есептеңіз. Мысалы, 5! = 1*2*3*4*5.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>n = 5
+
+fact = 1
+for i in range(1, n + 1):
+    fact *= i
+
+print(&quot;Факториал:&quot;, fact)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-21-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>n = 5
+
+fact = 1
+for i in range(1, n + 1):
+    fact += i
+
+print(&quot;Факториал:&quot;, fact)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: fact += i. Дұрыс нұсқа: fact *= i. Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>n = 5
+
+fact = 1
+for i in range(1, n + 1):
+    fact *= i
+
+print(&quot;Факториал:&quot;, fact)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-21-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>n = 5
+
+fact = 1
+for i in range(1, n + 1):
+    fact *= i
+
+print(&quot;Факториал:&quot;, fact)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">22</span>
+    <div>
+      <h2>Фибоначчи сандары</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(22, 'task')" class="tab active" id="btn-22-task">Тапсырма</button>
+    <button onclick="showTab(22, 'debug')" class="tab" id="btn-22-debug">Debug: қатені тап</button>
+    <button onclick="showTab(22, 'solve')" class="tab" id="btn-22-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-22-task">
+    <p><b>Мәтіндік жағдай:</b> Алғашқы n Фибоначчи санын шығарыңыз. Әр келесі сан алдыңғы екі санның қосындысына тең.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>n = 8
+
+a, b = 0, 1
+for i in range(n):
+    print(a)
+    a, b = b, a + b</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-22-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>n = 8
+
+a, b = 0, 1
+for i in range(n):
+    print(a)
+    a = b; b = a + b</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: a = b; b = a + b. Дұрыс нұсқа: a, b = b, a + b. Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>n = 8
+
+a, b = 0, 1
+for i in range(n):
+    print(a)
+    a, b = b, a + b</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-22-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>n = 8
+
+a, b = 0, 1
+for i in range(n):
+    print(a)
+    a, b = b, a + b</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">23</span>
+    <div>
+      <h2>Жай санды тексеру</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(23, 'task')" class="tab active" id="btn-23-task">Тапсырма</button>
+    <button onclick="showTab(23, 'debug')" class="tab" id="btn-23-debug">Debug: қатені тап</button>
+    <button onclick="showTab(23, 'solve')" class="tab" id="btn-23-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-23-task">
+    <p><b>Мәтіндік жағдай:</b> Берілген санның жай сан екенін анықтаңыз. Жай сан тек 1-ге және өзіне бөлінеді.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>n = 17
+
+is_prime = True
+if n &lt; 2:
+    is_prime = False
+else:
+    for i in range(2, n):
+        if n % i == 0:
+            is_prime = False
+            break
+
+print(&quot;Жай сан&quot; if is_prime else &quot;Жай сан емес&quot;)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-23-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>n = 17
+
+is_prime = True
+if n &lt; 2:
+    is_prime = False
+else:
+    for i in range(2, n):
+        if n % i == 1:
+            is_prime = False
+            break
+
+print(&quot;Жай сан&quot; if is_prime else &quot;Жай сан емес&quot;)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: n % i == 1. Дұрыс нұсқа: n % i == 0. Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>n = 17
+
+is_prime = True
+if n &lt; 2:
+    is_prime = False
+else:
+    for i in range(2, n):
+        if n % i == 0:
+            is_prime = False
+            break
+
+print(&quot;Жай сан&quot; if is_prime else &quot;Жай сан емес&quot;)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-23-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>n = 17
+
+is_prime = True
+if n &lt; 2:
+    is_prime = False
+else:
+    for i in range(2, n):
+        if n % i == 0:
+            is_prime = False
+            break
+
+print(&quot;Жай сан&quot; if is_prime else &quot;Жай сан емес&quot;)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">24</span>
+    <div>
+      <h2>Сан цифрларының қосындысы</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(24, 'task')" class="tab active" id="btn-24-task">Тапсырма</button>
+    <button onclick="showTab(24, 'debug')" class="tab" id="btn-24-debug">Debug: қатені тап</button>
+    <button onclick="showTab(24, 'solve')" class="tab" id="btn-24-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-24-task">
+    <p><b>Мәтіндік жағдай:</b> Берілген бүтін санның барлық цифрларының қосындысын табыңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>n = 583
+
+s = 0
+while n &gt; 0:
+    s += n % 10
+    n //= 10
+
+print(&quot;Цифрлар қосындысы:&quot;, s)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-24-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>n = 583
+
+s = 0
+while n &gt; 0:
+    s += n
+    n //= 10
+
+print(&quot;Цифрлар қосындысы:&quot;, s)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: s += n. Дұрыс нұсқа: s += n % 10. Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>n = 583
+
+s = 0
+while n &gt; 0:
+    s += n % 10
+    n //= 10
+
+print(&quot;Цифрлар қосындысы:&quot;, s)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-24-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>n = 583
+
+s = 0
+while n &gt; 0:
+    s += n % 10
+    n //= 10
+
+print(&quot;Цифрлар қосындысы:&quot;, s)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="medium">
+  <div class="card-head">
+    <span class="num">25</span>
+    <div>
+      <h2>Цифрлар санын анықтау</h2>
+      <p class="level">Орташа деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(25, 'task')" class="tab active" id="btn-25-task">Тапсырма</button>
+    <button onclick="showTab(25, 'debug')" class="tab" id="btn-25-debug">Debug: қатені тап</button>
+    <button onclick="showTab(25, 'solve')" class="tab" id="btn-25-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-25-task">
+    <p><b>Мәтіндік жағдай:</b> Берілген бүтін санда қанша цифр бар екенін анықтаңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>n = 12045
+
+count = 0
+while n &gt; 0:
+    count += 1
+    n //= 10
+
+print(&quot;Цифрлар саны:&quot;, count)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-25-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>n = 12045
+
+count = 0
+while n &gt; 0:
+    count += n
+    n //= 10
+
+print(&quot;Цифрлар саны:&quot;, count)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Қате бөлік: count += n. Дұрыс нұсқа: count += 1. Алгоритм шартты дұрыс тексеріп, нәтижені дұрыс айнымалыға жинауы керек.</p>
+      <pre><code>n = 12045
+
+count = 0
+while n &gt; 0:
+    count += 1
+    n //= 10
+
+print(&quot;Цифрлар саны:&quot;, count)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-25-solve">
+    <p><b>Практикалық тапсырма:</b> Осы алгоритмді пайдаланушыдан дерек енгізілетіндей етіп қайта жазыңыз және нәтижені түсінікті мәтінмен шығарыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>n = 12045
+
+count = 0
+while n &gt; 0:
+    count += 1
+    n //= 10
+
+print(&quot;Цифрлар саны:&quot;, count)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">26</span>
+    <div>
+      <h2>Екінші максимумды табу</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(26, 'task')" class="tab active" id="btn-26-task">Тапсырма</button>
+    <button onclick="showTab(26, 'debug')" class="tab" id="btn-26-debug">Debug: қатені тап</button>
+    <button onclick="showTab(26, 'solve')" class="tab" id="btn-26-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-26-task">
+    <p><b>Мәтіндік жағдай:</b> Тізімдегі қайталанбайтын мәндер арасынан екінші ең үлкен санды табыңыз. Бұл тапсырмада тек бірінші максимумды табу жеткіліксіз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>numbers = [12, 45, 7, 45, 30]
+
+unique = list(set(numbers)); unique.sort(reverse=True); print(unique[1])</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-26-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>numbers = [12, 45, 7, 45, 30]
+
+unique = list(set(numbers)); unique.sort(reverse=False); print(unique[1])</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>numbers = [12, 45, 7, 45, 30]
+
+unique = list(set(numbers)); unique.sort(reverse=True); print(unique[1])</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-26-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>numbers = [12, 45, 7, 45, 30]
+
+unique = list(set(numbers)); unique.sort(reverse=True); print(unique[1])</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">27</span>
+    <div>
+      <h2>Қайталанатын мәндерді жою</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(27, 'task')" class="tab active" id="btn-27-task">Тапсырма</button>
+    <button onclick="showTab(27, 'debug')" class="tab" id="btn-27-debug">Debug: қатені тап</button>
+    <button onclick="showTab(27, 'solve')" class="tab" id="btn-27-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-27-task">
+    <p><b>Мәтіндік жағдай:</b> Тізімдегі қайталанатын элементтерді алып тастап, бастапқы ретін сақтаңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>numbers = [1, 2, 2, 3, 4, 4, 5]
+
+unique = []
+for n in numbers:
+    if n not in unique:
+        unique.append(n)
+print(unique)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-27-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>numbers = [1, 2, 2, 3, 4, 4, 5]
+
+unique = []
+for n in numbers:
+    if n in unique:
+        unique.append(n)
+print(unique)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>numbers = [1, 2, 2, 3, 4, 4, 5]
+
+unique = []
+for n in numbers:
+    if n not in unique:
+        unique.append(n)
+print(unique)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-27-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>numbers = [1, 2, 2, 3, 4, 4, 5]
+
+unique = []
+for n in numbers:
+    if n not in unique:
+        unique.append(n)
+print(unique)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">28</span>
+    <div>
+      <h2>Элемент жиілігін есептеу</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(28, 'task')" class="tab active" id="btn-28-task">Тапсырма</button>
+    <button onclick="showTab(28, 'debug')" class="tab" id="btn-28-debug">Debug: қатені тап</button>
+    <button onclick="showTab(28, 'solve')" class="tab" id="btn-28-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-28-task">
+    <p><b>Мәтіндік жағдай:</b> Әр санның тізімде неше рет кездесетінін сөздік арқылы анықтаңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>numbers = [2, 3, 2, 5, 3, 2]
+
+freq = {}
+for n in numbers:
+    freq[n] = freq.get(n, 0) + 1
+print(freq)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-28-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>numbers = [2, 3, 2, 5, 3, 2]
+
+freq = {}
+for n in numbers:
+    freq[n] = freq.get(n, 0) + 1
+print(freq)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>numbers = [2, 3, 2, 5, 3, 2]
+
+freq = {}
+for n in numbers:
+    freq[n] = freq.get(n, 0) + 1
+print(freq)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-28-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>numbers = [2, 3, 2, 5, 3, 2]
+
+freq = {}
+for n in numbers:
+    freq[n] = freq.get(n, 0) + 1
+print(freq)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">29</span>
+    <div>
+      <h2>Ең жиі кездесетін сан</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(29, 'task')" class="tab active" id="btn-29-task">Тапсырма</button>
+    <button onclick="showTab(29, 'debug')" class="tab" id="btn-29-debug">Debug: қатені тап</button>
+    <button onclick="showTab(29, 'solve')" class="tab" id="btn-29-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-29-task">
+    <p><b>Мәтіндік жағдай:</b> Тізімдегі ең жиі кездесетін санды және оның жиілігін табыңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>numbers = [4, 2, 4, 3, 2, 4]
+
+freq = {}
+for n in numbers:
+    freq[n] = freq.get(n, 0) + 1
+most = max(freq, key=freq.get)
+print(most, freq[most])</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-29-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>numbers = [4, 2, 4, 3, 2, 4]
+
+freq = {}
+for n in numbers:
+    freq[n] = freq.get(n, 0) + 1
+most = min(freq, key=freq.get)
+print(most, freq[most])</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>numbers = [4, 2, 4, 3, 2, 4]
+
+freq = {}
+for n in numbers:
+    freq[n] = freq.get(n, 0) + 1
+most = max(freq, key=freq.get)
+print(most, freq[most])</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-29-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>numbers = [4, 2, 4, 3, 2, 4]
+
+freq = {}
+for n in numbers:
+    freq[n] = freq.get(n, 0) + 1
+most = max(freq, key=freq.get)
+print(most, freq[most])</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">30</span>
+    <div>
+      <h2>Қосындысы K болатын екі сан</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(30, 'task')" class="tab active" id="btn-30-task">Тапсырма</button>
+    <button onclick="showTab(30, 'debug')" class="tab" id="btn-30-debug">Debug: қатені тап</button>
+    <button onclick="showTab(30, 'solve')" class="tab" id="btn-30-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-30-task">
+    <p><b>Мәтіндік жағдай:</b> Тізімнен қосындысы K болатын екі санды табыңыз. Бір элементті екі рет қолдануға болмайды.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>numbers = [2, 7, 11, 15]
+K = 9
+
+seen = set()
+for n in numbers:
+    if K - n in seen:
+        print(K - n, n)
+        break
+    seen.add(n)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-30-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>numbers = [2, 7, 11, 15]
+K = 9
+
+seen = set()
+for n in numbers:
+    if K - n in seen:
+        print(K - n, n)
+        break
+    seen.add(n)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>numbers = [2, 7, 11, 15]
+K = 9
+
+seen = set()
+for n in numbers:
+    if K - n in seen:
+        print(K - n, n)
+        break
+    seen.add(n)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-30-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>numbers = [2, 7, 11, 15]
+K = 9
+
+seen = set()
+for n in numbers:
+    if K - n in seen:
+        print(K - n, n)
+        break
+    seen.add(n)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">31</span>
+    <div>
+      <h2>Екі сұрыпталған тізімді біріктіру</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(31, 'task')" class="tab active" id="btn-31-task">Тапсырма</button>
+    <button onclick="showTab(31, 'debug')" class="tab" id="btn-31-debug">Debug: қатені тап</button>
+    <button onclick="showTab(31, 'solve')" class="tab" id="btn-31-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-31-task">
+    <p><b>Мәтіндік жағдай:</b> Екі сұрыпталған тізімді бір сұрыпталған тізімге біріктіріңіз. Нәтиже де сұрыпталған болуы керек.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>a = [1, 3, 5]
+b = [2, 4, 6]
+
+i = j = 0
+result = []
+while i &lt; len(a) and j &lt; len(b):
+    if a[i] &lt; b[j]:
+        result.append(a[i]); i += 1
+    else:
+        result.append(b[j]); j += 1
+result += a[i:] + b[j:]
+print(result)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-31-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>a = [1, 3, 5]
+b = [2, 4, 6]
+
+i = j = 0
+result = []
+while i &lt; 5 # қате бөлгіш
+# len(a) and j &lt; len(b):
+    if a[i] &lt; b[j]:
+        result.append(a[i]); i += 1
+    else:
+        result.append(b[j]); j += 1
+result += a[i:] + b[j:]
+print(result)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>a = [1, 3, 5]
+b = [2, 4, 6]
+
+i = j = 0
+result = []
+while i &lt; len(a) and j &lt; len(b):
+    if a[i] &lt; b[j]:
+        result.append(a[i]); i += 1
+    else:
+        result.append(b[j]); j += 1
+result += a[i:] + b[j:]
+print(result)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-31-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>a = [1, 3, 5]
+b = [2, 4, 6]
+
+i = j = 0
+result = []
+while i &lt; len(a) and j &lt; len(b):
+    if a[i] &lt; b[j]:
+        result.append(a[i]); i += 1
+    else:
+        result.append(b[j]); j += 1
+result += a[i:] + b[j:]
+print(result)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">32</span>
+    <div>
+      <h2>Жақшалардың дұрыстығын тексеру</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(32, 'task')" class="tab active" id="btn-32-task">Тапсырма</button>
+    <button onclick="showTab(32, 'debug')" class="tab" id="btn-32-debug">Debug: қатені тап</button>
+    <button onclick="showTab(32, 'solve')" class="tab" id="btn-32-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-32-task">
+    <p><b>Мәтіндік жағдай:</b> Жақшалар дұрыс ашылып-жабылғанын тексеріңіз. Әр жабылатын жақшаға дейін ашылатын жақша болуы керек.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>text = &#x27;(()())&#x27;
+
+balance = 0
+ok = True
+for ch in text:
+    if ch == &#x27;(&#x27;:
+        balance += 1
+    elif ch == &#x27;)&#x27;:
+        balance -= 1
+    if balance &lt; 0:
+        ok = False
+        break
+if balance != 0:
+    ok = False
+print(&#x27;Дұрыс&#x27; if ok else &#x27;Қате&#x27;)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-32-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>text = &#x27;(()())&#x27;
+
+balance = 0
+ok = True
+for ch in text:
+    if ch == &#x27;(&#x27;:
+        balance += 1
+    elif ch == &#x27;)&#x27;:
+        balance = 1
+    if balance &lt; 0:
+        ok = False
+        break
+if balance != 0:
+    ok = False
+print(&#x27;Дұрыс&#x27; if ok else &#x27;Қате&#x27;)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>text = &#x27;(()())&#x27;
+
+balance = 0
+ok = True
+for ch in text:
+    if ch == &#x27;(&#x27;:
+        balance += 1
+    elif ch == &#x27;)&#x27;:
+        balance -= 1
+    if balance &lt; 0:
+        ok = False
+        break
+if balance != 0:
+    ok = False
+print(&#x27;Дұрыс&#x27; if ok else &#x27;Қате&#x27;)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-32-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>text = &#x27;(()())&#x27;
+
+balance = 0
+ok = True
+for ch in text:
+    if ch == &#x27;(&#x27;:
+        balance += 1
+    elif ch == &#x27;)&#x27;:
+        balance -= 1
+    if balance &lt; 0:
+        ok = False
+        break
+if balance != 0:
+    ok = False
+print(&#x27;Дұрыс&#x27; if ok else &#x27;Қате&#x27;)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">33</span>
+    <div>
+      <h2>Бағаларды талдау</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(33, 'task')" class="tab active" id="btn-33-task">Тапсырма</button>
+    <button onclick="showTab(33, 'debug')" class="tab" id="btn-33-debug">Debug: қатені тап</button>
+    <button onclick="showTab(33, 'solve')" class="tab" id="btn-33-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-33-task">
+    <p><b>Мәтіндік жағдай:</b> Бағалар тізімі бойынша орташа балды, максимумды және ортадан жоғары бағалар санын табыңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>scores = [88, 72, 95, 60, 91]
+
+avg = sum(scores) / len(scores)
+mx = max(scores)
+count = 0
+for s in scores:
+    if s &gt; avg:
+        count += 1
+print(avg, mx, count)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-33-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>scores = [88, 72, 95, 60, 91]
+
+avg = sum(scores) / 5 # қате бөлгіш
+# len(scores)
+mx = max(scores)
+count = 0
+for s in scores:
+    if s &gt; avg:
+        count += 1
+print(avg, mx, count)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>scores = [88, 72, 95, 60, 91]
+
+avg = sum(scores) / len(scores)
+mx = max(scores)
+count = 0
+for s in scores:
+    if s &gt; avg:
+        count += 1
+print(avg, mx, count)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-33-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>scores = [88, 72, 95, 60, 91]
+
+avg = sum(scores) / len(scores)
+mx = max(scores)
+count = 0
+for s in scores:
+    if s &gt; avg:
+        count += 1
+print(avg, mx, count)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">34</span>
+    <div>
+      <h2>Рейтинг құру</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(34, 'task')" class="tab active" id="btn-34-task">Тапсырма</button>
+    <button onclick="showTab(34, 'debug')" class="tab" id="btn-34-debug">Debug: қатені тап</button>
+    <button onclick="showTab(34, 'solve')" class="tab" id="btn-34-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-34-task">
+    <p><b>Мәтіндік жағдай:</b> Оқушылардың аты мен ұпайы сөздікте берілген. Оларды ұпай бойынша кему ретімен шығарыңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>students = {&#x27;Aruzhan&#x27;: 80, &#x27;Dias&#x27;: 95, &#x27;Miras&#x27;: 70}
+
+rating = sorted(students.items(), key=lambda x: x[1], reverse=True)
+for name, score in rating:
+    print(name, score)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-34-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>students = {&#x27;Aruzhan&#x27;: 80, &#x27;Dias&#x27;: 95, &#x27;Miras&#x27;: 70}
+
+rating = sorted(students.items(), key=lambda x: x[1], reverse=False)
+for name, score in rating:
+    print(name, score)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>students = {&#x27;Aruzhan&#x27;: 80, &#x27;Dias&#x27;: 95, &#x27;Miras&#x27;: 70}
+
+rating = sorted(students.items(), key=lambda x: x[1], reverse=True)
+for name, score in rating:
+    print(name, score)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-34-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>students = {&#x27;Aruzhan&#x27;: 80, &#x27;Dias&#x27;: 95, &#x27;Miras&#x27;: 70}
+
+rating = sorted(students.items(), key=lambda x: x[1], reverse=True)
+for name, score in rating:
+    print(name, score)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">35</span>
+    <div>
+      <h2>Тест нәтижесін өңдеу</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(35, 'task')" class="tab active" id="btn-35-task">Тапсырма</button>
+    <button onclick="showTab(35, 'debug')" class="tab" id="btn-35-debug">Debug: қатені тап</button>
+    <button onclick="showTab(35, 'solve')" class="tab" id="btn-35-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-35-task">
+    <p><b>Мәтіндік жағдай:</b> Оқушы жауаптарын дұрыс жауаптар кілтімен салыстырып, дұрыс жауаптар санын және пайызын есептеңіз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>answers = [&#x27;A&#x27;, &#x27;C&#x27;, &#x27;B&#x27;, &#x27;D&#x27;]
+key = [&#x27;A&#x27;, &#x27;B&#x27;, &#x27;B&#x27;, &#x27;D&#x27;]
+
+correct = 0
+for i in range(len(key)):
+    if answers[i] == key[i]:
+        correct += 1
+percent = correct / len(key) * 100
+print(correct, percent)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-35-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>answers = [&#x27;A&#x27;, &#x27;C&#x27;, &#x27;B&#x27;, &#x27;D&#x27;]
+key = [&#x27;A&#x27;, &#x27;B&#x27;, &#x27;B&#x27;, &#x27;D&#x27;]
+
+correct = 0
+for i in range(5 # қате бөлгіш
+# len(key)):
+    if answers[i] == key[i]:
+        correct += 1
+percent = correct / len(key) * 100
+print(correct, percent)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>answers = [&#x27;A&#x27;, &#x27;C&#x27;, &#x27;B&#x27;, &#x27;D&#x27;]
+key = [&#x27;A&#x27;, &#x27;B&#x27;, &#x27;B&#x27;, &#x27;D&#x27;]
+
+correct = 0
+for i in range(len(key)):
+    if answers[i] == key[i]:
+        correct += 1
+percent = correct / len(key) * 100
+print(correct, percent)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-35-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>answers = [&#x27;A&#x27;, &#x27;C&#x27;, &#x27;B&#x27;, &#x27;D&#x27;]
+key = [&#x27;A&#x27;, &#x27;B&#x27;, &#x27;B&#x27;, &#x27;D&#x27;]
+
+correct = 0
+for i in range(len(key)):
+    if answers[i] == key[i]:
+        correct += 1
+percent = correct / len(key) * 100
+print(correct, percent)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">36</span>
+    <div>
+      <h2>Орташа балл қатесін түзету</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(36, 'task')" class="tab active" id="btn-36-task">Тапсырма</button>
+    <button onclick="showTab(36, 'debug')" class="tab" id="btn-36-debug">Debug: қатені тап</button>
+    <button onclick="showTab(36, 'solve')" class="tab" id="btn-36-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-36-task">
+    <p><b>Мәтіндік жағдай:</b> Код әртүрлі ұзындықтағы тізімдер үшін орташа мәнді дұрыс есептеуі керек. Бекітілген бөлгіш қолдануға болмайды.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>scores = [100, 90, 80]
+
+avg = sum(scores) / len(scores)
+print(avg)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-36-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>scores = [100, 90, 80]
+
+avg = sum(scores) / 5 # қате бөлгіш
+# len(scores)
+print(avg)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>scores = [100, 90, 80]
+
+avg = sum(scores) / len(scores)
+print(avg)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-36-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>scores = [100, 90, 80]
+
+avg = sum(scores) / len(scores)
+print(avg)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">37</span>
+    <div>
+      <h2>Шарт бойынша сүзу</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(37, 'task')" class="tab active" id="btn-37-task">Тапсырма</button>
+    <button onclick="showTab(37, 'debug')" class="tab" id="btn-37-debug">Debug: қатені тап</button>
+    <button onclick="showTab(37, 'solve')" class="tab" id="btn-37-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-37-task">
+    <p><b>Мәтіндік жағдай:</b> 70-тен жоғары балл жинаған оқушыларды бөлек тізімге жинаңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>scores = [55, 70, 71, 90, 40]
+
+passed = []
+for s in scores:
+    if s &gt; 70:
+        passed.append(s)
+print(passed)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-37-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>scores = [55, 70, 71, 90, 40]
+
+passed = []
+for s in scores:
+    if s &gt; 70:
+        passed.append(s)
+print(passed)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>scores = [55, 70, 71, 90, 40]
+
+passed = []
+for s in scores:
+    if s &gt; 70:
+        passed.append(s)
+print(passed)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-37-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>scores = [55, 70, 71, 90, 40]
+
+passed = []
+for s in scores:
+    if s &gt; 70:
+        passed.append(s)
+print(passed)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">38</span>
+    <div>
+      <h2>Жұп және тақ топтау</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(38, 'task')" class="tab active" id="btn-38-task">Тапсырма</button>
+    <button onclick="showTab(38, 'debug')" class="tab" id="btn-38-debug">Debug: қатені тап</button>
+    <button onclick="showTab(38, 'solve')" class="tab" id="btn-38-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-38-task">
+    <p><b>Мәтіндік жағдай:</b> Сандарды екі бөлек тізімге бөліңіз: жұп сандар және тақ сандар.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>numbers = [1, 2, 3, 4, 5, 6]
+
+even = []
+odd = []
+for n in numbers:
+    if n % 2 == 0:
+        even.append(n)
+    else:
+        odd.append(n)
+print(even, odd)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-38-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>numbers = [1, 2, 3, 4, 5, 6]
+
+even = []
+odd = []
+for n in numbers:
+    if n % 2 == 0:
+        even.append(n)
+    else:
+        odd.append(n)
+print(even, odd)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>numbers = [1, 2, 3, 4, 5, 6]
+
+even = []
+odd = []
+for n in numbers:
+    if n % 2 == 0:
+        even.append(n)
+    else:
+        odd.append(n)
+print(even, odd)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-38-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>numbers = [1, 2, 3, 4, 5, 6]
+
+even = []
+odd = []
+for n in numbers:
+    if n % 2 == 0:
+        even.append(n)
+    else:
+        odd.append(n)
+print(even, odd)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">39</span>
+    <div>
+      <h2>Баға бойынша тауар іздеу</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(39, 'task')" class="tab active" id="btn-39-task">Тапсырма</button>
+    <button onclick="showTab(39, 'debug')" class="tab" id="btn-39-debug">Debug: қатені тап</button>
+    <button onclick="showTab(39, 'solve')" class="tab" id="btn-39-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-39-task">
+    <p><b>Мәтіндік жағдай:</b> Сөздіктегі тауарлардан бағасы берілген шектен төмендерін шығарыңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>products = {&#x27;bag&#x27;: 12000, &#x27;pen&#x27;: 300, &#x27;book&#x27;: 2500}
+limit = 3000
+
+for name, price in products.items():
+    if price &lt; limit:
+        print(name, price)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-39-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>products = {&#x27;bag&#x27;: 12000, &#x27;pen&#x27;: 300, &#x27;book&#x27;: 2500}
+limit = 3000
+
+for name, price in products.items():
+    if price &lt; limit:
+        print(name, price)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>products = {&#x27;bag&#x27;: 12000, &#x27;pen&#x27;: 300, &#x27;book&#x27;: 2500}
+limit = 3000
+
+for name, price in products.items():
+    if price &lt; limit:
+        print(name, price)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-39-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>products = {&#x27;bag&#x27;: 12000, &#x27;pen&#x27;: 300, &#x27;book&#x27;: 2500}
+limit = 3000
+
+for name, price in products.items():
+    if price &lt; limit:
+        print(name, price)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">40</span>
+    <div>
+      <h2>Апталық сатылымды талдау</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(40, 'task')" class="tab active" id="btn-40-task">Тапсырма</button>
+    <button onclick="showTab(40, 'debug')" class="tab" id="btn-40-debug">Debug: қатені тап</button>
+    <button onclick="showTab(40, 'solve')" class="tab" id="btn-40-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-40-task">
+    <p><b>Мәтіндік жағдай:</b> 7 күндік сатылым бойынша жалпы соманы, орташа мәнді және ең жоғары сатылым болған күнді табыңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>sales = [120, 150, 90, 200, 170, 130, 160]
+
+total = sum(sales)
+avg = total / len(sales)
+max_sale = max(sales)
+day = sales.index(max_sale) + 1
+print(total, avg, day)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-40-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>sales = [120, 150, 90, 200, 170, 130, 160]
+
+total = sum(sales)
+avg = total / 5 # қате бөлгіш
+# len(sales)
+max_sale = max(sales)
+day = sales.index(max_sale) + 1
+print(total, avg, day)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>sales = [120, 150, 90, 200, 170, 130, 160]
+
+total = sum(sales)
+avg = total / len(sales)
+max_sale = max(sales)
+day = sales.index(max_sale) + 1
+print(total, avg, day)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-40-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>sales = [120, 150, 90, 200, 170, 130, 160]
+
+total = sum(sales)
+avg = total / len(sales)
+max_sale = max(sales)
+day = sales.index(max_sale) + 1
+print(total, avg, day)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">41</span>
+    <div>
+      <h2>Пайданы есептеу</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(41, 'task')" class="tab active" id="btn-41-task">Тапсырма</button>
+    <button onclick="showTab(41, 'debug')" class="tab" id="btn-41-debug">Debug: қатені тап</button>
+    <button onclick="showTab(41, 'solve')" class="tab" id="btn-41-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-41-task">
+    <p><b>Мәтіндік жағдай:</b> Кіріс пен шығын тізімдері бойынша әр күннің пайдасын және жалпы пайданы есептеңіз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>income = [500, 700, 650]
+cost = [300, 400, 500]
+
+profits = []
+for i in range(len(income)):
+    profits.append(income[i] - cost[i])
+print(profits, sum(profits))</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-41-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>income = [500, 700, 650]
+cost = [300, 400, 500]
+
+profits = []
+for i in range(5 # қате бөлгіш
+# len(income)):
+    profits.append(income[i] - cost[i])
+print(profits, sum(profits))</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>income = [500, 700, 650]
+cost = [300, 400, 500]
+
+profits = []
+for i in range(len(income)):
+    profits.append(income[i] - cost[i])
+print(profits, sum(profits))</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-41-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>income = [500, 700, 650]
+cost = [300, 400, 500]
+
+profits = []
+for i in range(len(income)):
+    profits.append(income[i] - cost[i])
+print(profits, sum(profits))</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">42</span>
+    <div>
+      <h2>Ең тиімді күн</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(42, 'task')" class="tab active" id="btn-42-task">Тапсырма</button>
+    <button onclick="showTab(42, 'debug')" class="tab" id="btn-42-debug">Debug: қатені тап</button>
+    <button onclick="showTab(42, 'solve')" class="tab" id="btn-42-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-42-task">
+    <p><b>Мәтіндік жағдай:</b> Пайда тізімі бойынша ең тиімді күннің нөмірін анықтаңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>profits = [50, 80, 40, 120, 90]
+
+max_profit = max(profits)
+day = profits.index(max_profit) + 1
+print(day, max_profit)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-42-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>profits = [50, 80, 40, 120, 90]
+
+max_profit = min(profits)
+day = profits.index(max_profit) + 1
+print(day, max_profit)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>profits = [50, 80, 40, 120, 90]
+
+max_profit = max(profits)
+day = profits.index(max_profit) + 1
+print(day, max_profit)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-42-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>profits = [50, 80, 40, 120, 90]
+
+max_profit = max(profits)
+day = profits.index(max_profit) + 1
+print(day, max_profit)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">43</span>
+    <div>
+      <h2>Оқушылар сөздігі</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(43, 'task')" class="tab active" id="btn-43-task">Тапсырма</button>
+    <button onclick="showTab(43, 'debug')" class="tab" id="btn-43-debug">Debug: қатені тап</button>
+    <button onclick="showTab(43, 'solve')" class="tab" id="btn-43-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-43-task">
+    <p><b>Мәтіндік жағдай:</b> Оқушы аты енгізілгенде оның бағасын шығарыңыз. Егер оқушы жоқ болса, &#x27;Табылмады&#x27; деп шығарыңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>students = {&#x27;Aruzhan&#x27;: 90, &#x27;Dias&#x27;: 75}
+name = &#x27;Dias&#x27;
+
+print(students.get(name, &#x27;Табылмады&#x27;))</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-43-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>students = {&#x27;Aruzhan&#x27;: 90, &#x27;Dias&#x27;: 75}
+name = &#x27;Dias&#x27;
+
+print(students.get(name, &#x27;Табылмады&#x27;))</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>students = {&#x27;Aruzhan&#x27;: 90, &#x27;Dias&#x27;: 75}
+name = &#x27;Dias&#x27;
+
+print(students.get(name, &#x27;Табылмады&#x27;))</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-43-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>students = {&#x27;Aruzhan&#x27;: 90, &#x27;Dias&#x27;: 75}
+name = &#x27;Dias&#x27;
+
+print(students.get(name, &#x27;Табылмады&#x27;))</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">44</span>
+    <div>
+      <h2>Сөздікті мән бойынша сұрыптау</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(44, 'task')" class="tab active" id="btn-44-task">Тапсырма</button>
+    <button onclick="showTab(44, 'debug')" class="tab" id="btn-44-debug">Debug: қатені тап</button>
+    <button onclick="showTab(44, 'solve')" class="tab" id="btn-44-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-44-task">
+    <p><b>Мәтіндік жағдай:</b> Сөздіктегі оқушыларды бағасы бойынша кему ретімен сұрыптаңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>students = {&#x27;A&#x27;: 70, &#x27;B&#x27;: 95, &#x27;C&#x27;: 85}
+
+result = sorted(students.items(), key=lambda x: x[1], reverse=True)
+print(result)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-44-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>students = {&#x27;A&#x27;: 70, &#x27;B&#x27;: 95, &#x27;C&#x27;: 85}
+
+result = sorted(students.items(), key=lambda x: x[1], reverse=False)
+print(result)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>students = {&#x27;A&#x27;: 70, &#x27;B&#x27;: 95, &#x27;C&#x27;: 85}
+
+result = sorted(students.items(), key=lambda x: x[1], reverse=True)
+print(result)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-44-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>students = {&#x27;A&#x27;: 70, &#x27;B&#x27;: 95, &#x27;C&#x27;: 85}
+
+result = sorted(students.items(), key=lambda x: x[1], reverse=True)
+print(result)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">45</span>
+    <div>
+      <h2>Мәтіндегі сөз жиілігі</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(45, 'task')" class="tab active" id="btn-45-task">Тапсырма</button>
+    <button onclick="showTab(45, 'debug')" class="tab" id="btn-45-debug">Debug: қатені тап</button>
+    <button onclick="showTab(45, 'solve')" class="tab" id="btn-45-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-45-task">
+    <p><b>Мәтіндік жағдай:</b> Берілген мәтіндегі әр сөздің неше рет кездесетінін анықтаңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>text = &#x27;python python code test&#x27;
+
+freq = {}
+for word in text.split():
+    freq[word] = freq.get(word, 0) + 1
+print(freq)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-45-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>text = &#x27;python python code test&#x27;
+
+freq = {}
+for word in text.split():
+    freq[word] = freq.get(word, 0) + 1
+print(freq)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>text = &#x27;python python code test&#x27;
+
+freq = {}
+for word in text.split():
+    freq[word] = freq.get(word, 0) + 1
+print(freq)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-45-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>text = &#x27;python python code test&#x27;
+
+freq = {}
+for word in text.split():
+    freq[word] = freq.get(word, 0) + 1
+print(freq)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">46</span>
+    <div>
+      <h2>Стоп-сөздерді жою</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(46, 'task')" class="tab active" id="btn-46-task">Тапсырма</button>
+    <button onclick="showTab(46, 'debug')" class="tab" id="btn-46-debug">Debug: қатені тап</button>
+    <button onclick="showTab(46, 'solve')" class="tab" id="btn-46-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-46-task">
+    <p><b>Мәтіндік жағдай:</b> Мәтіндегі қажетсіз сөздерді алып тастап, қалған сөздерден жаңа тізім жасаңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>words = [&#x27;мен&#x27;, &#x27;python&#x27;, &#x27;және&#x27;, &#x27;код&#x27;]
+stop = [&#x27;мен&#x27;, &#x27;және&#x27;]
+
+clean = []
+for word in words:
+    if word not in stop:
+        clean.append(word)
+print(clean)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-46-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>words = [&#x27;мен&#x27;, &#x27;python&#x27;, &#x27;және&#x27;, &#x27;код&#x27;]
+stop = [&#x27;мен&#x27;, &#x27;және&#x27;]
+
+clean = []
+for word in words:
+    if word in stop:
+        clean.append(word)
+print(clean)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>words = [&#x27;мен&#x27;, &#x27;python&#x27;, &#x27;және&#x27;, &#x27;код&#x27;]
+stop = [&#x27;мен&#x27;, &#x27;және&#x27;]
+
+clean = []
+for word in words:
+    if word not in stop:
+        clean.append(word)
+print(clean)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-46-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>words = [&#x27;мен&#x27;, &#x27;python&#x27;, &#x27;және&#x27;, &#x27;код&#x27;]
+stop = [&#x27;мен&#x27;, &#x27;және&#x27;]
+
+clean = []
+for word in words:
+    if word not in stop:
+        clean.append(word)
+print(clean)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">47</span>
+    <div>
+      <h2>Логин және құпиясөзді тексеру</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(47, 'task')" class="tab active" id="btn-47-task">Тапсырма</button>
+    <button onclick="showTab(47, 'debug')" class="tab" id="btn-47-debug">Debug: қатені тап</button>
+    <button onclick="showTab(47, 'solve')" class="tab" id="btn-47-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-47-task">
+    <p><b>Мәтіндік жағдай:</b> Қолданушылар сөздігі арқылы логин мен құпиясөздің дұрыстығын тексеріңіз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>users = {&#x27;admin&#x27;: &#x27;1234&#x27;, &#x27;user&#x27;: &#x27;1111&#x27;}
+login = &#x27;admin&#x27;
+password = &#x27;1234&#x27;
+
+if login in users and users[login] == password:
+    print(&#x27;Рұқсат берілді&#x27;)
+else:
+    print(&#x27;Қате&#x27;)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-47-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>users = {&#x27;admin&#x27;: &#x27;1234&#x27;, &#x27;user&#x27;: &#x27;1111&#x27;}
+login = &#x27;admin&#x27;
+password = &#x27;1234&#x27;
+
+if login in users and users[login] == password:
+    print(&#x27;Рұқсат берілді&#x27;)
+else:
+    print(&#x27;Қате&#x27;)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>users = {&#x27;admin&#x27;: &#x27;1234&#x27;, &#x27;user&#x27;: &#x27;1111&#x27;}
+login = &#x27;admin&#x27;
+password = &#x27;1234&#x27;
+
+if login in users and users[login] == password:
+    print(&#x27;Рұқсат берілді&#x27;)
+else:
+    print(&#x27;Қате&#x27;)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-47-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>users = {&#x27;admin&#x27;: &#x27;1234&#x27;, &#x27;user&#x27;: &#x27;1111&#x27;}
+login = &#x27;admin&#x27;
+password = &#x27;1234&#x27;
+
+if login in users and users[login] == password:
+    print(&#x27;Рұқсат берілді&#x27;)
+else:
+    print(&#x27;Қате&#x27;)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">48</span>
+    <div>
+      <h2>Банкомат алгоритмі</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(48, 'task')" class="tab active" id="btn-48-task">Тапсырма</button>
+    <button onclick="showTab(48, 'debug')" class="tab" id="btn-48-debug">Debug: қатені тап</button>
+    <button onclick="showTab(48, 'solve')" class="tab" id="btn-48-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-48-task">
+    <p><b>Мәтіндік жағдай:</b> Шоттағы ақша жеткілікті болса, сұралған соманы шешіңіз. Егер ақша жетпесе, операция орындалмайды.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>balance = 10000
+withdraw = 3500
+
+if withdraw &lt;= balance:
+    balance -= withdraw
+    print(&#x27;Қалған ақша:&#x27;, balance)
+else:
+    print(&#x27;Қаражат жеткіліксіз&#x27;)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-48-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>balance = 10000
+withdraw = 3500
+
+if withdraw &lt;= balance:
+    balance = withdraw
+    print(&#x27;Қалған ақша:&#x27;, balance)
+else:
+    print(&#x27;Қаражат жеткіліксіз&#x27;)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>balance = 10000
+withdraw = 3500
+
+if withdraw &lt;= balance:
+    balance -= withdraw
+    print(&#x27;Қалған ақша:&#x27;, balance)
+else:
+    print(&#x27;Қаражат жеткіліксіз&#x27;)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-48-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>balance = 10000
+withdraw = 3500
+
+if withdraw &lt;= balance:
+    balance -= withdraw
+    print(&#x27;Қалған ақша:&#x27;, balance)
+else:
+    print(&#x27;Қаражат жеткіліксіз&#x27;)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">49</span>
+    <div>
+      <h2>Санды тап ойыны</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(49, 'task')" class="tab active" id="btn-49-task">Тапсырма</button>
+    <button onclick="showTab(49, 'debug')" class="tab" id="btn-49-debug">Debug: қатені тап</button>
+    <button onclick="showTab(49, 'solve')" class="tab" id="btn-49-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-49-task">
+    <p><b>Мәтіндік жағдай:</b> Пайдаланушы құпия санды тапқанша цикл жалғасуы керек. Әр әрекеттен кейін бағдарлама бағыт берсін.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>secret = 7
+guesses = [3, 9, 7]
+
+for guess in guesses:
+    if guess == secret:
+        print(&#x27;Дұрыс таптыңыз&#x27;)
+        break
+    elif guess &lt; secret:
+        print(&#x27;Үлкен сан енгізіңіз&#x27;)
+    else:
+        print(&#x27;Кіші сан енгізіңіз&#x27;)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-49-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>secret = 7
+guesses = [3, 9, 7]
+
+for guess in guesses:
+    if guess == secret:
+        print(&#x27;Дұрыс таптыңыз&#x27;)
+        break
+    elif guess &lt; secret:
+        print(&#x27;Үлкен сан енгізіңіз&#x27;)
+    else:
+        print(&#x27;Кіші сан енгізіңіз&#x27;)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>secret = 7
+guesses = [3, 9, 7]
+
+for guess in guesses:
+    if guess == secret:
+        print(&#x27;Дұрыс таптыңыз&#x27;)
+        break
+    elif guess &lt; secret:
+        print(&#x27;Үлкен сан енгізіңіз&#x27;)
+    else:
+        print(&#x27;Кіші сан енгізіңіз&#x27;)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-49-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>secret = 7
+guesses = [3, 9, 7]
+
+for guess in guesses:
+    if guess == secret:
+        print(&#x27;Дұрыс таптыңыз&#x27;)
+        break
+    elif guess &lt; secret:
+        print(&#x27;Үлкен сан енгізіңіз&#x27;)
+    else:
+        print(&#x27;Кіші сан енгізіңіз&#x27;)</code></pre>
+    </details>
+  </div>
+</section>
+
+<section class="card" data-level="hard">
+  <div class="card-head">
+    <span class="num">50</span>
+    <div>
+      <h2>Кешенді талдау</h2>
+      <p class="level">Күрделі деңгей</p>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button onclick="showTab(50, 'task')" class="tab active" id="btn-50-task">Тапсырма</button>
+    <button onclick="showTab(50, 'debug')" class="tab" id="btn-50-debug">Debug: қатені тап</button>
+    <button onclick="showTab(50, 'solve')" class="tab" id="btn-50-solve">Есепті шеш</button>
+  </div>
+
+  <div class="panel active" id="panel-50-task">
+    <p><b>Мәтіндік жағдай:</b> Бағалар тізімі бойынша орташа, максимум, минимум, ортадан жоғары бағалар санын және сұрыпталған рейтингті шығарыңыз.</p>
+    <p><b>Оқушы орындайтын жұмыс:</b> кодты оқыңыз, әр жолдың қызметін түсіндіріңіз, соңғы нәтижені қолмен есептеңіз.</p>
+    <pre><code>scores = [78, 92, 65, 88, 100]
+
+avg = sum(scores) / len(scores)
+mx = max(scores)
+mn = min(scores)
+above = 0
+for s in scores:
+    if s &gt; avg:
+        above += 1
+rating = sorted(scores, reverse=True)
+print(avg, mx, mn, above, rating)</code></pre>
+    <div class="question">
+      <b>Талдау сұрақтары:</b>
+      <ol>
+        <li>Бұл код қандай есепті шешеді?</li>
+        <li>Негізгі айнымалылардың қызметі қандай?</li>
+        <li>Цикл немесе шарт қай жерде қолданылған?</li>
+        <li>Бағдарлама экранға қандай нәтиже шығарады?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-50-debug">
+    <p><b>Міндет:</b> кодтағы қатені табыңыз. Қате синтаксистік емес, көбіне логикалық қате болуы мүмкін. Қате жолды көрсетіп, дұрыс нұсқасын жазыңыз.</p>
+    <pre><code>scores = [78, 92, 65, 88, 100]
+
+avg = sum(scores) / 5 # қате бөлгіш
+# len(scores)
+mx = max(scores)
+mn = min(scores)
+above = 0
+for s in scores:
+    if s &gt; avg:
+        above += 1
+rating = sorted(scores, reverse=True)
+print(avg, mx, mn, above, rating)</code></pre>
+    <details class="teacher">
+      <summary>Тексеру үшін дұрыс жауапты ашу</summary>
+      <p>Шешімде негізгі талап толық орындалуы керек: деректер дұрыс өңделеді, шарт дұрыс қойылады, нәтиже бөлек айнымалыға жиналады және соңында түсінікті түрде шығарылады.</p>
+      <pre><code>scores = [78, 92, 65, 88, 100]
+
+avg = sum(scores) / len(scores)
+mx = max(scores)
+mn = min(scores)
+above = 0
+for s in scores:
+    if s &gt; avg:
+        above += 1
+rating = sorted(scores, reverse=True)
+print(avg, mx, mn, above, rating)</code></pre>
+    </details>
+  </div>
+
+  <div class="panel" id="panel-50-solve">
+    <p><b>Практикалық тапсырма:</b> Осы есепті басқа кіріс деректерімен жұмыс істейтіндей етіп өзгертіңіз. Қажет болса input(), цикл, шарт және сөздік қолданыңыз.</p>
+    <p><b>Талаптар:</b> бағдарламада дерек енгізу немесе дайын дерек болуы керек; алгоритм нақты орындалуы керек; нәтиже түсінікті мәтінмен шығарылуы керек.</p>
+    <textarea placeholder="Оқушы жауабын осы жерге жаза алады..."></textarea>
+    <details class="teacher">
+      <summary>Тексеру үшін үлгі шешімді ашу</summary>
+      <pre><code>scores = [78, 92, 65, 88, 100]
+
+avg = sum(scores) / len(scores)
+mx = max(scores)
+mn = min(scores)
+above = 0
+for s in scores:
+    if s &gt; avg:
+        above += 1
+rating = sorted(scores, reverse=True)
+print(avg, mx, mn, above, rating)</code></pre>
+    </details>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Python бойынша ЕНТ-ға дайындыққа арналған интерактивті HTML тренажер
+</footer>
+
+<script>
+function showTab(num, name) {
+  const names = ['task', 'debug', 'solve'];
+  names.forEach(n => {
+    document.getElementById(`panel-${num}-${n}`).classList.remove('active');
+    document.getElementById(`btn-${num}-${n}`).classList.remove('active');
+  });
+  document.getElementById(`panel-${num}-${name}`).classList.add('active');
+  document.getElementById(`btn-${num}-${name}`).classList.add('active');
+}
+
+function filterCards(level) {
+  document.querySelectorAll('.card').forEach(card => {
+    if (level === 'all' || card.dataset.level === level) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+</script>
+</body>
+</html>
