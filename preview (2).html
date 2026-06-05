@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Информатика 10-сынып: терминдерді жаттау тренажері</title>
+  <style>
+    :root {
+      --blue-950: #071426;
+      --blue-900: #0b1f3a;
+      --blue-800: #102a4c;
+      --blue-700: #173b63;
+      --emerald-500: #10b981;
+      --emerald-600: #059669;
+      --emerald-100: #d1fae5;
+      --white: #ffffff;
+      --soft: #eef6ff;
+      --muted: #9fb4c7;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(16, 185, 129, 0.18), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(23, 59, 99, 0.60), transparent 36%),
+        linear-gradient(135deg, var(--blue-950), var(--blue-900));
+      color: var(--white);
+    }
+
+    .app {
+      width: min(1120px, 94vw);
+      margin: 0 auto;
+      padding: 28px 0 40px;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .title-block h1 {
+      margin: 0 0 8px;
+      font-size: clamp(24px, 3.5vw, 42px);
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+    }
+
+    .title-block p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+      max-width: 780px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 148px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.16);
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      color: var(--emerald-100);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+    }
+
+    .settings {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr auto;
+      gap: 12px;
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+    }
+
+    label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    select,
+    input {
+      width: 100%;
+      height: 44px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 14px;
+      background: rgba(7, 20, 38, 0.84);
+      color: var(--white);
+      padding: 0 12px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    select:focus,
+    input:focus {
+      border-color: var(--emerald-500);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      background: var(--emerald-500);
+      color: #042017;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease, background 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      background: #34d399;
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button.secondary {
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--white);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    button.danger {
+      background: rgba(239, 68, 68, 0.18);
+      color: #fecaca;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .main {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 280px;
+      gap: 0;
+    }
+
+    .card-area {
+      padding: 24px;
+    }
+
+    .top-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .progress-wrap {
+      display: grid;
+      gap: 8px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .progress {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--emerald-500), #7dd3fc);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .timer {
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      position: relative;
+      background:
+        conic-gradient(var(--emerald-500) var(--angle, 360deg), rgba(255, 255, 255, 0.12) 0deg);
+      box-shadow: inset 0 0 0 7px rgba(7, 20, 38, 0.96);
+    }
+
+    .timer span {
+      font-size: 26px;
+      font-weight: 900;
+    }
+
+    .timer.warning {
+      background: conic-gradient(var(--warning) var(--angle, 360deg), rgba(255, 255, 255, 0.12) 0deg);
+    }
+
+    .timer.danger {
+      background: conic-gradient(var(--danger) var(--angle, 360deg), rgba(255, 255, 255, 0.12) 0deg);
+    }
+
+    .mode-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.14);
+      color: var(--emerald-100);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .flashcard {
+      min-height: 320px;
+      border-radius: 28px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05)),
+        linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0));
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: clamp(22px, 4vw, 42px);
+      display: grid;
+      align-content: center;
+      gap: 18px;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .flashcard::before {
+      content: "";
+      position: absolute;
+      inset: auto -60px -90px auto;
+      width: 230px;
+      height: 230px;
+      border-radius: 50%;
+      background: rgba(16, 185, 129, 0.10);
+    }
+
+    .card-hint {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      font-size: 12px;
+      font-weight: 800;
+      z-index: 1;
+    }
+
+    .card-text {
+      font-size: clamp(23px, 3.2vw, 40px);
+      font-weight: 900;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      z-index: 1;
+    }
+
+    .card-text.definition {
+      font-size: clamp(20px, 2.3vw, 30px);
+      font-weight: 750;
+      line-height: 1.38;
+    }
+
+    .answer-box {
+      display: none;
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.30);
+    }
+
+    .answer-box.show {
+      display: block;
+    }
+
+    .answer-box .label {
+      margin-bottom: 7px;
+      color: var(--emerald-100);
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .answer-box .value {
+      font-size: 18px;
+      line-height: 1.45;
+      color: #f6fffb;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.4fr;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .sidebar {
+      padding: 22px;
+      background: rgba(7, 20, 38, 0.34);
+      border-left: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .side-card {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      margin-bottom: 14px;
+    }
+
+    .side-card h3 {
+      margin: 0 0 10px;
+      font-size: 15px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stat {
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 2px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .help {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .term-list {
+      max-height: 310px;
+      overflow: auto;
+      display: grid;
+      gap: 8px;
+      padding-right: 4px;
+    }
+
+    .term-pill {
+      padding: 9px 10px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--soft);
+      font-size: 13px;
+      line-height: 1.25;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .term-pill.active {
+      border-color: rgba(16, 185, 129, 0.7);
+      background: rgba(16, 185, 129, 0.16);
+      color: var(--white);
+      font-weight: 800;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      text-align: center;
+    }
+
+    @media (max-width: 880px) {
+      .header,
+      .settings,
+      .main,
+      .top-row,
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .badge {
+        justify-self: start;
+      }
+
+      .timer {
+        justify-self: center;
+      }
+
+      .sidebar {
+        border-left: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .flashcard {
+        min-height: 270px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .app {
+        width: min(100% - 24px, 1120px);
+        padding-top: 16px;
+      }
+
+      .settings,
+      .card-area,
+      .sidebar {
+        padding: 14px;
+      }
+
+      .flashcard {
+        border-radius: 22px;
+      }
+
+      .timer {
+        width: 78px;
+        height: 78px;
+      }
+
+      .timer span {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="title-block">
+        <h1>Информатика 10-сынып: терминдерді жаттау тренажері</h1>
+        <p>Карточканы басыңыз: терминнен анықтамаға немесе анықтамадан терминге ауысады. Уақыт біткенде дұрыс жауап автоматты түрде көрсетіледі.</p>
+      </div>
+      <div class="badge">93 термин</div>
+    </header>
+
+    <section class="panel">
+      <div class="settings">
+        <div class="field">
+          <label for="mode">Жаттығу режимі</label>
+          <select id="mode">
+            <option value="term">Термин → анықтама</option>
+            <option value="definition">Анықтама → термин</option>
+            <option value="mixed">Аралас режим</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="order">Реті</label>
+          <select id="order">
+            <option value="sequential">Кезекпен</option>
+            <option value="random">Араластыру</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="seconds">Таймер, секунд</label>
+          <input id="seconds" type="number" min="5" max="180" value="30" />
+        </div>
+
+        <div class="field">
+          <label>&nbsp;</label>
+          <button id="restartBtn">Қайта бастау</button>
+        </div>
+      </div>
+
+      <div class="main">
+        <div class="card-area">
+          <div class="top-row">
+            <div class="progress-wrap">
+              <div class="progress-meta">
+                <span id="counter">1 / 93</span>
+                <span id="statusText">Жауапты ойлаңыз, кейін карточканы басыңыз</span>
+              </div>
+              <div class="progress"><div id="progressBar" class="progress-bar"></div></div>
+            </div>
+            <div id="timer" class="timer"><span id="timeLeft">30</span></div>
+          </div>
+
+          <div id="modeLabel" class="mode-label">Термин → анықтама</div>
+
+          <div id="flashcard" class="flashcard" tabindex="0" role="button" aria-label="Карточканы ашу">
+            <div id="cardHint" class="card-hint">Термин</div>
+            <div id="cardText" class="card-text">Ақиқаттық кестесі</div>
+          </div>
+
+          <div id="answerBox" class="answer-box">
+            <div id="answerLabel" class="label">Дұрыс анықтама</div>
+            <div id="answerValue" class="value"></div>
+          </div>
+
+          <div class="controls">
+            <button id="showBtn" class="secondary">Жауапты көрсету</button>
+            <button id="knownBtn">Білемін</button>
+            <button id="nextBtn" class="secondary">Далее / Келесі</button>
+          </div>
+        </div>
+
+        <aside class="sidebar">
+          <div class="side-card">
+            <h3>Нәтиже</h3>
+            <div class="stat-grid">
+              <div class="stat">
+                <strong id="knownCount">0</strong>
+                <span>біледі</span>
+              </div>
+              <div class="stat">
+                <strong id="missedCount">0</strong>
+                <span>уақыты өтті</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="side-card">
+            <h3>Қолдану тәртібі</h3>
+            <p class="help">
+              1) Оқушы карточкадағы сұрақты оқиды.<br>
+              2) Іштей жауап береді.<br>
+              3) Карточканы басып дұрыс жауапты көреді.<br>
+              4) «Келесі» батырмасын басады.
+            </p>
+          </div>
+
+          <div class="side-card">
+            <h3>Терминдер тізімі</h3>
+            <div id="termList" class="term-list"></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="footer-note">
+      Локалды HTML-тренажер. Интернетсіз ашылады. Терминдер 10-сынып информатика тақырыбы бойынша берілді.
+    </div>
+  </div>
+
+  <script>
+    const DATA = [
+      {
+            "term": "Ақиқаттық кестесі",
+            "definition": "Құрамына кіретін қарапайым пікірлердің барлық комбинациялары үшін құрамдас пікірдің қандай мән қабылдайтынын көрсететін кесте."
+      },
+      {
+            "term": "Ақпараттық жүйе",
+            "definition": "Пайдаланушыларды қажетті ақпаратпен қамтамасыз ететін аппараттық және программалық құралдар жиынтығы."
+      },
+      {
+            "term": "Ақпараттық қауіпсіздік",
+            "definition": "Электрондық ақпараттық ресурстарды, ақпараттық жүйелерді және ақпараттық инфрақұрылымды сыртқы және ішкі қауіптерден қорғау жағдайы."
+      },
+      {
+            "term": "Ақпараттық қауіпсіздіктің құқықтық негіздері",
+            "definition": "Ақпаратты қорғауды халықаралық конвенциялар, Конституция және мемлекеттік заңдар арқылы реттейтін құқықтық нормалар жүйесі."
+      },
+      {
+            "term": "Алғашқы кілт / кілт",
+            "definition": "Кестедегі әрбір жазбаны бірмәнді анықтайтын өріс немесе өрістер комбинациясы."
+      },
+      {
+            "term": "Аргумент / параметр",
+            "definition": "Ішкі программа шақырылған кезде негізгі программадан ішкі программаға берілетін мән."
+      },
+      {
+            "term": "Арифметикалық-логикалық құрылғы (АЛҚ)",
+            "definition": "Арифметикалық және логикалық операцияларды орындайтын процессордың орталық бөлігі."
+      },
+      {
+            "term": "Аутентификациялау",
+            "definition": "Қолданушы ұсынған идентификатордың шынайылығын немесе оның сол пайдаланушыға тиесілі екенін тексеру процесі."
+      },
+      {
+            "term": "Басқару құрылғысы (БҚ)",
+            "definition": "Процессор компоненттерінің, жад блогының, АЛҚ-ның, енгізу және шығару құрылғыларының жұмысын басқаратын блок."
+      },
+      {
+            "term": "Вирус",
+            "definition": "Компьютерге, файлдарға немесе программаларға зиян келтіруі мүмкін арнайы жазылған зиянды программа."
+      },
+      {
+            "term": "Вирустардың жіктелуі",
+            "definition": "Вирустардың жазылған тіліне, қолданатын технологиясына, зақымдайтын платформасына, қосымша зиянды функциясына және мақсатына қарай бөлінуі."
+      },
+      {
+            "term": "Гиперсілтеме",
+            "definition": "Сол беттегі немесе басқа беттегі элементке өтуге мүмкіндік беретін web-құжат бөлігі."
+      },
+      {
+            "term": "CSS",
+            "definition": "Web-бет элементтерінің сыртқы көрінісін басқаруға арналған технология."
+      },
+      {
+            "term": "Граф",
+            "definition": "Төбелер жиынтығынан және олардың арасындағы қабырғалар байланысынан тұратын құрылым."
+      },
+      {
+            "term": "Граф төбесі",
+            "definition": "Графтағы жеке объектіні білдіретін элемент."
+      },
+      {
+            "term": "Граф қабырғасы",
+            "definition": "Графтағы екі төбені байланыстыратын байланыс."
+      },
+      {
+            "term": "Деректер қоры",
+            "definition": "Компьютердің сыртқы жадында сақталған белгілі бір сала туралы арнайы ұйымдастырылған деректер жиынтығы."
+      },
+      {
+            "term": "Деректер қоры бар web-беттер",
+            "definition": "Деректер қорымен динамикалық байланыс жасайтын және деректерді қарауға, өңдеуге, енгізуге мүмкіндік беретін диалогтық web-беттер."
+      },
+      {
+            "term": "Деректер қорын басқару жүйесі (ДҚБЖ)",
+            "definition": "Деректер қорын құруға, ақпаратты жаңартуға, толықтыруға және оған қолжеткізуді ұйымдастыруға арналған программалық жабдықтама."
+      },
+      {
+            "term": "Деректер қорының тұтастығы",
+            "definition": "Кестелер арасындағы байланыстардың дұрыс сақталуы және деректердің логикалық сәйкестігі."
+      },
+      {
+            "term": "Есеп",
+            "definition": "Экранға, баспаға немесе файлға шығарылатын деректердің форматталған түрі."
+      },
+      {
+            "term": "Жад регистрі",
+            "definition": "Екілік кодтармен ұсынылған ақпаратты қабылдау және сақтау қызметін атқаратын регистр."
+      },
+      {
+            "term": "Желі архитектурасы",
+            "definition": "Желінің топологиясын, құрылғыларының құрамын және олардың өзара әрекеттесу ережелерін анықтайтын құрылым."
+      },
+      {
+            "term": "Желілік хаттама",
+            "definition": "Желіге қосылған құрылғылар арасында байланыс орнатуға және деректер алмасуға мүмкіндік беретін ережелер мен әрекеттер жиынтығы."
+      },
+      {
+            "term": "IP адрес",
+            "definition": "Ақпаратты бір компьютерден екіншісіне тасымалдауға, алуға және іздеуге арналған желідегі бірегей адрес."
+      },
+      {
+            "term": "Динамикалық IP адрес",
+            "definition": "Құрылғыға уақытша берілетін IP адрес."
+      },
+      {
+            "term": "Статикалық IP адрес",
+            "definition": "Құрылғыға тұрақты түрде бекітілетін IP адрес."
+      },
+      {
+            "term": "Домен",
+            "definition": "Интернеттің иерархиялық жүйесіндегі бірегей атаулар кеңістігінің белгілі бір аумағы."
+      },
+      {
+            "term": "Домендік атау",
+            "definition": "Интернеттегі ресурсты адамға түсінікті атау арқылы табуға мүмкіндік беретін адрес."
+      },
+      {
+            "term": "Идентификациялау",
+            "definition": "Идентификаторды ұсыну процесі."
+      },
+      {
+            "term": "Идентификатор",
+            "definition": "Объектіні басқа объектілерден ажыратуға мүмкіндік беретін бірегей белгі."
+      },
+      {
+            "term": "Индекс",
+            "definition": "Негізгі кестедегі іздеуді тездетуге көмектесетін көмекші құрылым немесе көрсеткіш."
+      },
+      {
+            "term": "Итерацияланатын объектілер",
+            "definition": "Өз элементтері арқылы кезекпен өтуге мүмкіндік беретін объектілер."
+      },
+      {
+            "term": "Ішкі программа",
+            "definition": "Белгілі бір тапсырманы шешуге арналған операторлар тобы."
+      },
+      {
+            "term": "Ішкі программаны шақыру",
+            "definition": "Ішкі программаны қажет кезде аты арқылы іске қосу әрекеті."
+      },
+      {
+            "term": "Функция",
+            "definition": "Python тілінде белгілі бір әрекетті орындайтын және қажет жағдайда мән қайтаратын ішкі программа."
+      },
+      {
+            "term": "Өріс",
+            "definition": "Деректер қорындағы кестенің бағаны; объектінің бір қасиетін сипаттайды."
+      },
+      {
+            "term": "Жазба",
+            "definition": "Деректер қорындағы кестенің жолы; бір объект туралы толық ақпаратты қамтиды."
+      },
+      {
+            "term": "Код",
+            "definition": "Алдын ала анықталған тұжырымдарды жазу немесе беру үшін қолданылатын шартты белгілер жиынтығы."
+      },
+      {
+            "term": "Кодек",
+            "definition": "Файлдағы мәліметтерді сығу және қайта ашу алгоритмі."
+      },
+      {
+            "term": "Кодтық кесте",
+            "definition": "Таңбалар мен олардың екілік кодтары арасындағы сәйкестікті көрсететін кесте."
+      },
+      {
+            "term": "Колонтитул",
+            "definition": "Құжат бетінің жоғарғы немесе төменгі бөлігінде орналасатын анықтамалық жол; онда автор, жұмыс атауы, бөлім немесе бет нөмірі беріледі."
+      },
+      {
+            "term": "Криптография",
+            "definition": "Ақпаратты рұқсатсыз пайдаланудан қорғау үшін мәтіндер мен деректерді шифрлеумен айналысатын ғылым."
+      },
+      {
+            "term": "Құпиясөз",
+            "definition": "Компьютерге, жүйеге немесе жеке тіркелгіге қолжеткізуді қорғау үшін қолданылатын құпия таңбалар жиынтығы."
+      },
+      {
+            "term": "Логикалық операциялар",
+            "definition": "Ұғымдардың мазмұны мен көлемін өзгертуге немесе жаңа ұғым қалыптастыруға бағытталған ақыл-ой әрекеттері."
+      },
+      {
+            "term": "Конъюнкция",
+            "definition": "Екі пікір де ақиқат болғанда ғана ақиқат мән қабылдайтын логикалық операция."
+      },
+      {
+            "term": "Дизъюнкция",
+            "definition": "Екі пікірдің кемінде біреуі ақиқат болса, ақиқат мән қабылдайтын логикалық операция."
+      },
+      {
+            "term": "Инверсия",
+            "definition": "Пікірдің мәнін қарама-қарсы мәнге өзгертетін логикалық операция."
+      },
+      {
+            "term": "Логикалық схема",
+            "definition": "Компьютер құрылғыларының жұмысын сипаттайтын логикалық функцияны іске асыратын электрондық құрылғы."
+      },
+      {
+            "term": "Логикалық элемент / вентиль",
+            "definition": "Логика алгебрасы ережелеріне сәйкес екілік айнымалылармен белгілі бір логикалық операцияны орындайтын ЭЕМ-нің қарапайым құрылымдық бірлігі."
+      },
+      {
+            "term": "MAC адрес",
+            "definition": "Желілік адаптер өндірушісімен орнатылатын және нақты адаптерді анықтайтын ұзындығы 6 байт сандық код."
+      },
+      {
+            "term": "Маршрутизация",
+            "definition": "Деректер пакетінің жүру маршрутын таңдау процесі."
+      },
+      {
+            "term": "Маршрутизатор",
+            "definition": "Деректер пакетінің желі арқылы қандай бағытпен жіберілетінін анықтайтын желілік құрылғы."
+      },
+      {
+            "term": "Мәтінді форматтау",
+            "definition": "Мәтіннің сыртқы түрін безендіру, шрифтін өзгерту және түрлі эффектілер қолдану әрекеті."
+      },
+      {
+            "term": "Разряд",
+            "definition": "Цифрдың сандағы орны. Бүтін сандарда разряд оңнан солға қарай нөмірленеді."
+      },
+      {
+            "term": "Рекурентті функция",
+            "definition": "Өзін тікелей немесе басқа функциялар арқылы шақыратын функция."
+      },
+      {
+            "term": "Рекурсия",
+            "definition": "Объектілерді немесе есептеу процестерін өздері арқылы сипаттау тәсілі."
+      },
+      {
+            "term": "Рекурсия қадамы / рекурсивті шақыру",
+            "definition": "Базалық жағдайға жақындататын параметрдің жаңа мәнімен функцияның өзін қайта шақыру қадамы."
+      },
+      {
+            "term": "Реляциялық деректер қоры",
+            "definition": "Кестелер жиынтығы ретінде ұсынылатын деректер қоры."
+      },
+      {
+            "term": "Реляциялық деректер қорының байланысы",
+            "definition": "Бірнеше кестенің ортақ өрістер арқылы өзара байланысуы."
+      },
+      {
+            "term": "Санау жүйесі",
+            "definition": "Арнайы белгілер, яғни цифрлар жиынтығы арқылы сандарды жазу тәсілі."
+      },
+      {
+            "term": "Санау жүйесінің алфавиті",
+            "definition": "Белгілі бір санау жүйесінде қолданылатын цифрлар жиынтығы."
+      },
+      {
+            "term": "Санау жүйесінің негізі",
+            "definition": "Санау жүйесінде қолданылатын цифрлар саны. Мысалы, екілік жүйенің негізі 2, ондық жүйенің негізі 10."
+      },
+      {
+            "term": "Символдық жол",
+            "definition": "Жадтың көрші ұяшықтарында орналасқан символдар тізбегі."
+      },
+      {
+            "term": "Конкатенация",
+            "definition": "Жолдарды біріктіру операциясы. Python тілінде көбіне + операторы арқылы орындалады."
+      },
+      {
+            "term": "Скрипт",
+            "definition": "Пайдаланушы интерфейсін қолдана отырып кейбір тапсырмаларды автоматтандыратын программа немесе программа файлы."
+      },
+      {
+            "term": "Стек",
+            "definition": "Уақытша деректерді немесе адрестерді сақтауға арналған арнайы ұйымдастырылған жедел жады аумағы."
+      },
+      {
+            "term": "Сұраныс",
+            "definition": "Деректер қорынан қажетті ақпаратты таңдау құралы."
+      },
+      {
+            "term": "SQL",
+            "definition": "Реляциялық деректер қорын басқаруға арналған құрылымдық сұраныстар тілі."
+      },
+      {
+            "term": "Тег",
+            "definition": "HTML тіліндегі белгілі бір операцияны орындау қажет екенін көрсететін команда."
+      },
+      {
+            "term": "HTML",
+            "definition": "Интернеттегі құжаттарды белгілеудің стандартталған гипермәтіндік тілі."
+      },
+      {
+            "term": "Пакет",
+            "definition": "Байланыс арнасы арқылы жіберуге арналған белгілі форматтағы деректер блогы."
+      },
+      {
+            "term": "Тізім",
+            "definition": "Белгі немесе нөмір арқылы басталатын жеке сөйлемдер немесе өзара байланысты сөйлемдер жиынтығы."
+      },
+      {
+            "term": "Форма",
+            "definition": "Деректер қорындағы немесе сұраныстағы кестелерде сақталатын ақпаратты енгізуді, өңдеуді және көрсетуді жеңілдететін құрал."
+      },
+      {
+            "term": "Электрондық цифрлық қолтаңба (ЭЦҚ)",
+            "definition": "Электрондық құжаттың түпнұсқалығын, тиесілілігін және мазмұны өзгермегенін растайтын электрондық цифрлық символдар жиынтығы."
+      },
+      {
+            "term": "Үлкен деректер / Big Data",
+            "definition": "Көлемі өте үлкен, құрылымы күрделі және жылдам өзгеретін, дәстүрлі құралдармен өңдеу қиын деректер жиынтығы."
+      },
+      {
+            "term": "Volume",
+            "definition": "Үлкен деректердің көлемін сипаттайтын белгі."
+      },
+      {
+            "term": "Variety",
+            "definition": "Үлкен деректердің әртүрлі форматта және әртүрлі құрылымда болуын сипаттайтын белгі."
+      },
+      {
+            "term": "Velocity",
+            "definition": "Деректердің жиналу және өңделу жылдамдығын сипаттайтын белгі."
+      },
+      {
+            "term": "Veracity",
+            "definition": "Деректердің дұрыстығын, сенімділігін сипаттайтын белгі."
+      },
+      {
+            "term": "Value",
+            "definition": "Жиналған деректердің ұйым немесе қолданушы үшін пайдасы мен маңыздылығын сипаттайтын белгі."
+      },
+      {
+            "term": "Желілік адаптер",
+            "definition": "Компьютерді желіге қосуға арналған құрылғы."
+      },
+      {
+            "term": "Концентратор",
+            "definition": "Желілік құрылғыларды бір сегментке біріктіретін құрылғы."
+      },
+      {
+            "term": "Коммутатор",
+            "definition": "Бір желі сегментінде компьютерлер арасында деректерді беруді қамтамасыз ететін құрылғы."
+      },
+      {
+            "term": "Торап",
+            "definition": "Компьютерлік желінің бөлігі ретінде басқа құрылғылармен қосылған құрылғы."
+      },
+      {
+            "term": "Жергілікті желі (LAN)",
+            "definition": "Шағын аумақта орналасқан компьютерлер мен құрылғыларды байланыстыратын желі."
+      },
+      {
+            "term": "Ғаламдық желі (WAN)",
+            "definition": "Үлкен аумақты қамтитын, әртүрлі жергілікті желілерді біріктіретін желі."
+      },
+      {
+            "term": "Өңірлік желі / MAN",
+            "definition": "Қала немесе ірі өңір көлеміндегі компьютерлік желі."
+      },
+      {
+            "term": "VPN",
+            "definition": "Ғаламдық желі арқылы бірнеше жергілікті желіні қауіпсіз біріктіруге мүмкіндік беретін виртуалды жеке желі."
+      },
+      {
+            "term": "Ақпаратты қорғау",
+            "definition": "Ақпараттың құпиялылығын, тұтастығын және қолжетімділігін сақтау үшін қолданылатын шаралар жүйесі."
+      },
+      {
+            "term": "Құпиялылық",
+            "definition": "Ақпаратқа тек рұқсаты бар қолданушылардың ғана қол жеткізуі."
+      },
+      {
+            "term": "Тұтастық",
+            "definition": "Ақпараттың рұқсатсыз өзгертілмеуі және бастапқы қалпын сақтауы."
+      },
+      {
+            "term": "Қолжетімділік",
+            "definition": "Ақпараттың қажет кезде қолданушыға немесе жүйеге қолжетімді болуы."
+      }
+];
+
+    let deck = [];
+    let current = 0;
+    let showingAnswer = false;
+    let currentMode = "term";
+    let totalSeconds = 30;
+    let timeLeft = 30;
+    let timerId = null;
+    let known = 0;
+    let missed = 0;
+    let expiredForCurrent = false;
+
+    const els = {
+      mode: document.getElementById("mode"),
+      order: document.getElementById("order"),
+      seconds: document.getElementById("seconds"),
+      restartBtn: document.getElementById("restartBtn"),
+      counter: document.getElementById("counter"),
+      statusText: document.getElementById("statusText"),
+      progressBar: document.getElementById("progressBar"),
+      timer: document.getElementById("timer"),
+      timeLeft: document.getElementById("timeLeft"),
+      modeLabel: document.getElementById("modeLabel"),
+      flashcard: document.getElementById("flashcard"),
+      cardHint: document.getElementById("cardHint"),
+      cardText: document.getElementById("cardText"),
+      answerBox: document.getElementById("answerBox"),
+      answerLabel: document.getElementById("answerLabel"),
+      answerValue: document.getElementById("answerValue"),
+      showBtn: document.getElementById("showBtn"),
+      knownBtn: document.getElementById("knownBtn"),
+      nextBtn: document.getElementById("nextBtn"),
+      knownCount: document.getElementById("knownCount"),
+      missedCount: document.getElementById("missedCount"),
+      termList: document.getElementById("termList")
+    };
+
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function getModeForCard() {
+      const selected = els.mode.value;
+      if (selected === "mixed") {
+        return Math.random() > 0.5 ? "term" : "definition";
+      }
+      return selected;
+    }
+
+    function startTrainer() {
+      totalSeconds = Math.max(5, Math.min(180, Number(els.seconds.value) || 30));
+      timeLeft = totalSeconds;
+      current = 0;
+      known = 0;
+      missed = 0;
+      deck = els.order.value === "random" ? shuffle(DATA) : [...DATA];
+      buildTermList();
+      renderCard();
+      updateStats();
+    }
+
+    function buildTermList() {
+      els.termList.innerHTML = "";
+      deck.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "term-pill";
+        div.textContent = `${index + 1}. ${item.term}`;
+        div.addEventListener("click", () => {
+          current = index;
+          renderCard();
+        });
+        els.termList.appendChild(div);
+      });
+    }
+
+    function updateTermListActive() {
+      const items = els.termList.querySelectorAll(".term-pill");
+      items.forEach((el, index) => {
+        el.classList.toggle("active", index === current);
+      });
+    }
+
+    function renderCard() {
+      clearInterval(timerId);
+      showingAnswer = false;
+      expiredForCurrent = false;
+      currentMode = getModeForCard();
+      timeLeft = totalSeconds;
+
+      const item = deck[current];
+      const modeText = currentMode === "term" ? "Термин → анықтама" : "Анықтама → термин";
+      els.modeLabel.textContent = modeText;
+      els.cardHint.textContent = currentMode === "term" ? "Термин" : "Анықтама";
+      els.cardText.textContent = currentMode === "term" ? item.term : item.definition;
+      els.cardText.classList.toggle("definition", currentMode === "definition");
+      els.answerBox.classList.remove("show");
+      els.answerValue.textContent = "";
+      els.answerLabel.textContent = currentMode === "term" ? "Дұрыс анықтама" : "Дұрыс термин";
+      els.statusText.textContent = "Жауапты ойлаңыз, кейін карточканы басыңыз";
+      els.counter.textContent = `${current + 1} / ${deck.length}`;
+      els.progressBar.style.width = `${((current + 1) / deck.length) * 100}%`;
+      updateTermListActive();
+      updateTimerVisual();
+      startTimer();
+    }
+
+    function startTimer() {
+      timerId = setInterval(() => {
+        timeLeft -= 1;
+        updateTimerVisual();
+
+        if (timeLeft <= 0) {
+          clearInterval(timerId);
+          if (!showingAnswer) {
+            expiredForCurrent = true;
+            missed += 1;
+            updateStats();
+            showAnswer(true);
+          }
+        }
+      }, 1000);
+    }
+
+    function updateTimerVisual() {
+      els.timeLeft.textContent = Math.max(0, timeLeft);
+      const angle = Math.max(0, (timeLeft / totalSeconds) * 360);
+      els.timer.style.setProperty("--angle", `${angle}deg`);
+      els.timer.classList.remove("warning", "danger");
+
+      if (timeLeft <= Math.ceil(totalSeconds * 0.2)) {
+        els.timer.classList.add("danger");
+      } else if (timeLeft <= Math.ceil(totalSeconds * 0.45)) {
+        els.timer.classList.add("warning");
+      }
+    }
+
+    function showAnswer(byTimer = false) {
+      const item = deck[current];
+      showingAnswer = true;
+      clearInterval(timerId);
+
+      if (currentMode === "term") {
+        els.answerLabel.textContent = "Дұрыс анықтама";
+        els.answerValue.textContent = item.definition;
+      } else {
+        els.answerLabel.textContent = "Дұрыс термин";
+        els.answerValue.textContent = item.term;
+      }
+
+      els.answerBox.classList.add("show");
+      els.statusText.textContent = byTimer
+        ? "Уақыт аяқталды. Дұрыс жауап көрсетілді."
+        : "Дұрыс жауап көрсетілді.";
+    }
+
+    function nextCard() {
+      if (current < deck.length - 1) {
+        current += 1;
+        renderCard();
+      } else {
+        clearInterval(timerId);
+        els.statusText.textContent = "Жаттығу аяқталды. Қайта бастауға болады.";
+        els.answerBox.classList.add("show");
+        els.answerLabel.textContent = "Жаттығу аяқталды";
+        els.answerValue.textContent = `Нәтиже: ${known} термин белгіленді, ${missed} карточкада уақыт өтіп кетті.`;
+      }
+    }
+
+    function markKnown() {
+      if (!showingAnswer) {
+        showAnswer(false);
+      }
+      known += 1;
+      updateStats();
+    }
+
+    function updateStats() {
+      els.knownCount.textContent = known;
+      els.missedCount.textContent = missed;
+    }
+
+    els.flashcard.addEventListener("click", () => showAnswer(false));
+    els.flashcard.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        showAnswer(false);
+      }
+    });
+    els.showBtn.addEventListener("click", () => showAnswer(false));
+    els.knownBtn.addEventListener("click", markKnown);
+    els.nextBtn.addEventListener("click", nextCard);
+    els.restartBtn.addEventListener("click", startTrainer);
+
+    els.mode.addEventListener("change", startTrainer);
+    els.order.addEventListener("change", startTrainer);
+    els.seconds.addEventListener("change", startTrainer);
+
+    startTrainer();
+  </script>
+</body>
+</html>
