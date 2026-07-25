@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#fffaf1">
+  <title>Wordly — английские карточки</title>
+  <style>
+    :root{--ink:#17211b;--muted:#68736b;--paper:#fffaf1;--white:#fff;--green:#1f7751;--green2:#0f5d3b;--lime:#dff36b;--peach:#ffb899;--line:#dfe4dc;--red:#b84343;--shadow:0 18px 50px rgba(31,70,51,.14)}
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;background:var(--paper);color:var(--ink);font-family:Inter,ui-rounded,"SF Pro Rounded","Segoe UI",system-ui,sans-serif}
+    body{min-height:100dvh;background:radial-gradient(circle at 92% 3%,rgba(223,243,107,.55),transparent 28rem),radial-gradient(circle at 5% 95%,rgba(255,184,153,.32),transparent 24rem)}
+    button,input{font:inherit}
+    button{border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+    .app{width:min(100%,520px);min-height:100dvh;margin:auto;padding:max(18px,env(safe-area-inset-top)) 20px max(22px,env(safe-area-inset-bottom));display:flex;flex-direction:column}
+    header{display:flex;align-items:center;justify-content:space-between;min-height:48px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:19px;letter-spacing:-.4px}
+    .logo{width:38px;height:38px;border-radius:13px;background:var(--green);color:#fff;display:grid;place-items:center;transform:rotate(-4deg);box-shadow:0 8px 18px rgba(31,119,81,.22)}
+    .logo span{transform:rotate(4deg);font-size:21px}
+    .iconbtn{width:44px;height:44px;border-radius:15px;background:rgba(255,255,255,.72);border:1px solid rgba(23,33,27,.08);color:var(--ink);font-size:20px}
+    main{flex:1;display:flex;flex-direction:column}
+    .screen{display:none;flex:1;animation:in .25s ease}
+    .screen.active{display:flex;flex-direction:column}
+    @keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+    .hero{padding:48px 0 24px}
+    .eyebrow{font-size:12px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--green)}
+    h1{font-size:clamp(40px,12vw,59px);line-height:.97;letter-spacing:-2.6px;margin:12px 0 17px;max-width:470px}
+    .lead{font-size:17px;line-height:1.55;color:var(--muted);margin:0;max-width:430px}
+    .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:25px 0}
+    .stat{background:rgba(255,255,255,.64);border:1px solid rgba(23,33,27,.08);border-radius:19px;padding:16px}
+    .stat b{font-size:25px;display:block;letter-spacing:-1px}.stat span{color:var(--muted);font-size:13px}
+    .choices{display:grid;gap:13px;margin-top:auto;padding-top:12px}
+    .choice{min-height:92px;border-radius:25px;padding:20px;text-align:left;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow);transition:.15s transform}
+    .choice:active,.primary:active,.secondary:active{transform:scale(.98)}
+    .choice.learn{background:var(--green);color:white}.choice.test{background:var(--lime);color:var(--ink)}
+    .choiceIcon{width:50px;height:50px;flex:0 0 50px;border-radius:17px;display:grid;place-items:center;font-size:24px;background:rgba(255,255,255,.17)}
+    .test .choiceIcon{background:rgba(255,255,255,.55)}
+    .choice strong{font-size:20px;display:block}.choice small{display:block;margin-top:4px;opacity:.78;font-size:13px}
+    .topline{display:flex;align-items:center;gap:12px;padding:20px 0 12px}
+    .back{width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,.7);font-size:19px}
+    .topcopy{flex:1}.topcopy b{display:block;font-size:17px}.topcopy span{color:var(--muted);font-size:13px}
+    .progress{height:8px;background:#e4e8df;border-radius:999px;overflow:hidden;margin:4px 0 24px}.progress i{display:block;height:100%;width:0;background:var(--green);border-radius:inherit;transition:width .3s}
+    .cardwrap{perspective:1100px;min-height:330px;display:flex}
+    .card{position:relative;flex:1;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.75,.25,1);cursor:pointer}
+    .card.flipped{transform:rotateY(180deg)}
+    .face{position:absolute;inset:0;backface-visibility:hidden;border-radius:31px;padding:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow);border:1px solid rgba(23,33,27,.06)}
+    .front{background:var(--white)}.backface{background:var(--green);color:#fff;transform:rotateY(180deg)}
+    .lang{position:absolute;top:24px;left:25px;font-size:11px;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;opacity:.55}
+    .word{font-size:clamp(27px,8vw,42px);line-height:1.14;font-weight:900;letter-spacing:-1.4px;overflow-wrap:anywhere}
+    .hint{position:absolute;bottom:22px;font-size:12px;opacity:.54;display:flex;align-items:center;gap:6px}
+    .actions{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:18px}
+    .primary,.secondary{min-height:56px;border-radius:18px;font-weight:850;padding:14px;transition:.15s transform}
+    .primary{background:var(--green);color:white}.secondary{background:var(--white);color:var(--ink);border:1px solid var(--line)}
+    .wide{grid-column:1/-1}.danger{color:var(--red)}
+    .testbox{background:var(--white);border-radius:29px;padding:26px;box-shadow:var(--shadow);margin-top:6px}
+    .promptTag{font-size:11px;font-weight:900;letter-spacing:1.3px;text-transform:uppercase;color:var(--green)}
+    .prompt{font-size:clamp(28px,8vw,40px);font-weight:900;line-height:1.15;letter-spacing:-1.2px;margin:25px 0 28px;min-height:92px;display:flex;align-items:center;overflow-wrap:anywhere}
+    label{display:block;font-size:13px;font-weight:800;margin-bottom:9px}
+    input{width:100%;height:58px;border-radius:17px;border:2px solid var(--line);padding:0 16px;background:#fbfcf8;color:var(--ink);outline:none;font-size:17px}
+    input:focus{border-color:var(--green)}
+    .feedback{display:none;margin-top:15px;padding:15px;border-radius:16px;font-size:14px;line-height:1.45}.feedback.show{display:block}.feedback.ok{background:#e2f4e9;color:var(--green2)}.feedback.no{background:#fff0eb;color:#8f3f37}
+    .testactions{display:grid;gap:10px;margin-top:16px}
+    .result{text-align:center;padding:40px 12px}.result .big{font-size:74px}.result h2{font-size:35px;margin:10px 0}.result p{color:var(--muted);line-height:1.5}
+    .tiny{text-align:center;color:var(--muted);font-size:12px;margin-top:18px}
+    @media(max-height:720px){.hero{padding-top:24px}.cardwrap{min-height:275px}.face{padding:24px}.prompt{margin:18px 0;min-height:60px}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand"><div class="logo"><span>W</span></div> Wordly</div>
+    <button class="iconbtn" id="resetBtn" aria-label="Сбросить прогресс" title="Сбросить прогресс">↻</button>
+  </header>
+  <main>
+    <section id="home" class="screen active">
+      <div class="hero">
+        <div class="eyebrow">Твой английский, день за днём</div>
+        <h1>Учить слова — легко.</h1>
+        <p class="lead">Все 200 слов и выражений из вашего файла. Карточки, самопроверка и прогресс — прямо на телефоне.</p>
+        <div class="stats">
+          <div class="stat"><b id="learnedStat">0</b><span>выучено</span></div>
+          <div class="stat"><b id="accuracyStat">—</b><span>точность ответов</span></div>
+        </div>
+      </div>
+      <div class="choices">
+        <button class="choice learn" data-go="learn"><span class="choiceIcon">◫</span><span><strong>Учить слова</strong><small>Переворачивайте карточки в своём темпе</small></span></button>
+        <button class="choice test" data-go="test"><span class="choiceIcon">✓</span><span><strong>Проверить себя</strong><small>10 случайных заданий в обе стороны</small></span></button>
+      </div>
+    </section>
+
+    <section id="learn" class="screen">
+      <div class="topline"><button class="back" data-go="home" aria-label="Назад">←</button><div class="topcopy"><b>Карточки</b><span id="learnCount">1 из 200</span></div></div>
+      <div class="progress"><i id="learnProgress"></i></div>
+      <div class="cardwrap"><div class="card" id="card" tabindex="0" role="button" aria-label="Перевернуть карточку">
+        <div class="face front"><span class="lang">English</span><div class="word" id="frontWord"></div><span class="hint">↻ Нажмите, чтобы увидеть перевод</span></div>
+        <div class="face backface"><span class="lang">Русский</span><div class="word" id="backWord"></div><span class="hint">↻ Нажмите, чтобы перевернуть</span></div>
+      </div></div>
+      <div class="actions">
+        <button class="secondary danger" id="againBtn">Ещё учу</button>
+        <button class="primary" id="knowBtn">Знаю</button>
+        <button class="secondary wide" id="nextBtn">Следующее слово →</button>
+      </div>
+      <div class="tiny">Прогресс сохраняется автоматически</div>
+    </section>
+
+    <section id="test" class="screen">
+      <div class="topline"><button class="back" data-go="home" aria-label="Назад">←</button><div class="topcopy"><b>Самопроверка</b><span id="testCount">Вопрос 1 из 10</span></div></div>
+      <div class="progress"><i id="testProgress"></i></div>
+      <div class="testbox">
+        <div class="promptTag" id="direction">Переведите на русский</div>
+        <div class="prompt" id="prompt"></div>
+        <label for="answer">Ваш ответ</label>
+        <input id="answer" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Введите перевод">
+        <div class="feedback" id="feedback"></div>
+        <div class="testactions">
+          <button class="primary" id="checkBtn">Проверить</button>
+          <button class="primary" id="testNextBtn" hidden>Следующий вопрос →</button>
+        </div>
+      </div>
+      <div class="tiny">Регистр и знаки препинания не учитываются</div>
+    </section>
+
+    <section id="result" class="screen">
+      <div class="result"><div class="big" id="resultEmoji">🎉</div><h2 id="resultTitle">Отлично!</h2><p id="resultText"></p></div>
+      <div class="choices"><button class="choice learn" id="retryBtn"><span class="choiceIcon">↻</span><span><strong>Ещё раз</strong><small>Новые 10 случайных заданий</small></span></button><button class="secondary primary" data-go="home">На главную</button></div>
+    </section>
+  </main>
+</div>
+<script>
+const WORDS=[{"en":"In my opinion","ru":"По моему мнению"},{"en":"I believe that...","ru":"Я считаю, что..."},{"en":"I think that...","ru":"Я думаю, что..."},{"en":"From my point of view","ru":"С моей точки зрения"},{"en":"As far as I know","ru":"Насколько я знаю"},{"en":"To begin with","ru":"Для начала"},{"en":"First of all","ru":"Прежде всего"},{"en":"The main reason is...","ru":"Главная причина заключается в том, что..."},{"en":"One important point is...","ru":"Один важный момент — это..."},{"en":"For example","ru":"Например"},{"en":"For instance","ru":"Например, в частности"},{"en":"In addition","ru":"Кроме того"},{"en":"Also","ru":"Также"},{"en":"However","ru":"Однако"},{"en":"On the other hand","ru":"С другой стороны"},{"en":"Because of this","ru":"Из-за этого"},{"en":"As a result","ru":"В результате"},{"en":"That is why","ru":"Вот почему"},{"en":"Overall","ru":"В целом"},{"en":"To sum up","ru":"Подводя итог"},{"en":"responsible person","ru":"ответственный человек"},{"en":"hard-working person","ru":"трудолюбивый человек"},{"en":"open-minded person","ru":"человек, открытый новым идеям"},{"en":"friendly and helpful","ru":"дружелюбный и готовый помочь"},{"en":"calm and patient","ru":"спокойный и терпеливый"},{"en":"honest and reliable","ru":"честный и надёжный"},{"en":"confident","ru":"уверенный в себе"},{"en":"independent","ru":"самостоятельный"},{"en":"motivated","ru":"мотивированный"},{"en":"creative","ru":"творческий"},{"en":"curious","ru":"любознательный"},{"en":"organized","ru":"организованный"},{"en":"flexible","ru":"гибкий, умеющий адаптироваться"},{"en":"careful","ru":"внимательный, аккуратный"},{"en":"ambitious","ru":"целеустремлённый"},{"en":"positive attitude","ru":"позитивный настрой"},{"en":"strong communication skills","ru":"хорошие коммуникативные навыки"},{"en":"good at solving problems","ru":"хорошо умею решать проблемы"},{"en":"willing to learn","ru":"готов учиться"},{"en":"able to work under pressure","ru":"умеющий работать под давлением"},{"en":"prepare for an exam","ru":"готовиться к экзамену"},{"en":"take an exam","ru":"сдавать экзамен"},{"en":"pass an exam","ru":"сдать экзамен успешно"},{"en":"improve my score","ru":"улучшить свой балл"},{"en":"practice every day","ru":"практиковаться каждый день"},{"en":"learn new words","ru":"учить новые слова"},{"en":"review the material","ru":"повторять материал"},{"en":"take notes","ru":"делать записи"},{"en":"complete an assignment","ru":"выполнить задание"},{"en":"meet a deadline","ru":"уложиться в срок"},{"en":"make progress","ru":"добиваться прогресса"},{"en":"stay focused","ru":"сохранять концентрацию"},{"en":"avoid distractions","ru":"избегать отвлекающих факторов"},{"en":"manage my time","ru":"управлять своим временем"},{"en":"set small goals","ru":"ставить небольшие цели"},{"en":"follow a study plan","ru":"следовать учебному плану"},{"en":"develop speaking skills","ru":"развивать разговорные навыки"},{"en":"improve pronunciation","ru":"улучшать произношение"},{"en":"understand the main idea","ru":"понимать основную мысль"},{"en":"give a clear answer","ru":"давать чёткий ответ"},{"en":"work experience","ru":"опыт работы"},{"en":"professional skills","ru":"профессиональные навыки"},{"en":"career goals","ru":"карьерные цели"},{"en":"work in a team","ru":"работать в команде"},{"en":"lead a project","ru":"руководить проектом"},{"en":"solve a problem","ru":"решить проблему"},{"en":"make a decision","ru":"принять решение"},{"en":"take responsibility","ru":"брать на себя ответственность"},{"en":"manage a project","ru":"управлять проектом"},{"en":"organize my work","ru":"организовывать свою работу"},{"en":"communicate with colleagues","ru":"общаться с коллегами"},{"en":"meet with clients","ru":"встречаться с клиентами"},{"en":"share ideas","ru":"делиться идеями"},{"en":"give feedback","ru":"давать обратную связь"},{"en":"learn from mistakes","ru":"учиться на ошибках"},{"en":"gain experience","ru":"приобретать опыт"},{"en":"develop my career","ru":"развивать карьеру"},{"en":"apply for a job","ru":"подать заявку на работу"},{"en":"work remotely","ru":"работать удалённо"},{"en":"achieve a goal","ru":"достичь цели"},{"en":"modern technology","ru":"современные технологии"},{"en":"digital skills","ru":"цифровые навыки"},{"en":"online learning","ru":"онлайн-обучение"},{"en":"educational platform","ru":"образовательная платформа"},{"en":"useful application","ru":"полезное приложение"},{"en":"digital device","ru":"цифровое устройство"},{"en":"access information","ru":"получать доступ к информации"},{"en":"search for information","ru":"искать информацию"},{"en":"save time","ru":"экономить время"},{"en":"improve efficiency","ru":"повышать эффективность"},{"en":"solve technical issues","ru":"решать технические проблемы"},{"en":"protect personal data","ru":"защищать персональные данные"},{"en":"use technology wisely","ru":"разумно использовать технологии"},{"en":"develop an application","ru":"разрабатывать приложение"},{"en":"analyze data","ru":"анализировать данные"},{"en":"share files","ru":"делиться файлами"},{"en":"attend an online class","ru":"посещать онлайн-занятие"},{"en":"use artificial intelligence","ru":"использовать искусственный интеллект"},{"en":"learn new technologies","ru":"изучать новые технологии"},{"en":"technology in education","ru":"технологии в образовании"},{"en":"daily routine","ru":"повседневный распорядок"},{"en":"wake up early","ru":"просыпаться рано"},{"en":"get ready for work","ru":"собираться на работу"},{"en":"cook breakfast","ru":"готовить завтрак"},{"en":"do household chores","ru":"заниматься домашними делами"},{"en":"clean the apartment","ru":"убирать квартиру"},{"en":"go grocery shopping","ru":"ходить за продуктами"},{"en":"spend time with my family","ru":"проводить время с семьёй"},{"en":"help my children","ru":"помогать детям"},{"en":"take a short break","ru":"сделать небольшой перерыв"},{"en":"get some rest","ru":"немного отдохнуть"},{"en":"go for a walk","ru":"пойти на прогулку"},{"en":"listen to music","ru":"слушать музыку"},{"en":"read an article","ru":"читать статью"},{"en":"watch a movie","ru":"смотреть фильм"},{"en":"call a friend","ru":"позвонить другу"},{"en":"make a plan","ru":"составить план"},{"en":"finish my work","ru":"закончить работу"},{"en":"go to bed early","ru":"лечь спать рано"},{"en":"have a busy day","ru":"иметь насыщенный день"},{"en":"travel abroad","ru":"путешествовать за границу"},{"en":"visit a new country","ru":"посетить новую страну"},{"en":"explore a city","ru":"исследовать город"},{"en":"see famous landmarks","ru":"увидеть известные достопримечательности"},{"en":"book a hotel","ru":"забронировать отель"},{"en":"buy a ticket","ru":"купить билет"},{"en":"pack my luggage","ru":"собрать багаж"},{"en":"take a flight","ru":"полететь самолётом"},{"en":"use public transport","ru":"пользоваться общественным транспортом"},{"en":"ask for directions","ru":"спросить дорогу"},{"en":"try local food","ru":"попробовать местную еду"},{"en":"meet new people","ru":"познакомиться с новыми людьми"},{"en":"learn about the culture","ru":"узнать о культуре"},{"en":"take photos","ru":"фотографировать"},{"en":"have a great experience","ru":"получить прекрасный опыт"},{"en":"beautiful scenery","ru":"красивый пейзаж"},{"en":"crowded place","ru":"многолюдное место"},{"en":"peaceful place","ru":"спокойное место"},{"en":"memorable trip","ru":"запоминающаяся поездка"},{"en":"travel destination","ru":"туристическое направление"},{"en":"I agree with this idea","ru":"Я согласен с этой идеей"},{"en":"I disagree with this opinion","ru":"Я не согласен с этим мнением"},{"en":"I prefer... to...","ru":"Я предпочитаю... вместо..."},{"en":"I enjoy spending time...","ru":"Мне нравится проводить время..."},{"en":"I am interested in...","ru":"Я интересуюсь..."},{"en":"I am proud of...","ru":"Я горжусь..."},{"en":"I am worried about...","ru":"Я беспокоюсь о..."},{"en":"I am excited about...","ru":"Я в предвкушении..."},{"en":"I am satisfied with...","ru":"Я доволен..."},{"en":"I am surprised by...","ru":"Я удивлён..."},{"en":"I feel relaxed","ru":"Я чувствую себя расслабленно"},{"en":"I feel nervous","ru":"Я нервничаю"},{"en":"I feel confident","ru":"Я чувствую себя уверенно"},{"en":"I feel tired","ru":"Я чувствую усталость"},{"en":"It makes me happy","ru":"Это делает меня счастливым"},{"en":"It helps me relax","ru":"Это помогает мне расслабиться"},{"en":"It is important to me","ru":"Это важно для меня"},{"en":"It depends on the situation","ru":"Это зависит от ситуации"},{"en":"I have mixed feelings","ru":"У меня смешанные чувства"},{"en":"I completely understand","ru":"Я полностью понимаю"},{"en":"In this picture, I can see...","ru":"На этой фотографии я вижу..."},{"en":"The photo shows...","ru":"Фотография показывает..."},{"en":"There is a person...","ru":"На фотографии есть человек..."},{"en":"There are several people...","ru":"На фотографии несколько людей..."},{"en":"In the foreground","ru":"На переднем плане"},{"en":"In the background","ru":"На заднем плане"},{"en":"On the left side","ru":"С левой стороны"},{"en":"On the right side","ru":"С правой стороны"},{"en":"In the center","ru":"В центре"},{"en":"The person is wearing...","ru":"Человек одет в..."},{"en":"They are talking to each other","ru":"Они разговаривают друг с другом"},{"en":"She is holding...","ru":"Она держит..."},{"en":"He is sitting next to...","ru":"Он сидит рядом с..."},{"en":"They seem happy","ru":"Они кажутся счастливыми"},{"en":"It looks like...","ru":"Похоже, что..."},{"en":"The weather seems...","ru":"Погода кажется..."},{"en":"The place looks crowded","ru":"Место выглядит многолюдным"},{"en":"The atmosphere is calm","ru":"Атмосфера спокойная"},{"en":"They might be...","ru":"Возможно, они..."},{"en":"Overall, the picture shows...","ru":"В целом фотография показывает..."},{"en":"significant difference","ru":"существенное различие"},{"en":"major advantage","ru":"главное преимущество"},{"en":"possible disadvantage","ru":"возможный недостаток"},{"en":"effective solution","ru":"эффективное решение"},{"en":"practical approach","ru":"практический подход"},{"en":"positive impact","ru":"положительное влияние"},{"en":"negative effect","ru":"отрицательный эффект"},{"en":"important factor","ru":"важный фактор"},{"en":"main purpose","ru":"основная цель"},{"en":"common problem","ru":"распространённая проблема"},{"en":"valuable experience","ru":"ценный опыт"},{"en":"reliable information","ru":"надёжная информация"},{"en":"clear explanation","ru":"ясное объяснение"},{"en":"strong argument","ru":"сильный аргумент"},{"en":"support an idea","ru":"поддержать идею"},{"en":"provide an example","ru":"привести пример"},{"en":"compare two options","ru":"сравнить два варианта"},{"en":"describe a situation","ru":"описать ситуацию"},{"en":"express an opinion","ru":"выразить мнение"},{"en":"reach a conclusion","ru":"прийти к выводу"}];
+const KEY="wordly-progress-v1";
+let saved=JSON.parse(localStorage.getItem(KEY)||'{"known":[],"correct":0,"attempts":0,"index":0}');
+let learnIndex=Math.min(saved.index||0,WORDS.length-1),quiz=[],quizIndex=0,quizCorrect=0,answered=false;
+const $=id=>document.getElementById(id);
+function save(){saved.index=learnIndex;localStorage.setItem(KEY,JSON.stringify(saved));updateStats()}
+function updateStats(){$("learnedStat").textContent=new Set(saved.known).size;$("accuracyStat").textContent=saved.attempts?Math.round(saved.correct/saved.attempts*100)+"%":"—"}
+function show(name){document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===name));window.scrollTo(0,0);if(name==="learn")renderCard();if(name==="test")startQuiz();if(name==="home")updateStats()}
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));
+function renderCard(){$("card").classList.remove("flipped");$("frontWord").textContent=WORDS[learnIndex].en;$("backWord").textContent=WORDS[learnIndex].ru;$("learnCount").textContent=`${learnIndex+1} из ${WORDS.length}`;$("learnProgress").style.width=`${(learnIndex+1)/WORDS.length*100}%`}
+function flip(){$("card").classList.toggle("flipped")}
+$("card").onclick=flip;$("card").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flip()}};
+function nextCard(){learnIndex=(learnIndex+1)%WORDS.length;save();renderCard()}
+$("nextBtn").onclick=nextCard;
+$("knowBtn").onclick=()=>{if(!saved.known.includes(learnIndex))saved.known.push(learnIndex);nextCard()};
+$("againBtn").onclick=()=>{saved.known=saved.known.filter(x=>x!==learnIndex);nextCard()};
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function startQuiz(){quiz=shuffle([...Array(WORDS.length).keys()]).slice(0,10).map(i=>({i,reverse:Math.random()<.5}));quizIndex=0;quizCorrect=0;renderQuestion()}
+function renderQuestion(){answered=false;const q=quiz[quizIndex],w=WORDS[q.i];$("testCount").textContent=`Вопрос ${quizIndex+1} из ${quiz.length}`;$("testProgress").style.width=`${quizIndex/quiz.length*100}%`;$("direction").textContent=q.reverse?"Переведите на английский":"Переведите на русский";$("prompt").textContent=q.reverse?w.ru:w.en;$("answer").value="";$("answer").disabled=false;$("feedback").className="feedback";$("feedback").textContent="";$("checkBtn").hidden=false;$("testNextBtn").hidden=true;setTimeout(()=>$("answer").focus(),100)}
+function norm(s){return s.toLocaleLowerCase("ru").replace(/ё/g,"е").replace(/[.?!,…:;'"“”‘’()]/g,"").replace(/\s+/g," ").trim()}
+function check(){if(answered)return;const value=$("answer").value.trim();if(!value){$("answer").focus();return}answered=true;const q=quiz[quizIndex],w=WORDS[q.i],expected=q.reverse?w.en:w.ru;const ok=norm(value)===norm(expected);saved.attempts++;if(ok){saved.correct++;quizCorrect++}$("feedback").className=`feedback show ${ok?"ok":"no"}`;$("feedback").innerHTML=ok?`<b>Верно!</b> Отличная работа.`:`<b>Правильный ответ:</b><br>${expected}`;$("answer").disabled=true;$("checkBtn").hidden=true;$("testNextBtn").hidden=false;save()}
+$("checkBtn").onclick=check;$("answer").onkeydown=e=>{if(e.key==="Enter"){answered?nextQuestion():check()}};
+function nextQuestion(){quizIndex++;if(quizIndex>=quiz.length){finishQuiz()}else renderQuestion()}
+$("testNextBtn").onclick=nextQuestion;
+function finishQuiz(){$("testProgress").style.width="100%";const pct=quizCorrect/quiz.length;$("resultEmoji").textContent=pct>=.8?"🎉":pct>=.5?"🌱":"💪";$("resultTitle").textContent=pct>=.8?"Прекрасный результат!":pct>=.5?"Хорошее начало!":"Продолжаем учиться!";$("resultText").textContent=`Правильных ответов: ${quizCorrect} из ${quiz.length}. ${pct>=.8?"Вы уверенно знаете эти слова.":"Карточки помогут быстро закрепить сложные выражения."}`;show("result")}
+$("retryBtn").onclick=()=>show("test");
+$("resetBtn").onclick=()=>{if(confirm("Сбросить весь сохранённый прогресс?")){saved={known:[],correct:0,attempts:0,index:0};learnIndex=0;save();show("home")}};
+updateStats();
+</script>
+</body>
+</html>
