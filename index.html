@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6254e7">
+  <title>Умный супермаркет — урок алгоритмов</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="confetti" id="confetti" aria-hidden="true"></div>
+  <header class="topbar">
+    <button class="brand" data-go="home" aria-label="На главную"><span>🛒</span> Умный супермаркет</button>
+    <nav class="nav" aria-label="Разделы урока">
+      <button data-go="learn" data-step="1"><span>💡</span><b>Что такое алгоритм?</b></button>
+      <button data-go="linear" data-step="2"><span>➡️</span><b>Линейный алгоритм</b></button>
+      <button data-go="condition" data-step="3"><span>🔀</span><b>Алгоритм ветвления</b></button>
+      <button data-go="loop" data-step="4"><span>🔁</span><b>Циклический алгоритм</b></button>
+      <button data-go="pro" data-step="5" class="pro-nav"><span>🚀</span><b>Для крутых кодеров</b></button>
+    </nav>
+    <button class="sound-toggle" id="soundToggle" aria-label="Включить или выключить звук">🔊 Звук</button>
+    <div class="score" aria-label="Собранные звёзды"><span id="starCount">0</span>/3 ⭐</div>
+  </header>
+
+  <main>
+    <section class="screen active hero" id="home">
+      <div class="hero-copy">
+        <span class="eyebrow">Интерактивный урок • 20 минут</span>
+        <h1>Умный<br><span>супермаркет</span></h1>
+        <p class="lead">Помоги роботу Робику купить продукты и открой три секретные команды программиста!</p>
+        <div class="goal-card"><strong>🎯 Цель миссии</strong><span>Научиться строить алгоритм, выбирать по условию и сокращать повторения с помощью цикла.</span></div>
+        <button class="primary big" data-go="learn">Начать миссию <span>→</span></button>
+      </div>
+      <div class="hero-art" aria-label="Робот-покупатель в супермаркете">
+        <div class="sun"></div><div class="cloud c1">☁</div><div class="cloud c2">☁</div>
+        <div class="market"><div class="awning"></div><div class="market-sign">SUPER<br>MARKET</div><div class="shelf">🍞　🥛<br>🍎　🧃</div></div>
+        <img class="robik hero-robik" src="assets/robik-character.png" alt="Весёлый техно-помощник Робик машет рукой">
+        <div class="cart">🛒</div>
+        <div class="speech">Привет! Я Робик.<br>Запрограммируешь меня?</div>
+      </div>
+      <div class="mission-strip">
+        <div><span>🔵</span><b>Алгоритм</b><small>Команды по порядку</small></div>
+        <div><span>🟠</span><b>Условие</b><small>Выбор «если — иначе»</small></div>
+        <div><span>🟣</span><b>Цикл</b><small>Повторение действий</small></div>
+      </div>
+    </section>
+
+    <section class="screen" id="learn">
+      <div class="section-head"><span class="step-pill">Этап 1 из 4</span><h2>Три команды для Робика</h2><p>Нажимайте на карточки и выполняйте движения вместе с роботом.</p></div>
+      <div class="learn-grid">
+        <button class="concept blue selected" data-concept="algo"><span class="concept-icon">➡️</span><small>Секрет №1</small><strong>Линейный алгоритм</strong><em>Команды идут по порядку</em></button>
+        <button class="concept orange" data-concept="if"><span class="concept-icon">🔀</span><small>Секрет №2</small><strong>Алгоритм ветвления</strong><em>Выбираем один из двух путей</em></button>
+        <button class="concept purple" data-concept="repeat"><span class="concept-icon">🔁</span><small>Секрет №3</small><strong>Циклический алгоритм</strong><em>Повторяем действия несколько раз</em></button>
+      </div>
+      <div class="explain-card" id="explainCard"></div>
+      <button class="primary next" data-go="linear">Перейти к первой игре →</button>
+    </section>
+
+    <section class="screen game-screen" id="linear">
+      <div class="section-head"><span class="step-pill blue-bg">Игра 1 • Линейный алгоритм</span><h2>Собери покупку 🍞</h2><p>Нажимай на команды в правильном порядке. Робик выполнит их сверху вниз.</p></div>
+      <div class="game-layout">
+        <div class="scene-box"><div class="mini-market"><span>🚪</span><span>🧺</span><span>🛍️</span><span>🍞</span><span>💳</span></div><div class="mini-robot" id="linearRobot">🤖</div><div class="scene-message" id="linearMessage">С чего начнём?</div></div>
+        <div class="task-box"><div class="progress-line"><b>Твой алгоритм</b><span id="linearProgress">0 из 6</span></div><div class="answer-slots" id="linearSlots"></div><div class="command-bank" id="linearBank"></div><div class="actions"><button class="secondary" id="linearReset">↻ Начать заново</button><button class="primary" id="linearCheck">▶ Запустить</button></div></div>
+      </div>
+      <div class="feedback" id="linearFeedback" role="status"></div>
+    </section>
+
+    <section class="screen game-screen" id="condition">
+      <div class="section-head"><span class="step-pill orange-bg">Игра 2 • Алгоритм с ветвлением</span><h2>Развилка решений 🚦</h2><p>Условие меняет продолжение истории. Посмотри на магазин и выбери ветку «ДА» или «НЕТ».</p></div>
+      <div class="branch-game">
+        <div class="branch-scene" id="branchScene"><div class="sky-orb">☀️</div><div class="storybook-store"><div id="storeStatus" class="store-status">ОТКРЫТО</div><div class="store-window">🥛 🍞 🍎</div><div class="store-door">🚪</div></div><div class="storybook-home">🏠</div><div class="branch-path"></div><img class="robik branch-robik" id="branchRobik" src="assets/robik-character.png" alt="Робик перед магазином"><div class="story-bubble" id="branchStory">Магазин открыт?</div></div>
+        <div class="branch-panel"><span class="round-label">Ситуация <b id="conditionRound">1</b> из 2</span><div class="condition-diamond"><small>УСЛОВИЕ</small><strong>Магазин открыт?</strong></div><div class="branch-lines"><button class="branch-choice yes" data-choice="yes"><b>ДА</b><span>Войти → купить молоко → вернуться домой</span></button><button class="branch-choice no" data-choice="no"><b>НЕТ</b><span>Посмотреть расписание → вернуться завтра</span></button></div><div class="feedback inline" id="conditionFeedback" role="status"></div></div>
+      </div>
+    </section>
+
+    <section class="screen game-screen" id="loop">
+      <div class="section-head"><span class="step-pill purple-bg">Игра 3 • Цикл</span><h2>Три дня покупок 🔁</h2><p>Один и тот же маршрут повторяется каждый день. Собери команду и наблюдай за циклом.</p></div>
+      <div class="loop-board route-loop">
+        <div class="route-scene" id="routeScene"><div class="day-sky" id="daySky">☀️</div><div class="calendar" id="dayLabel">День 1</div><div class="route-home">🏠<small>ДОМ</small><div class="homeApples" id="homeApples"></div></div><div class="route-shop">🏪<small>МАГАЗИН</small></div><div class="road"><i></i></div><img class="robik route-robik" id="routeRobik" src="assets/robik-character.png" alt="Робик идёт между домом и магазином"><div class="route-caption" id="routeCaption">Робик готов к маршруту</div></div>
+        <div class="code-panel"><div class="code-title"><span>Циклическая команда</span><i>● ● ●</i></div><div class="code-block"><b>ПОВТОРИ</b><div class="number-picker" aria-label="Количество повторений"><button data-times="1">1</button><button data-times="2">2</button><button data-times="3">3</button><button data-times="4">4</button></div><b>РАЗА:</b><div class="nested-command">↳ выйди из дома<br>↳ иди в магазин<br>↳ купи 1 яблоко<br>↳ вернись домой</div></div><button class="primary full" id="loopRun">▶ Запустить цикл</button><div class="feedback inline" id="loopFeedback" role="status"></div></div>
+      </div>
+    </section>
+
+    <section class="screen finish" id="finish">
+      <div class="finish-banner"><div class="trophy">🏆</div><span class="eyebrow">Все три миссии пройдены!</span><h2>Покупка завершена</h2><p>Ты запрограммировал умный супермаркет и собрал три звезды.</p><div class="badge-row"><span>⭐ Алгоритм</span><span>⭐ Условие</span><span>⭐ Цикл</span></div></div>
+      <div class="quick-check"><h3>⚡ Быстрая проверка</h3><p>Что здесь спрятано? Нажми на правильный ответ.</p><div id="quizCard" class="quiz-card"></div><div id="quizChoices" class="quiz-choices"></div><div id="quizFeedback" class="feedback inline" role="status"></div></div>
+      <button class="primary big reflection-entry" id="openReflection">Перейти к рефлексии ✨</button><button class="secondary restart" id="restart">↻ Пройти урок ещё раз</button>
+    </section>
+    <section class="screen reflection-screen" id="reflection"><div class="reflection"><img class="robik reflection-robik" src="assets/robik-character.png" alt="Робик благодарит за урок"><div class="section-head"><span class="step-pill green-bg">Отдельный этап • Рефлексия</span><h2>Как прошёл урок?</h2><p>Выбери стикер, который лучше всего показывает твои впечатления.</p></div><div class="stickers" id="stickers"><button data-mood="star"><span>⭐</span><b>Всё понял!</b><small>Могу объяснить другому</small></button><button data-mood="heart"><span>❤️</span><b>Мне понравилось</b><small>Хочу ещё такие игры</small></button><button data-mood="smile"><span>😊</span><b>Почти всё понял</b><small>Хочу потренироваться</small></button><button data-mood="flower"><span>🌸</span><b>Было интересно</b><small>Узнал что-то новое</small></button><button data-mood="think"><span>🤔</span><b>Нужна помощь</b><small>Объясните ещё раз</small></button></div><label class="wish"><span>💬 Моё пожелание <small>(необязательно)</small></span><textarea id="wishText" maxlength="180" placeholder="Напиши, что понравилось или что хочешь попробовать…"></textarea></label><button class="primary big" id="saveReflection">Отправить в корзину 🛒</button><div class="reflectionThanks" id="reflectionThanks"></div></div><button class="secondary restart" data-go="finish">← Вернуться к результатам</button></section>
+
+    <section class="screen pro-screen" id="pro">
+      <div class="pro-hero"><div class="rocket-trail">✨　⭐　✨</div><img class="robik pro-robik" src="assets/robik-character.png" alt="Робик приглашает выполнить сложное упражнение"><div class="pro-copy"><span class="pro-label">Секретная бонус-миссия</span><h2>Упражнение для<br><em>самых крутых кодеров</em></h2><p>Готов к настоящему испытанию? Читай команды, размышляй как программист и помоги персонажу пройти маршрут.</p><div class="pro-warning">🌐 Упражнение откроется на сайте Compute It в новой вкладке. Для него нужен интернет.</div><button class="pro-launch" id="launchPro">Начать супериспытание 🚀</button></div></div>
+      <div class="pro-return" id="proReturn"><span class="return-icon">🏁</span><div><h3>Вернулся с задания?</h3><p>Если ты выполнил упражнение, забирай особую награду!</p></div><button id="claimPro">Я выполнил упражнение</button></div>
+      <div class="mega-reward" id="megaReward"><div class="crown">👑</div><span>НАГРАДА СУПЕРКОДЕРА</span><h3>Пять ярких звёзд!</h3><div class="five-stars" aria-label="Пять звёзд"><i>⭐</i><i>⭐</i><i>⭐</i><i>⭐</i><i>⭐</i></div><p>Ты не испугался сложного задания и мыслил как настоящий программист!</p><button class="primary big" data-go="finish">К результатам →</button></div>
+    </section>
+  </main>
+  <footer><span>Урок «Основы программирования»</span><span>Линейный • С ветвлением • Циклический</span></footer>
+  <script src="script.js"></script>
+</body>
+</html>
